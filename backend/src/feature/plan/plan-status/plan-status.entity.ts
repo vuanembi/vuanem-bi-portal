@@ -1,5 +1,7 @@
 import { Entity, Column } from 'typeorm';
 
+import { EntityMeta } from 'src/feature/common/entity';
+
 export enum StatusEnum {
     DRAFT = 'draft',
     FORECASTED = 'forecasted',
@@ -7,7 +9,7 @@ export enum StatusEnum {
 }
 
 @Entity()
-export class PlanStatus {
+export class PlanStatus extends EntityMeta {
     @Column({
         type: 'enum',
         enum: StatusEnum,

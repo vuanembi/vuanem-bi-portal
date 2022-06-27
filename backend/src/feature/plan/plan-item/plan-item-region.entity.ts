@@ -1,5 +1,7 @@
 import { Entity, Column } from 'typeorm';
 
+import { EntityMeta } from 'src/feature/common/entity';
+
 export enum RegionEnum {
     NORTH = 'North',
     MIDDLE = 'Middle',
@@ -7,10 +9,10 @@ export enum RegionEnum {
 }
 
 @Entity()
-export class PlanRegion {
+export class PlanItemRegion extends EntityMeta {
     @Column({
         type: 'enum',
         enum: RegionEnum,
     })
-    region: PlanRegion;
+    region: PlanItemRegion;
 }

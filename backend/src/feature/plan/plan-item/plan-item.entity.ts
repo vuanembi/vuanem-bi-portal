@@ -1,10 +1,10 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 
-import { BaseEntity } from '../common/entity';
+import { EntityMeta } from '../../common/entity';
 
 import { Plan } from '../plan/plan.entity';
 import { PlanStatus } from '../plan-status/plan-status.entity';
-import { PlanRegion } from './plan-region.entity';
+import { PlanItemRegion } from './plan-item-region.entity';
 
 class Item {
     @Column()
@@ -13,8 +13,8 @@ class Item {
     @Column()
     startOfWeek: Date;
 
-    @ManyToOne(() => PlanRegion, ({ region }) => region)
-    region: PlanRegion;
+    @ManyToOne(() => PlanItemRegion, ({ region }) => region)
+    region: PlanItemRegion;
 
     @Column()
     avgItemDiscount: number;
@@ -53,7 +53,7 @@ class Forecast {
 }
 
 @Entity()
-export class PlanItem extends BaseEntity {
+export class PlanItem extends EntityMeta {
     @ManyToOne(() => PlanStatus, ({ status }) => status)
     status: PlanStatus;
 
