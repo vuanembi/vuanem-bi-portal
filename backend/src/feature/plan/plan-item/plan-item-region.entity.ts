@@ -14,5 +14,5 @@ export class PlanItemRegion extends EntityMeta {
         type: 'enum',
         enum: RegionEnum,
     })
-    region: PlanItemRegion;
+    name: PlanItemRegion;
 }

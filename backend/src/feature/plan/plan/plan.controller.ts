@@ -7,11 +7,18 @@ import {
     Param,
     Delete,
 } from '@nestjs/common';
+
 import { PlanService } from './plan.service';
+import { CreatePlan } from './plan.dto';
 
 @Controller('plan')
 export class PlanController {
     constructor(private readonly planService: PlanService) {}
+
+    @Post()
+    create(@Body() createPlanDto: CreatePlan) {
+        return this.planService.create(createPlanDto);
+    }
 
     @Get()
     findAll() {

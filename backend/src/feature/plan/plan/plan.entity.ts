@@ -7,10 +7,13 @@ import { PlanStatus } from '../plan-status/plan-status.entity';
 
 @Entity()
 export class Plan extends EntityMeta {
-    @Column()
+    @Column({ type: 'date' })
     startOfForecastWeek: Date;
 
-    @ManyToOne(() => PlanStatus, ({ status }) => status)
+    @Column()
+    name: string;
+
+    @ManyToOne(() => PlanStatus, ({ name }) => name)
     status: PlanStatus;
 
     @OneToMany(() => PlanItem, ({ plan }) => plan)

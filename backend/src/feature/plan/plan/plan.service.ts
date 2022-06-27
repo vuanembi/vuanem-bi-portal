@@ -1,18 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Equal } from 'typeorm';
 
 import { Plan } from './plan.entity';
+import { StatusEnum, PlanStatus } from '../plan-status/plan-status.entity';
+import { CreatePlan } from './plan.dto';
 
 @Injectable()
 export class PlanService {
     constructor(
         @InjectRepository(Plan)
         private planRepository: Repository<Plan>,
+        @InjectRepository(PlanStatus)
+        private planStatusRepository: Repository<PlanStatus>,
     ) {}
 
-    create(product) {
-        return this.planRepository.save(product);
+    async create(createPlanDto: CreatePlan) {
+        return this.planStatusRepository
+            .findOne({
+                where: { name: Equal(StatusEnum.DRAFT) },
+            })
+            .then((status) =>
+                this.planRepository.save({
+                    ...createPlanDto,
+                    status,
+                }),
+            );
     }
 
     findAll() {

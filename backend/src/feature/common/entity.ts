@@ -1,9 +1,9 @@
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column,
     CreateDateColumn,
     UpdateDateColumn,
+    DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -11,8 +11,8 @@ export class EntityMeta {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    isDeleted: boolean;
+    @DeleteDateColumn()
+    deletedAt: boolean;
 
     @CreateDateColumn()
     createdAt: Date;

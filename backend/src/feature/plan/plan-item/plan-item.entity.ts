@@ -3,7 +3,6 @@ import { Entity, Column, ManyToOne } from 'typeorm';
 import { EntityMeta } from '../../common/entity';
 
 import { Plan } from '../plan/plan.entity';
-import { PlanStatus } from '../plan-status/plan-status.entity';
 import { PlanItemRegion } from './plan-item-region.entity';
 
 class Item {
@@ -13,7 +12,7 @@ class Item {
     @Column()
     startOfWeek: Date;
 
-    @ManyToOne(() => PlanItemRegion, ({ region }) => region)
+    @ManyToOne(() => PlanItemRegion, ({ name }) => name)
     region: PlanItemRegion;
 
     @Column()
@@ -54,9 +53,6 @@ class Forecast {
 
 @Entity()
 export class PlanItem extends EntityMeta {
-    @ManyToOne(() => PlanStatus, ({ status }) => status)
-    status: PlanStatus;
-
     @ManyToOne(() => Plan, ({ items }) => items)
     plan: Plan;
 

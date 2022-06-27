@@ -14,6 +14,7 @@ export class PlanStatus extends EntityMeta {
         type: 'enum',
         enum: StatusEnum,
         default: StatusEnum.DRAFT,
+        unique: true,
     })
-    status: PlanStatus;
+    name: PlanStatus;
 }
