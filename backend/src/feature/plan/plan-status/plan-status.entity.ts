@@ -10,11 +10,6 @@ export enum StatusEnum {
 
 @Entity()
 export class PlanStatus extends EntityMeta {
-    @Column({
-        type: 'enum',
-        enum: StatusEnum,
-        default: StatusEnum.DRAFT,
-        unique: true,
-    })
-    name: PlanStatus;
+    @Column()
+    name: string;
 }
