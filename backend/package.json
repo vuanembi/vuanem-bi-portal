@@ -8,7 +8,9 @@
         "start": "nest start",
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
-        "start:prod": "node dist/main"
+        "start:prod": "node dist/main",
+        "typeorm": "typeorm-ts-node-commonjs -d ./src/provider/database/database.module.ts",
+        "typeorm:schema:drop": "npm run typeorm -- schema:drop"
     },
     "dependencies": {
         "@google-cloud/bigquery": "^6.0.0",
@@ -34,6 +36,7 @@
         "@types/supertest": "^2.0.11",
         "@typescript-eslint/eslint-plugin": "^5.0.0",
         "@typescript-eslint/parser": "^5.0.0",
+        "dotenv": "^16.0.1",
         "eslint": "^8.0.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",

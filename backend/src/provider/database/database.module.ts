@@ -1,34 +1,30 @@
+import 'dotenv/config';
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
+export const config: DataSourceOptions = {
+    type: 'postgres',
+    host: process.env.PG_HOST || '',
+    port: 5432,
+    database:
+        process.env.NODE_ENV === 'production' ? 'postgres' : 'postgres-dev',
+    username: process.env.PG_USER || '',
+    password: process.env.PG_PASSWORD || '',
+    synchronize: true,
+    namingStrategy: new SnakeNamingStrategy(),
+};
 
 @Module({
     imports: [
-        TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: (configService: ConfigService) => {
-                console.log(configService.get('PG_USER'))
-                return {
-                    type: 'postgres',
-                    host: configService.get('PG_HOST'),
-                    port: 5432,
-                    database:
-                        process.env.NODE_ENV === 'production'
-                            ? 'postgres'
-                            : 'postgres-dev',
-                    username: configService.get('PG_USER'),
-                    password: configService.get('PG_PASSWORD'),
-                    entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-                    synchronize: true,
-                    // ssl: {
-                    //     rejectUnauthorized: false,
-                    // },
-                    namingStrategy: new SnakeNamingStrategy(),
-                };
-            },
+        TypeOrmModule.forRoot({
+            ...config,
+            entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
         }),
     ],
 })
 export class DatabaseModule {}
+
+export default new DataSource(config);
