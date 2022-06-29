@@ -1,11 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { BigQuery } from '@google-cloud/bigquery';
+import { faker } from '@faker-js/faker';
+import { range} from 'lodash'
+
+import { CreateDto } from 'src/feature/plan/plan-item/plan-item.dto';
+
+const createMockPlanItem = (): CreateDto => ({
+    sku: faker.random.numeric(13),
+    startOfWeek: faker.date.soon(),
+    region: 'north',
+    avgItemDiscount: faker.datatype.number(),
+    avgOrderDiscount: faker.datatype.number(),
+    discount: faker.datatype.number(),
+    workingDays: faker.datatype.number(),
+    inventory: faker.datatype.number(),
+    moq: faker.datatype.number(),
+    leadTime: faker.datatype.number(),
+});
 
 @Injectable()
 export class BigQueryService {
-    constructor(private bigQuery: BigQuery) {}
+    private bigQuery: BigQuery
+    
+    constructor() {
+        this.bigQuery = new BigQuery()
+    }
 
-    async query<T>(query: string): Promise<T[]> {
-        return this.bigQuery.query(query).then(([rows]) => rows);
+    async query() {
+        return range(1, 400).map(() => createMockPlanItem())
+        // return this.bigQuery.query(query).then(([rows]) => rows);
     }
 }

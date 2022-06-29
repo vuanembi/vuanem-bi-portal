@@ -3,7 +3,6 @@ import { Entity, Column, ManyToOne } from 'typeorm';
 import { EntityMeta } from '../../common/entity';
 
 import { Plan } from '../plan/plan.entity';
-import { PlanItemRegion } from './plan-item-region.entity';
 
 class Item {
     @Column()
@@ -12,8 +11,8 @@ class Item {
     @Column()
     startOfWeek: Date;
 
-    @ManyToOne(() => PlanItemRegion, ({ name }) => name)
-    region: PlanItemRegion;
+    @Column()
+    region: string;
 
     @Column()
     avgItemDiscount: number;
@@ -38,22 +37,22 @@ class Item {
 }
 
 class Forecast {
-    @Column()
-    qtyDemandML: number;
+    @Column({ nullable: true })
+    qtyDemandML: number | null;
 
-    @Column()
-    qtyDemandPurchasing: number;
+    @Column({ nullable: true })
+    qtyDemandPurchasing: number | null;
 
-    @Column()
-    qtyDemand: number;
+    @Column({ nullable: true })
+    qtyDemand: number | null;
 
-    @Column()
-    qtySupply: number;
+    @Column({ nullable: true })
+    qtySupply: number | null;
 }
 
 @Entity()
 export class PlanItem extends EntityMeta {
-    @ManyToOne(() => Plan, ({ items }) => items)
+    @ManyToOne(() => Plan, ({ items }) => items, { cascade: true })
     plan: Plan;
 
     @Column(() => Item)
