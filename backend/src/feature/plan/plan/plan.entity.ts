@@ -16,6 +16,6 @@ export class Plan extends EntityMeta {
     @ManyToOne(() => PlanStatus, ({ name }) => name)
     status: PlanStatus;
 
-    @OneToMany(() => PlanItem, ({ plan }) => plan)
+    @OneToMany(() => PlanItem, ({ plan }) => plan, { cascade: true })
     items: PlanItem[];
 }

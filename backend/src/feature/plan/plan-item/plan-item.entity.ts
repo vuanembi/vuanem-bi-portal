@@ -14,13 +14,13 @@ class Item {
     @Column()
     region: string;
 
-    @Column()
+    @Column({type: 'float'})
     avgItemDiscount: number;
 
-    @Column()
+    @Column({type: 'float'})
     avgOrderDiscount: number;
 
-    @Column()
+    @Column({type: 'float'})
     discount: number;
 
     @Column()
@@ -52,7 +52,7 @@ class Forecast {
 
 @Entity()
 export class PlanItem extends EntityMeta {
-    @ManyToOne(() => Plan, ({ items }) => items, { cascade: true })
+    @ManyToOne(() => Plan, ({ items }) => items)
     plan: Plan;
 
     @Column(() => Item)

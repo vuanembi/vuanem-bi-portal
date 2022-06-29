@@ -26,8 +26,9 @@ export class PlanService {
     async create(createPlanDto: CreatePlan) {
         const [itemData, status] = await Promise.all([
             this.bigQueryService.query(),
-            this.planStatusRepository.findOne({
-                where: { name: Equal(StatusEnum.DRAFT) },
+            this.planStatusRepository.preload({
+                id: 1,
+                name: StatusEnum.DRAFT,
             }),
         ]);
 
