@@ -3,7 +3,7 @@ import { BigQuery } from '@google-cloud/bigquery';
 import { faker } from '@faker-js/faker';
 import { range } from 'lodash';
 
-import { CreateDto } from 'src/feature/plan/plan-item/plan-item.dto';
+import { CreateDto } from '../../feature/plan/plan-item/plan-item.dto';
 
 const mockFloat = () => faker.datatype.number({
     max: 0.99,
@@ -33,7 +33,7 @@ export class BigQueryService {
     }
 
     async query() {
-        return range(1, 400).map(() => createMockPlanItem());
+        return range(1, 10).map(() => createMockPlanItem());
         // return this.bigQuery.query(query).then(([rows]) => rows);
     }
 }

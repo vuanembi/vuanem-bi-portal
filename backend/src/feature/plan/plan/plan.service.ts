@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Plan } from './plan.entity';
 import { StatusEnum, PlanStatus } from '../plan-status/plan-status.entity';
 import { CreatePlan } from './plan.dto';
-import { BigQueryService } from 'src/provider/warehouse/bigquery.service';
+import { BigQueryService } from '../../../provider/warehouse/bigquery.service';
 import { PlanItem } from '../plan-item/plan-item.entity';
 
 @Injectable()
