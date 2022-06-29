@@ -52,16 +52,4 @@ export class PlanService {
     findOne(id: number) {
         return this.planRepository.findOneBy({ id });
     }
-
-    async update(id: number, updateProductDto) {
-        return this.findOne(id).then((product) =>
-            this.planRepository.save({ ...product, ...updateProductDto }),
-        );
-    }
-
-    async remove(id: number) {
-        return this.findOne(id).then((product) =>
-            this.planRepository.remove(product),
-        );
-    }
 }
