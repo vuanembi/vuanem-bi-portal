@@ -11,17 +11,24 @@ export class CreateDto {
     leadTime: number;
 }
 
-export class GetPlanItems {
+export class GetDto {
     sku: string;
     region: string;
 }
 
 export class UpdateDto {
-    avgItemDiscount: number;
-    avgOrderDiscount: number;
-    discount: number;
-    workingDays: number;
-    inventory: number;
-    moq: number;
-    leadTime: number;
+    sku?: string;
+    startOfWeek?: Date;
+    region?: string;
+    avgItemDiscount?: number;
+    avgOrderDiscount?: number;
+    discount?: number;
+    workingDays?: number;
+    inventory?: number;
+    moq?: number;
+    leadTime?: number;
+    qtyDemandML?: number | null;
+    qtyDemandPurchasing?: number | null;
+    qtyDemand?: number | null;
+    qtySupply?: number | null;
 }
