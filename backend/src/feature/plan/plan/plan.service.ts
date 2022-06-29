@@ -33,7 +33,7 @@ export class PlanService {
         ]);
 
         const planItems = itemData.map((item) =>
-            this.planItemRepository.create({ item }),
+            this.planItemRepository.create(item),
         );
 
         const plan = this.planRepository.create({

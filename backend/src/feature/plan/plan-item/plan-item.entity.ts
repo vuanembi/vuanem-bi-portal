@@ -4,7 +4,13 @@ import { EntityMeta } from '../../common/entity';
 
 import { Plan } from '../plan/plan.entity';
 
-class Item {
+@Entity()
+export class PlanItem extends EntityMeta {
+    @ManyToOne(() => Plan, ({ items }) => items)
+    plan: Plan;
+
+    // Item
+
     @Column()
     sku: string;
 
@@ -14,13 +20,13 @@ class Item {
     @Column()
     region: string;
 
-    @Column({type: 'float'})
+    @Column({ type: 'float' })
     avgItemDiscount: number;
 
-    @Column({type: 'float'})
+    @Column({ type: 'float' })
     avgOrderDiscount: number;
 
-    @Column({type: 'float'})
+    @Column({ type: 'float' })
     discount: number;
 
     @Column()
@@ -34,9 +40,9 @@ class Item {
 
     @Column()
     leadTime: number;
-}
 
-class Forecast {
+    // Forecast
+
     @Column({ nullable: true })
     qtyDemandML: number | null;
 
@@ -48,16 +54,4 @@ class Forecast {
 
     @Column({ nullable: true })
     qtySupply: number | null;
-}
-
-@Entity()
-export class PlanItem extends EntityMeta {
-    @ManyToOne(() => Plan, ({ items }) => items)
-    plan: Plan;
-
-    @Column(() => Item)
-    item: Item;
-
-    @Column(() => Forecast)
-    forecast: Forecast;
 }
