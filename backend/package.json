@@ -10,7 +10,8 @@
         "start:debug": "nest start --debug --watch",
         "start:prod": "node dist/main",
         "typeorm": "typeorm-ts-node-commonjs -d ./src/provider/database/database.module.ts",
-        "typeorm:schema:drop": "npm run typeorm -- schema:drop"
+        "typeorm:schema:drop": "npm run typeorm -- schema:drop",
+        "typeorm:schema:sync": "npm run typeorm -- schema:sync"
     },
     "dependencies": {
         "@faker-js/faker": "^7.3.0",
