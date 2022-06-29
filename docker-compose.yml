@@ -7,14 +7,17 @@ services:
       - ./${GOOGLE_APPLICATION_CREDENTIALS}:/tmp/{GOOGLE_APPLICATION_CREDENTIALS}
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/{GOOGLE_APPLICATION_CREDENTIALS}
+      PG_HOST: ${PG_HOST}
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
     ports:
-      - "3000:8080"
+      - 3000:3000
 
-  frontend:
-    container_name: frontend
-    build:
-      context: ./frontend
-    env_file:
-      - .env
-    ports:
-      - "8080:8080"
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./frontend
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "8080:8080"
