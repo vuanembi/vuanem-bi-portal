@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm';
 
-import { EntityMeta } from 'src/feature/common/entity';
+import { EntityMeta } from '../../common/entity';
 
 export enum StatusEnum {
     DRAFT = 'draft',

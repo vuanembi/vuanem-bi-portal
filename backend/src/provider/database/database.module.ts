@@ -15,15 +15,11 @@ export const config: DataSourceOptions = {
     password: process.env.PG_PASSWORD || '',
     synchronize: true,
     namingStrategy: new SnakeNamingStrategy(),
+    entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
 };
 
 @Module({
-    imports: [
-        TypeOrmModule.forRoot({
-            ...config,
-            entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-        }),
-    ],
+    imports: [TypeOrmModule.forRoot(config)],
 })
 export class DatabaseModule {}
 
