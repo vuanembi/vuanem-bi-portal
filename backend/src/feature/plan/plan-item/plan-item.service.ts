@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { PlanItem } from './plan-item.entity';
-import { GetDto, UpdateDto } from './plan-item.dto';
+import { GetDto, UpdatePlanItemDto } from './plan-item.dto';
 
 @Injectable()
 export class PlanItemService {
@@ -12,7 +12,7 @@ export class PlanItemService {
         private readonly planItemRepository: Repository<PlanItem>,
     ) {}
 
-    findAll({sku, region}: GetDto) {
+    findAll({ sku, region }: GetDto) {
         return this.planItemRepository.find({
             where: { sku, region },
         });
@@ -22,7 +22,7 @@ export class PlanItemService {
         return this.planItemRepository.findOneBy({ id });
     }
 
-    async update(id: number, updatePlanItemDto: UpdateDto) {
-        return this.planItemRepository.update(id, updatePlanItemDto)
+    async update(id: number, updatePlanItemDto: UpdatePlanItemDto) {
+        return this.planItemRepository.update(id, updatePlanItemDto);
     }
 }

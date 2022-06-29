@@ -1,8 +1,10 @@
 import { Controller, Get, Put, Param, Query, Body } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { PlanItemService } from '../plan-item/plan-item.service';
-import { GetDto, UpdateDto } from '../plan-item/plan-item.dto';
+import { GetDto, UpdatePlanItemDto } from '../plan-item/plan-item.dto';
 
+@ApiTags('Plan Item')
 @Controller('plan-item')
 export class PlanItemController {
     constructor(private readonly planItemService: PlanItemService) {}
@@ -18,7 +20,7 @@ export class PlanItemController {
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() body: UpdateDto) {
+    update(@Param('id') id: string, @Body() body: UpdatePlanItemDto) {
         return this.planItemService.update(+id, body);
     }
 }

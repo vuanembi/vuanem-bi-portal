@@ -3,15 +3,16 @@ import { BigQuery } from '@google-cloud/bigquery';
 import { faker } from '@faker-js/faker';
 import { range } from 'lodash';
 
-import { CreateDto } from '../../feature/plan/plan-item/plan-item.dto';
+import { CreatePlanItemDto } from '../../feature/plan/plan-item/plan-item.dto';
 
-const mockFloat = () => faker.datatype.number({
-    max: 0.99,
-    min: 0.01,
-    precision: 0.01,
-})
+const mockFloat = () =>
+    faker.datatype.number({
+        max: 0.99,
+        min: 0.01,
+        precision: 0.01,
+    });
 
-const createMockPlanItem = (): CreateDto => ({
+const createMockPlanItem = (): CreatePlanItemDto => ({
     sku: faker.random.numeric(13),
     startOfWeek: faker.date.soon(),
     region: 'north',

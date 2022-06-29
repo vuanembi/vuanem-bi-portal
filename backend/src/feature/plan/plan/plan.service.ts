@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { Plan } from './plan.entity';
 import { StatusEnum, PlanStatus } from '../plan-status/plan-status.entity';
-import { CreatePlan } from './plan.dto';
+import { CreatePlanDto } from './plan.dto';
 import { BigQueryService } from '../../../provider/warehouse/bigquery.service';
 import { PlanItem } from '../plan-item/plan-item.entity';
 
@@ -23,7 +23,7 @@ export class PlanService {
         private bigQueryService: BigQueryService,
     ) {}
 
-    async create(createPlanDto: CreatePlan) {
+    async create(createPlanDto: CreatePlanDto) {
         const [itemData, status] = await Promise.all([
             this.bigQueryService.query(),
             this.planStatusRepository.preload({

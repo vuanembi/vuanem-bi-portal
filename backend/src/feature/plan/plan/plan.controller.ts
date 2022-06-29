@@ -1,22 +1,16 @@
-import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Put,
-    Param,
-    Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { PlanService } from './plan.service';
-import { CreatePlan } from './plan.dto';
+import { CreatePlanDto } from './plan.dto';
 
+@ApiTags('Plan')
 @Controller('plan')
 export class PlanController {
     constructor(private readonly planService: PlanService) {}
 
     @Post()
-    create(@Body() createPlanDto: CreatePlan) {
+    create(@Body() createPlanDto: CreatePlanDto) {
         return this.planService.create(createPlanDto);
     }
 
@@ -28,10 +22,5 @@ export class PlanController {
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.planService.findOne(+id);
-    }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.planService.remove(+id);
     }
 }
