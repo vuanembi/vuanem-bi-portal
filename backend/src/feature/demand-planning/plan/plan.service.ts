@@ -54,10 +54,7 @@ export class PlanService {
     async create(createPlanDto: CreatePlanDto) {
         const [itemData, status, vendor] = await Promise.all([
             Promise.resolve(range(1, 10).map(() => createMockPlanItem())),
-            this.planStatusRepository.preload({
-                id: 1,
-                name: StatusEnum.DRAFT,
-            }),
+            this.planStatusRepository.preload({ id: 0 }),
             this.vendorRepository.preload({
                 id: createPlanDto.vendorId,
             }),

@@ -15,18 +15,7 @@ export class PlanStatusService {
         const statuses = Object.values(StatusEnum);
 
         return statuses.map((status, id) =>
-            this.planStatusRepository
-                .findOne({
-                    where: { name: Equal(status) },
-                })
-                .then((dbStatus) =>
-                    dbStatus
-                        ? Promise.resolve(null)
-                        : this.planStatusRepository.save({
-                              id,
-                              name: status,
-                          }),
-                ),
+            this.planStatusRepository.save({ id, name: status }),
         );
     }
 }

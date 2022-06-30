@@ -1,6 +1,4 @@
-import { Entity, Column } from 'typeorm';
-
-import { EntityMeta } from '../../common/entity';
+import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 export enum StatusEnum {
     DRAFT = 'draft',
@@ -9,7 +7,10 @@ export enum StatusEnum {
 }
 
 @Entity()
-export class PlanStatus extends EntityMeta {
+export class PlanStatus {
+    @PrimaryColumn()
+    id: number;
+
     @Column()
     name: string;
 }
