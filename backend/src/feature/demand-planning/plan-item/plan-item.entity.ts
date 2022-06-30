@@ -6,7 +6,7 @@ import { Plan } from '../plan/plan.entity';
 
 @Entity()
 export class PlanItem extends EntityMeta {
-    @ManyToOne(() => Plan, ({ items }) => items)
+    @ManyToOne(() => Plan, ({ items }) => items, { onDelete: 'CASCADE' })
     plan: Plan;
 
     // Item
