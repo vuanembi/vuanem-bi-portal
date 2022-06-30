@@ -1,13 +1,16 @@
 import type { NextPage } from 'next';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext, createContext } from 'react';
 
 import { Flex, HStack, Button, useDisclosure } from '@chakra-ui/react';
+
+import {
+    apiClient,
+    ApiContext,
+} from '../../page-component/demand-planning/context';
 
 import PlanList from '../../page-component/demand-planning/PlanList';
 import type { PlanData } from '../../page-component/demand-planning/Plan';
 import PlanForm from '../../page-component/demand-planning/PlanForm';
-
-import apiClient from '../../lib/api';
 
 const DemandPlanning: NextPage = () => {
     const [plans, setPlans] = useState<PlanData[]>([]);
@@ -15,7 +18,7 @@ const DemandPlanning: NextPage = () => {
 
     useEffect(() => {
         setPlansLoaded(false);
-        apiClient('demand-planning')
+        apiClient
             .get('/plan')
             .then(({ data }) => setPlans(data))
             .then(() => setPlansLoaded(true));
@@ -55,7 +58,7 @@ const DemandPlanning: NextPage = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
-        <>
+        <ApiContext.Provider value={apiClient}>
             <Flex justifyContent="flex-end" mb="8">
                 <Button onClick={onOpen}>Tạo Plan</Button>
             </Flex>
@@ -65,7 +68,7 @@ const DemandPlanning: NextPage = () => {
             <PlanForm isOpen={isOpen} onClose={onClose}>
                 {}
             </PlanForm>
-        </>
+        </ApiContext.Provider>
     );
 };
 

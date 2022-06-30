@@ -1,4 +1,11 @@
-import { useState, useEffect } from 'react';
+import {
+    useState,
+    useEffect,
+    useContext,
+    Dispatch,
+    SetStateAction,
+    ChangeEventHandler,
+} from 'react';
 
 import {
     VStack,
@@ -16,7 +23,8 @@ import {
     Input,
     Select,
 } from '@chakra-ui/react';
-import apiClient from '../../../lib/api';
+
+import { ApiContext } from '../context';
 
 type Vendor = {
     id: string;
@@ -26,10 +34,10 @@ type Vendor = {
 const PlanForm = ({ isOpen, onClose }: ModalProps) => {
     const [vendors, setVendors] = useState<Vendor[]>([]);
 
+    const apiClient = useContext(ApiContext);
+
     useEffect(() => {
-        apiClient('demand-planning')
-            .get<Vendor[]>('/vendor')
-            .then(({ data }) => setVendors(data));
+        apiClient.get<Vendor[]>('/vendor').then(({ data }) => setVendors(data));
     });
 
     const vendorOptions = vendors.map((vendor) => (
@@ -40,6 +48,14 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
 
     const [name, setName] = useState<string | undefined>(undefined);
     const [vendor, setVendor] = useState<number | undefined>(undefined);
+
+    const handleChange =
+        (
+            setter: Dispatch<SetStateAction<any>>,
+            parser: (value: string) => any = (v) => v,
+        ): ChangeEventHandler<HTMLInputElement | HTMLSelectElement> =>
+        (e) =>
+            setter(parser(e.currentTarget.value));
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -59,9 +75,8 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
                                 <FormLabel htmlFor="name">Name</FormLabel>
                                 <Input
                                     id="name"
-                                    onChange={(e) =>
-                                        setName(e.currentTarget.value)
-                                    }
+                                    value={name}
+                                    onChange={handleChange(setName)}
                                 />
                             </FormControl>
                             <FormControl isRequired>
@@ -69,11 +84,8 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
                                 <Select
                                     id="vendor"
                                     placeholder="Select Vendor"
-                                    onChange={(e) =>
-                                        setVendor(
-                                            parseInt(e.currentTarget.value),
-                                        )
-                                    }
+                                    value={vendor}
+                                    onChange={handleChange(setVendor, parseInt)}
                                 >
                                     {vendorOptions}
                                 </Select>

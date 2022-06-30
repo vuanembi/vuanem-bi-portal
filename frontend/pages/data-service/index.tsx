@@ -6,7 +6,7 @@ import { FaDatabase, FaTable, FaChartBar } from 'react-icons/fa';
 import { SiGooglesheets } from 'react-icons/si';
 
 import type { Entity } from '../../common/bigquery';
-import apiClient from '../../lib/api';
+import getApiClient from '../../lib/api';
 import List from '../../page-component/data-service/List';
 import Workbench from '../../page-component/data-service/Workbench';
 
@@ -20,7 +20,7 @@ const DataService: NextPage = () => {
     const [table, setTable] = useState('');
 
     useEffect(() => {
-        apiClient('data-service')
+        getApiClient('data-service')
             .get<Entity[]>('/dataset')
             .then(({ data }) => {
                 setDatasets(data);
@@ -32,10 +32,8 @@ const DataService: NextPage = () => {
         setTablesLoaded(false);
         setTable('');
         dataset &&
-            apiClient('data-service')
-                .get<Entity[]>(
-                    `/dataset/${dataset}`
-                )
+            getApiClient('data-service')
+                .get<Entity[]>(`/dataset/${dataset}`)
                 .then(({ data }) => {
                     setTables(data);
                     setTablesLoaded(true);

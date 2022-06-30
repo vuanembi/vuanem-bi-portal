@@ -4,7 +4,7 @@ import { VStack, useToast } from '@chakra-ui/react';
 
 import dayjs from 'dayjs';
 
-import apiClient from '../../../lib/api';
+import getApiClient from '../../../lib/api';
 import Submit from './Submit';
 import Results from './Results';
 import { ResultItemProps } from './Results/ResultItem';
@@ -30,7 +30,7 @@ const Workbench: FC<WorkbenchProps> = ({ dataset, table }) => {
 
     const handleRequest = () => {
         setLoading(true);
-        apiClient('data-service')
+        getApiClient('data-service')
             .post<{ url: string }>('/export', { dataset, table })
             .then(({ data }) =>
                 setResults([
@@ -40,7 +40,7 @@ const Workbench: FC<WorkbenchProps> = ({ dataset, table }) => {
                         url: data.url,
                     },
                     ...results,
-                ])
+                ]),
             )
             .then(() =>
                 toast({
@@ -49,7 +49,7 @@ const Workbench: FC<WorkbenchProps> = ({ dataset, table }) => {
                     status: 'success',
                     duration: 4000,
                     isClosable: true,
-                })
+                }),
             )
             .catch(() =>
                 toast({
@@ -57,7 +57,7 @@ const Workbench: FC<WorkbenchProps> = ({ dataset, table }) => {
                     status: 'error',
                     duration: 4000,
                     isClosable: true,
-                })
+                }),
             )
             .finally(() => setLoading(false));
     };
