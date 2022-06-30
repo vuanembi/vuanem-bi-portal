@@ -27,7 +27,7 @@ const PlanList = ({ isLoaded, label, style, plans }: PlanListProps) => {
     }, [plans, searchTerm]);
 
     return (
-        <VStack maxH="full" flex="1" alignItems="stretch">
+        <VStack maxH="80vh" flex="1" alignItems="stretch">
             <Flex
                 p={4}
                 borderWidth="1px"
