@@ -59,7 +59,7 @@ export class PlanService {
                 name: StatusEnum.DRAFT,
             }),
             this.vendorRepository.preload({
-                id: createPlanDto.vendor_id,
+                id: createPlanDto.vendorId,
             }),
         ]);
 

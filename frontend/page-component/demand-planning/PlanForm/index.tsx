@@ -4,7 +4,6 @@ import {
     useContext,
     Dispatch,
     SetStateAction,
-    ChangeEventHandler,
 } from 'react';
 
 import {
@@ -24,6 +23,8 @@ import {
     Select,
 } from '@chakra-ui/react';
 
+import PopoverDatePicker from './DatePicker';
+
 import { ApiContext } from '../context';
 
 type Vendor = {
@@ -38,7 +39,29 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
 
     useEffect(() => {
         apiClient.get<Vendor[]>('/vendor').then(({ data }) => setVendors(data));
-    });
+    }, [apiClient]);
+
+    const [name, setName] = useState<string | undefined>(undefined);
+    const [vendorId, setVendor] = useState<number | undefined>(undefined);
+    const [startOfForecastWeek, setStartOfForecastWeek] = useState<
+        string | undefined
+    >(undefined);
+
+    const handleChange =
+        (
+            setter: Dispatch<SetStateAction<any>>,
+            parser: (value: any) => any = (v) => v,
+        ) =>
+        (e: any) =>
+            setter(parser(e.currentTarget.value));
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        apiClient
+            .post('/plan', { name, vendorId, startOfForecastWeek })
+            .then(({ data }) => console.log(data));
+        console.log({ name, vendorId, startOfForecastWeek });
+    };
 
     const vendorOptions = vendors.map((vendor) => (
         <option key={vendor.id} value={vendor.id}>
@@ -46,27 +69,11 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
         </option>
     ));
 
-    const [name, setName] = useState<string | undefined>(undefined);
-    const [vendor, setVendor] = useState<number | undefined>(undefined);
-
-    const handleChange =
-        (
-            setter: Dispatch<SetStateAction<any>>,
-            parser: (value: string) => any = (v) => v,
-        ): ChangeEventHandler<HTMLInputElement | HTMLSelectElement> =>
-        (e) =>
-            setter(parser(e.currentTarget.value));
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        console.log({ name, vendor });
-    };
-
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <ModalHeader>New Plan</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
@@ -80,24 +87,29 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
                                 />
                             </FormControl>
                             <FormControl isRequired>
-                                <FormLabel htmlFor="vendor">Country</FormLabel>
+                                <FormLabel htmlFor="vendor">Vendor</FormLabel>
                                 <Select
                                     id="vendor"
                                     placeholder="Select Vendor"
-                                    value={vendor}
+                                    value={vendorId}
                                     onChange={handleChange(setVendor, parseInt)}
                                 >
                                     {vendorOptions}
                                 </Select>
                             </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel htmlFor="vendor">
+                                    Start of Forecast Week
+                                </FormLabel>
+                                <PopoverDatePicker
+                                    date={startOfForecastWeek}
+                                    setDate={setStartOfForecastWeek}
+                                />
+                            </FormControl>
                         </VStack>
                     </ModalBody>
                     <ModalFooter>
-                        <Button
-                            colorScheme="blue"
-                            type="submit"
-                            onClick={handleSubmit}
-                        >
+                        <Button colorScheme="blue" type="submit">
                             Create
                         </Button>
                     </ModalFooter>
