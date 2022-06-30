@@ -78,7 +78,11 @@ export class PlanService {
     }
 
     findAll() {
-        return this.planRepository.find();
+        return this.planRepository.find({
+            relations: {
+                status: true,
+            },
+        });
     }
 
     findOne(id: number) {

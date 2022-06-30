@@ -8,7 +8,9 @@ dayjs.extend(utc);
 export type PlanData = {
     id: string;
     name: string;
-    status: string;
+    status: {
+        name: string;
+    };
     vendor: string;
     createdAt: Date;
     updatedAt: Date;

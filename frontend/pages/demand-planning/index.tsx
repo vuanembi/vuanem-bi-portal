@@ -20,36 +20,44 @@ const DemandPlanning: NextPage = () => {
             .then(() => setPlansLoaded(true));
     }, []);
 
+    const planLists = [
+        {
+            status: 'draft',
+            label: 'Draft',
+            color: 'teal.300',
+        },
+        {
+            status: 'forecasted',
+            label: 'Forecasted',
+            color: 'blue.300',
+        },
+        {
+            status: 'reviewed',
+            label: 'Reviewed',
+            color: 'purple.300',
+        },
+    ]
+        .map((planList) => ({
+            ...planList,
+            data: plans.filter((plan) => plan.status.name === planList.status),
+        }))
+        .map((planList) => (
+            <PlanList
+                key={planList.status}
+                isLoaded={plansLoaded}
+                label={planList.label}
+                style={{ color: planList.color }}
+                plans={planList.data}
+            />
+        ));
+
     return (
         <>
             <Flex justifyContent="flex-end" mb="8">
                 <Button>Tạo Plan</Button>
             </Flex>
             <HStack justifyContent="stretch" spacing={8}>
-                <PlanList
-                    isLoaded={plansLoaded}
-                    label="Nháp"
-                    style={{
-                        color: 'teal.300',
-                    }}
-                    plans={plans}
-                />
-                <PlanList
-                    isLoaded={plansLoaded}
-                    label="Dự đoán"
-                    style={{
-                        color: 'blue.300',
-                    }}
-                    plans={plans}
-                />
-                <PlanList
-                    isLoaded={plansLoaded}
-                    label="Review"
-                    style={{
-                        color: 'purple.300',
-                    }}
-                    plans={plans}
-                />
+                {planLists}
             </HStack>
         </>
     );
