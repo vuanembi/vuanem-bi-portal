@@ -1,10 +1,4 @@
-import {
-    useState,
-    useEffect,
-    useContext,
-    Dispatch,
-    SetStateAction,
-} from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 import {
     VStack,
@@ -23,9 +17,11 @@ import {
     Select,
 } from '@chakra-ui/react';
 
+import dayjs from 'dayjs';
+
 import PopoverDatePicker from './DatePicker';
 
-import { ApiContext } from '../context';
+import { apiClient } from '../../../page-lib/demand-planning';
 
 type Vendor = {
     id: string;
@@ -35,17 +31,18 @@ type Vendor = {
 const PlanForm = ({ isOpen, onClose }: ModalProps) => {
     const [vendors, setVendors] = useState<Vendor[]>([]);
 
-    const apiClient = useContext(ApiContext);
+    const getVendors = () =>
+        apiClient.get<Vendor[]>('/vendor').then(({ data }) => setVendors(data));
 
     useEffect(() => {
-        apiClient.get<Vendor[]>('/vendor').then(({ data }) => setVendors(data));
-    }, [apiClient]);
+        getVendors();
+    }, []);
 
     const [name, setName] = useState<string | undefined>(undefined);
     const [vendorId, setVendor] = useState<number | undefined>(undefined);
     const [startOfForecastWeek, setStartOfForecastWeek] = useState<
         string | undefined
-    >(undefined);
+    >(dayjs().format('YYYY-MM-DD'));
 
     const handleChange =
         (
@@ -59,8 +56,7 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
         e.preventDefault();
         apiClient
             .post('/plan', { name, vendorId, startOfForecastWeek })
-            .then(({ data }) => console.log(data));
-        console.log({ name, vendorId, startOfForecastWeek });
+            .then(() => onClose());
     };
 
     const vendorOptions = vendors.map((vendor) => (
