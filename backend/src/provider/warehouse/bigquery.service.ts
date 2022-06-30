@@ -4,10 +4,10 @@ import Knex from 'knex';
 
 @Injectable()
 export class BigQueryProvider {
-    private bigQuery: BigQuery;
+    public client: BigQuery;
 
     constructor() {
-        this.bigQuery = new BigQuery();
+        this.client = new BigQuery();
     }
 
     build() {
@@ -15,6 +15,6 @@ export class BigQueryProvider {
     }
 
     async query<T>(query: string): Promise<T[]> {
-        return this.bigQuery.query(query).then(([rows]) => rows);
+        return this.client.query(query).then(([rows]) => rows);
     }
 }
