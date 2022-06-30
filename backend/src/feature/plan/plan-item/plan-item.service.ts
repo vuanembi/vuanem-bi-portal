@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { PlanItem } from './plan-item.entity';
-import { GetDto, UpdatePlanItemDto } from './plan-item.dto';
+import { GetPlanItemsDto, UpdatePlanItemDto } from './plan-item.dto';
 
 @Injectable()
 export class PlanItemService {
@@ -12,7 +12,7 @@ export class PlanItemService {
         private readonly planItemRepository: Repository<PlanItem>,
     ) {}
 
-    findAll({ sku, region }: GetDto) {
+    findAll({ sku, region }: GetPlanItemsDto) {
         return this.planItemRepository.find({
             where: { sku, region },
         });

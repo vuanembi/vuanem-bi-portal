@@ -3,6 +3,7 @@ import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 import { EntityMeta } from '../../common/entity';
 
 import { PlanItem } from '../plan-item/plan-item.entity';
+import { Vendor } from '../vendor/vendor.entity';
 import { PlanStatus } from '../plan-status/plan-status.entity';
 
 @Entity()
@@ -13,7 +14,10 @@ export class Plan extends EntityMeta {
     @Column()
     name: string;
 
-    @ManyToOne(() => PlanStatus, ({ name }) => name)
+    @ManyToOne(() => Vendor, ({ id }) => id)
+    vendor: Vendor;
+
+    @ManyToOne(() => PlanStatus, ({ id }) => id)
     status: PlanStatus;
 
     @OneToMany(() => PlanItem, ({ plan }) => plan, { cascade: true })

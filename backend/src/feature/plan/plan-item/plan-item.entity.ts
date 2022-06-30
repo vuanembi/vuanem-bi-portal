@@ -3,6 +3,7 @@ import { Entity, Column, ManyToOne } from 'typeorm';
 import { EntityMeta } from '../../common/entity';
 
 import { Plan } from '../plan/plan.entity';
+import { Vendor } from '../vendor/vendor.entity';
 
 @Entity()
 export class PlanItem extends EntityMeta {
@@ -10,6 +11,9 @@ export class PlanItem extends EntityMeta {
     plan: Plan;
 
     // Item
+
+    @ManyToOne(() => Vendor, ({ id }) => id)
+    vendor: Vendor;
 
     @Column()
     sku: string;

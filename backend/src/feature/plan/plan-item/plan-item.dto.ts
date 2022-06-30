@@ -32,7 +32,7 @@ export class CreatePlanItemDto {
     leadTime: number;
 }
 
-export class GetDto {
+export class GetPlanItemsDto {
     @ApiPropertyOptional()
     sku?: string;
 

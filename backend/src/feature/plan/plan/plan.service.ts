@@ -3,10 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Plan } from './plan.entity';
-import { StatusEnum, PlanStatus } from '../plan-status/plan-status.entity';
 import { CreatePlanDto } from './plan.dto';
-import { BigQueryService } from '../../../provider/warehouse/bigquery.service';
+
+import { StatusEnum, PlanStatus } from '../plan-status/plan-status.entity';
 import { PlanItem } from '../plan-item/plan-item.entity';
+
+import { BigQueryService } from '../../../provider/warehouse/bigquery.service';
 
 @Injectable()
 export class PlanService {

@@ -1,8 +1,8 @@
 import { Controller, Get, Put, Param, Query, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { PlanItemService } from '../plan-item/plan-item.service';
-import { GetDto, UpdatePlanItemDto } from '../plan-item/plan-item.dto';
+import { PlanItemService } from './plan-item.service';
+import { GetPlanItemsDto, UpdatePlanItemDto } from './plan-item.dto';
 
 @ApiTags('Plan Item')
 @Controller('plan-item')
@@ -10,7 +10,7 @@ export class PlanItemController {
     constructor(private readonly planItemService: PlanItemService) {}
 
     @Get()
-    findAll(@Query() query: GetDto) {
+    findAll(@Query() query: GetPlanItemsDto) {
         return this.planItemService.findAll(query);
     }
 
