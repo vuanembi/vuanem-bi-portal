@@ -6,9 +6,34 @@ import { Plan } from './plan.entity';
 import { CreatePlanDto } from './plan.dto';
 
 import { StatusEnum, PlanStatus } from '../plan-status/plan-status.entity';
-import { PlanItem } from '../plan-item/plan-item.entity';
 
-import { BigQueryService } from '../../../provider/warehouse/bigquery.service';
+import { PlanItem } from '../plan-item/plan-item.entity';
+import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
+
+import { Vendor } from '../vendor/vendor.entity';
+
+import { faker } from '@faker-js/faker';
+import { range } from 'lodash';
+
+const mockFloat = () =>
+    faker.datatype.number({
+        max: 0.99,
+        min: 0.01,
+        precision: 0.01,
+    });
+
+const createMockPlanItem = (): CreatePlanItemDto => ({
+    sku: faker.random.numeric(13),
+    startOfWeek: faker.date.soon(),
+    region: 'north',
+    avgItemDiscount: mockFloat(),
+    avgOrderDiscount: mockFloat(),
+    discount: mockFloat(),
+    workingDays: faker.datatype.number(),
+    inventory: faker.datatype.number(),
+    moq: faker.datatype.number(),
+    leadTime: faker.datatype.number(),
+});
 
 @Injectable()
 export class PlanService {
@@ -22,15 +47,19 @@ export class PlanService {
         @InjectRepository(PlanItem)
         private planItemRepository: Repository<PlanItem>,
 
-        private bigQueryService: BigQueryService,
+        @InjectRepository(Vendor)
+        private vendorRepository: Repository<Vendor>,
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
-        const [itemData, status] = await Promise.all([
-            this.bigQueryService.query(),
+        const [itemData, status, vendor] = await Promise.all([
+            Promise.resolve(range(1, 10).map(() => createMockPlanItem())),
             this.planStatusRepository.preload({
                 id: 1,
                 name: StatusEnum.DRAFT,
+            }),
+            this.vendorRepository.preload({
+                id: createPlanDto.vendor_id,
             }),
         ]);
 
@@ -40,8 +69,9 @@ export class PlanService {
 
         const plan = this.planRepository.create({
             ...createPlanDto,
-            items: planItems,
             status,
+            vendor,
+            items: planItems,
         });
 
         return this.planRepository.save(plan);

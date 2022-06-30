@@ -1,15 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { VendorService } from './vendor.service';
 
-@ApiTags('Plan Vendor')
-@Controller('plan-vendor')
-export class PlanItemVendorController {
+@ApiTags('Vendor')
+@Controller('vendor')
+export class VendorController {
     constructor(private readonly vendorService: VendorService) {}
 
+    @Post()
+    async sync() {
+        return this.vendorService.sync().then(() => this.findAll());
+    }
+
     @Get()
-    findAll() {
-        return this.vendorService.findAll();
+    async findAll() {
+        return this.vendorService
+            .findAll()
+            .then((vendors) => vendors.slice(0, 10));
     }
 }

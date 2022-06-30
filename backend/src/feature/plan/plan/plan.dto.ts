@@ -6,4 +6,7 @@ export class CreatePlanDto {
 
     @ApiProperty()
     startOfForecastWeek: Date;
+
+    @ApiProperty()
+    vendor_id: number;
 }
