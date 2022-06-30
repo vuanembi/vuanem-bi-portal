@@ -4,13 +4,13 @@ import { RouterModule } from '@nestjs/core';
 
 import { DatabaseModule } from './provider/database/database.module';
 
-import { PlanModule } from './feature/plan/plan.module';
+import { DemandPlanningModule } from './feature/demand-planning/plan.module';
 import { DataServiceModule } from './feature/data-service/data-service.module';
 
 const routes = [
     {
         path: 'demand-planning',
-        module: PlanModule,
+        module: DemandPlanningModule,
     },
     {
         path: 'data-service',

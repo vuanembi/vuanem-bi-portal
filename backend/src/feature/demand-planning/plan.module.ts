@@ -29,7 +29,7 @@ import { VendorController } from './vendor/vendor.controller';
     ],
     controllers: [PlanController, PlanItemController, VendorController],
 })
-export class PlanModule implements OnApplicationBootstrap {
+export class DemandPlanningModule implements OnApplicationBootstrap {
     constructor(private planStatusService: PlanStatusService) {}
 
     async onApplicationBootstrap() {
