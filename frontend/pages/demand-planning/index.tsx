@@ -1,10 +1,11 @@
 import type { NextPage } from 'next';
 import { useState, useEffect } from 'react';
 
-import { Flex, HStack, Button } from '@chakra-ui/react';
+import { Flex, HStack, Button, useDisclosure } from '@chakra-ui/react';
 
 import PlanList from '../../page-component/demand-planning/PlanList';
-import { PlanData } from '../../page-component/demand-planning/Plan';
+import type { PlanData } from '../../page-component/demand-planning/Plan';
+import PlanForm from '../../page-component/demand-planning/PlanForm';
 
 import apiClient from '../../lib/api';
 
@@ -51,14 +52,19 @@ const DemandPlanning: NextPage = () => {
             />
         ));
 
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <>
             <Flex justifyContent="flex-end" mb="8">
-                <Button>Tạo Plan</Button>
+                <Button onClick={onOpen}>Tạo Plan</Button>
             </Flex>
             <HStack justifyContent="stretch" spacing={8}>
                 {planLists}
             </HStack>
+            <PlanForm isOpen={isOpen} onClose={onClose}>
+                {}
+            </PlanForm>
         </>
     );
 };
