@@ -3,7 +3,7 @@ import { useState, useEffect, Dispatch } from 'react';
 import { VStack, Skeleton, useRadioGroup } from '@chakra-ui/react';
 
 import ListItem, { ListItemProps } from './ListItem';
-import Search from './Search';
+import Search from '../../../components/Search';
 
 type ListProps = {
     items: ListItemProps['item'][];
@@ -25,11 +25,12 @@ const List = ({ items, iconFn, loaded, handleSelect }: ListProps) => {
     }, [items]);
 
     useEffect(() => {
-        setItemList(
-            items.filter(({ id }) =>
-                id.toLowerCase().match(searchTerm.toLowerCase())
-            )
-        );
+        items &&
+            setItemList(
+                items.filter(({ id }) =>
+                    id.toLowerCase().match(searchTerm.toLowerCase()),
+                ),
+            );
     }, [items, searchTerm]);
 
     return (

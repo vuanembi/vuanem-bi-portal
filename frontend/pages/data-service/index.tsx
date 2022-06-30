@@ -5,12 +5,12 @@ import { HStack } from '@chakra-ui/react';
 import { FaDatabase, FaTable, FaChartBar } from 'react-icons/fa';
 import { SiGooglesheets } from 'react-icons/si';
 
-import type { Entity } from '../common/bigquery';
-import apiClient from '../lib/api';
-import List from '../components/List';
-import Workbench from '../components/Workbench';
+import type { Entity } from '../../common/bigquery';
+import apiClient from '../../lib/api';
+import List from '../../page-component/data-service/List';
+import Workbench from '../../page-component/data-service/Workbench';
 
-const Home: NextPage = () => {
+const DataService: NextPage = () => {
     const [datasets, setDatasets] = useState<Entity[]>([]);
     const [datasetsLoaded, setDatasetsLoaded] = useState(false);
     const [dataset, setDataset] = useState('');
@@ -20,10 +20,10 @@ const Home: NextPage = () => {
     const [table, setTable] = useState('');
 
     useEffect(() => {
-        apiClient()
-            .get<{ datasets: Entity[] }>('/dataset')
+        apiClient('data-service')
+            .get<Entity[]>('/dataset')
             .then(({ data }) => {
-                setDatasets(data.datasets);
+                setDatasets(data);
                 setDatasetsLoaded(true);
             });
     }, []);
@@ -32,12 +32,12 @@ const Home: NextPage = () => {
         setTablesLoaded(false);
         setTable('');
         dataset &&
-            apiClient()
-                .get<{ id: Entity['id']; tables: Entity[] }>(
+            apiClient('data-service')
+                .get<Entity[]>(
                     `/dataset/${dataset}`
                 )
                 .then(({ data }) => {
-                    setTables(data.tables);
+                    setTables(data);
                     setTablesLoaded(true);
                 })
                 .finally(() => setTablesLoaded(true));
@@ -80,4 +80,4 @@ export const getStaticProps = async () => ({
     },
 });
 
-export default Home;
+export default DataService;

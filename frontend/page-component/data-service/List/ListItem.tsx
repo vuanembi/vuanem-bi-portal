@@ -2,7 +2,7 @@ import { chakra, HStack, Icon, Text, useRadio } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
 import { FaChevronRight } from 'react-icons/fa';
 
-import type { Entity } from '../../common/bigquery';
+import type { Entity } from '../../../common/bigquery';
 
 export type ListItemProps = {
     item: Entity;

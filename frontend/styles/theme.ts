@@ -12,7 +12,7 @@ export default extendTheme({
                 borderRadius: 'md',
             },
             body: {
-                backgroundColor: 'gray.50',
+                // backgroundColor: 'gray.50',
             },
             '.shadow': {
                 boxShadow: 'base',

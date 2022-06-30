@@ -10,13 +10,18 @@ import {
 } from '@chakra-ui/react';
 import { FaSearch } from 'react-icons/fa';
 
-const Search: FC<InputProps> = ({ value, onChange }) => (
-    <Flex w="full" p={4} borderWidth={1}>
+const Search: FC<InputProps> = ({ borderColor, value, onChange }) => (
+    <Flex p={4} borderWidth={1} borderColor={borderColor}>
         <InputGroup>
             <InputLeftElement>
                 <Icon as={FaSearch} />
             </InputLeftElement>
-            <Input placeholder="Search" value={value} onChange={onChange} />
+            <Input
+                placeholder="Search"
+                value={value}
+                onChange={onChange}
+                borderColor={borderColor}
+            />
         </InputGroup>
     </Flex>
 );
