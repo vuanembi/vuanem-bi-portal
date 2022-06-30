@@ -9,12 +9,12 @@ export class EntityMeta {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({type: 'timestamptz'})
     deletedAt: boolean;
 
-    @CreateDateColumn()
+    @CreateDateColumn({type: 'timestamptz'})
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({type: 'timestamptz'})
     updatedAt: Date;
 }
