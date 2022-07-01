@@ -10,14 +10,14 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { planStatusStyles } from '../../../lib';
+import usePlanStatus from '../../../hook/planStatus';
 
 import { Plan } from '../../../type';
 
 dayjs.extend(utc);
 
 const Info = ({ name, startOfForecastWeek, status, updatedAt }: Plan) => {
-    const { color, label } = planStatusStyles[status.name];
+    const { color, label } = usePlanStatus(status.name);
 
     return (
         <StatGroup

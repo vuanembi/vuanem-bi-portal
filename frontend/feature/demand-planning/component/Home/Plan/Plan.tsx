@@ -3,7 +3,7 @@ import { VStack, HStack, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { planStatusStyles } from '../../../lib';
+import usePlanStatus from '../../../hook/planStatus';
 
 dayjs.extend(utc);
 
@@ -19,7 +19,7 @@ export type PlanProps = {
 };
 
 const Plan = ({ name, updatedAt, status }: PlanProps) => {
-    const { color } = planStatusStyles[status.name];
+    const { color } = usePlanStatus(status.name);
 
     return (
         <VStack

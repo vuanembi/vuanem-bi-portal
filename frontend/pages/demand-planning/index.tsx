@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 
 import { Flex, HStack, Button, useDisclosure } from '@chakra-ui/react';
 
-import { apiClient, planStatusStyles } from '../../feature/demand-planning/lib';
+import { apiClient } from '../../feature/demand-planning/lib';
+
+import { planStatuses } from '../../feature/demand-planning/hook/planStatus';
 
 import type { PlanProps } from '../../feature/demand-planning/component/Home/Plan/Plan';
 import PlanList from '../../feature/demand-planning/component/Home/PlanList/PlanList';
@@ -25,7 +27,7 @@ const DemandPlanning: NextPage = () => {
         getPlans();
     }, []);
 
-    const planLists = Object.entries(planStatusStyles)
+    const planLists = Object.entries(planStatuses)
         .map(([status, style]) => ({ status, ...style }))
         .map((planList) => ({
             ...planList,

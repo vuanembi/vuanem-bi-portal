@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
-import { planStatusStyles } from '../../../lib';
+import usePlanStatus from '../../../hook/planStatus';
 
 import Plan, { PlanProps } from '../Plan/Plan';
 import Search from '../../../../../components/Search';
@@ -17,7 +17,7 @@ export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
     const [_plans, setPlans] = useState(plans);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const { label, color } = planStatusStyles[status];
+    const { label, color } = usePlanStatus(status);
 
     useEffect(() => {
         setPlans(
