@@ -9,8 +9,7 @@ export const config: DataSourceOptions = {
     type: 'postgres',
     host: process.env.PG_HOST || '',
     port: 5432,
-    database:
-        process.env.NODE_ENV === 'production' ? 'postgres' : 'postgres-dev',
+    database: 'postgres-dev',
     username: process.env.PG_USER || '',
     password: process.env.PG_PASSWORD || '',
     synchronize: true,

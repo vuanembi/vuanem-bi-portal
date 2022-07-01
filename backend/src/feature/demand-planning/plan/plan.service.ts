@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Plan } from './plan.entity';
 import { CreatePlanDto } from './plan.dto';
 
-import { StatusEnum, PlanStatus } from '../plan-status/plan-status.entity';
+import { PlanStatus } from '../plan-status/plan-status.entity';
 
 import { PlanItem } from '../plan-item/plan-item.entity';
 import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
@@ -74,7 +74,7 @@ export class PlanService {
         return this.planRepository.save(plan);
     }
 
-    findAll() {
+    async findAll() {
         return this.planRepository.find({
             relations: {
                 status: true,
