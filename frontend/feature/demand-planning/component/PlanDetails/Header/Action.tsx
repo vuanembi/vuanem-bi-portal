@@ -15,9 +15,11 @@ const Action = ({ id, status }: Plan) => {
     return (
         <VStack flex="1" alignItems="stretch">
             {action ? (
-                <Button bgColor={color}>{action.label}</Button>
+                <Button bgColor={color} onClick={action.handler}>
+                    {action.label}
+                </Button>
             ) : (
-                <Button isDisabled bgColor={color}/>
+                <Button isDisabled bgColor={color} />
             )}
             <Button color="white" bgColor="red.400">
                 Delete

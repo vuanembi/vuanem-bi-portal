@@ -1,3 +1,5 @@
+import { apiClient } from '../lib';
+
 export type PlanStatusStyle = {
     label: string;
     color: string;
@@ -13,7 +15,9 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         color: 'teal.300',
         action: {
             label: 'Forecast',
-            handler: () => {},
+            handler: () => {
+                console.log('forecast');
+            },
         },
     },
     forecasted: {
@@ -21,7 +25,9 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         color: 'blue.300',
         action: {
             label: 'Review',
-            handler: () => {},
+            handler: () => {
+                console.log('review');
+            },
         },
     },
     reviewed: {
