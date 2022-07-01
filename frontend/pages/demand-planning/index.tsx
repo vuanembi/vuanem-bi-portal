@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react';
 
 import { Flex, HStack, Button, useDisclosure } from '@chakra-ui/react';
 
-import { apiClient } from '../../page-lib/demand-planning';
+import { apiClient, planStatusStyles } from '../../page-lib/demand-planning';
 
-import type { PlanData } from '../../page-component/demand-planning/Plan/Plan';
-import PlanList from '../../page-component/demand-planning/PlanList/PlanList';
-import PlanForm from '../../page-component/demand-planning/PlanForm/PlanForm';
+import type { PlanProps } from '../../page-component/demand-planning/Home/Plan/Plan';
+import PlanList from '../../page-component/demand-planning/Home/PlanList/PlanList';
+import PlanForm from '../../page-component/demand-planning/Home/PlanForm/PlanForm';
 
 const DemandPlanning: NextPage = () => {
-    const [plans, setPlans] = useState<PlanData[]>([]);
+    const [plans, setPlans] = useState<PlanProps[]>([]);
     const [plansLoaded, setPlansLoaded] = useState(false);
 
     const getPlans = () => {
@@ -25,23 +25,8 @@ const DemandPlanning: NextPage = () => {
         getPlans();
     }, []);
 
-    const planLists = [
-        {
-            status: 'draft',
-            label: 'Draft',
-            color: 'teal.300',
-        },
-        {
-            status: 'forecasted',
-            label: 'Forecasted',
-            color: 'blue.300',
-        },
-        {
-            status: 'reviewed',
-            label: 'Reviewed',
-            color: 'purple.300',
-        },
-    ]
+    const planLists = Object.entries(planStatusStyles)
+        .map(([status, style]) => ({ status, ...style }))
         .map((planList) => ({
             ...planList,
             data: plans.filter((plan) => plan.status.name === planList.status),
@@ -50,8 +35,7 @@ const DemandPlanning: NextPage = () => {
             <PlanList
                 key={planList.status}
                 isLoaded={plansLoaded}
-                label={planList.label}
-                style={{ color: planList.color }}
+                status={planList.status}
                 plans={planList.data}
             />
         ));

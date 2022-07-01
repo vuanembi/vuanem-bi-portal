@@ -3,9 +3,11 @@ import { VStack, HStack, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
+import { planStatusStyles } from '../../../../page-lib/demand-planning';
+
 dayjs.extend(utc);
 
-export type PlanData = {
+export type PlanProps = {
     id: string;
     name: string;
     status: {
@@ -16,18 +18,8 @@ export type PlanData = {
     updatedAt: Date;
 };
 
-export type PlanStyles = {
-    color: string;
-};
-
-export type PlanProps = {
-    data: PlanData;
-    style: PlanStyles;
-};
-
-const Plan = ({ data, style }: PlanProps) => {
-    const { name, updatedAt } = data;
-    const { color } = style;
+const Plan = ({ name, updatedAt, status }: PlanProps) => {
+    const { color } = planStatusStyles[status.name];
 
     return (
         <VStack

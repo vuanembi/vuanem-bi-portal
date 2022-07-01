@@ -2,19 +2,22 @@ import { useState, useEffect } from 'react';
 
 import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
-import Plan, { PlanData, PlanStyles } from '../Plan/Plan';
-import Search from '../../../components/Search';
+import { planStatusStyles } from '../../../../page-lib/demand-planning';
+
+import Plan, { PlanProps } from '../Plan/Plan';
+import Search from '../../../../components/Search';
 
 export type PlanListProps = {
     isLoaded: boolean;
-    label: string;
-    style: PlanStyles;
-    plans: PlanData[];
+    status: PlanProps['status']['name'];
+    plans: PlanProps[];
 };
 
-export const PlanList = ({ isLoaded, label, style, plans }: PlanListProps) => {
+export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
     const [_plans, setPlans] = useState(plans);
     const [searchTerm, setSearchTerm] = useState('');
+
+    const { label, color } = planStatusStyles[status];
 
     useEffect(() => {
         setPlans(
@@ -31,13 +34,13 @@ export const PlanList = ({ isLoaded, label, style, plans }: PlanListProps) => {
             <Flex
                 p={4}
                 borderWidth="1px"
-                bgColor={style.color}
+                bgColor={color}
                 justifyContent="center"
             >
                 <Text fontWeight="bold">{label}</Text>
             </Flex>
             <Search
-                borderColor={style.color}
+                borderColor={color}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -45,7 +48,7 @@ export const PlanList = ({ isLoaded, label, style, plans }: PlanListProps) => {
                 <Skeleton w="full" isLoaded={isLoaded} height="800px">
                     <VStack overflowY="auto" alignItems="stretch">
                         {_plans.map((plan) => (
-                            <Plan key={plan.id} style={style} data={plan} />
+                            <Plan key={plan.id} {...plan} />
                         ))}
                     </VStack>
                 </Skeleton>

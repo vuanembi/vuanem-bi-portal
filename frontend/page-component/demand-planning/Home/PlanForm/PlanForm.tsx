@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 
 import PopoverDatePicker from './DatePicker';
 
-import { apiClient } from '../../../page-lib/demand-planning';
+import { apiClient } from '../../../../page-lib/demand-planning';
 
 type Vendor = {
     id: string;
