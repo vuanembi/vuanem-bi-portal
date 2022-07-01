@@ -75,11 +75,7 @@ export class PlanService {
     }
 
     async findAll() {
-        return this.planRepository.find({
-            relations: {
-                status: true,
-            },
-        });
+        return this.planRepository.find();
     }
 
     findOne(id: number) {

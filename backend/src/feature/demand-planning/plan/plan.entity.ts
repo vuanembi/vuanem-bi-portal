@@ -14,10 +14,10 @@ export class Plan extends EntityMeta {
     @Column()
     name: string;
 
-    @ManyToOne(() => Vendor, ({ id }) => id)
+    @ManyToOne(() => Vendor, ({ id }) => id, { eager: true })
     vendor: Vendor;
 
-    @ManyToOne(() => PlanStatus, ({ id }) => id)
+    @ManyToOne(() => PlanStatus, ({ id }) => id, { eager: true })
     status: PlanStatus;
 
     @OneToMany(() => PlanItem, ({ plan }) => plan, {
