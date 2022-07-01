@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
-import Plan, { PlanData, PlanStyles } from '../Plan';
+import Plan, { PlanData, PlanStyles } from '../Plan/Plan';
 import Search from '../../../components/Search';
 
 export type PlanListProps = {
@@ -12,7 +12,7 @@ export type PlanListProps = {
     plans: PlanData[];
 };
 
-const PlanList = ({ isLoaded, label, style, plans }: PlanListProps) => {
+export const PlanList = ({ isLoaded, label, style, plans }: PlanListProps) => {
     const [_plans, setPlans] = useState(plans);
     const [searchTerm, setSearchTerm] = useState('');
 
