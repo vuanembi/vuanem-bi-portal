@@ -1,23 +1,32 @@
 services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8000:80"
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - ./nginx/log:/var/log/nginx/
+
   backend:
     container_name: backend
-    build:
-      context: ./backend
+    build: ./backend
+    env_file:
+      - ./backend/.env
     volumes:
-      - ./${GOOGLE_APPLICATION_CREDENTIALS}:/tmp/{GOOGLE_APPLICATION_CREDENTIALS}
+      - ./backend/service-account.json:/tmp/service-account.json
     environment:
-      GOOGLE_APPLICATION_CREDENTIALS: /tmp/{GOOGLE_APPLICATION_CREDENTIALS}
-      PG_HOST: ${PG_HOST}
-      PG_USER: ${PG_USER}
-      PG_PASSWORD: ${PG_PASSWORD}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
     ports:
-      - 3000:3000
+      - 5000:5000
 
-  # frontend:
-  #   container_name: frontend
-  #   build:
-  #     context: ./frontend
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "8080:8080"
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    env_file:
+      - ./frontend/.env
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost/api
+    ports:
+      - "3000:3000"
