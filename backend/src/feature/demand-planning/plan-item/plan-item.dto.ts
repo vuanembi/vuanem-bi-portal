@@ -33,11 +33,8 @@ export class CreatePlanItemDto {
 }
 
 export class GetPlanItemsDto {
-    @ApiPropertyOptional()
-    sku?: string;
-
-    @ApiPropertyOptional()
-    region?: string;
+    @ApiProperty()
+    planId: number;
 }
 
 export class UpdatePlanItemDto {

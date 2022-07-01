@@ -12,9 +12,9 @@ export class PlanItemService {
         private readonly planItemRepository: Repository<PlanItem>,
     ) {}
 
-    findAll({ sku, region }: GetPlanItemsDto) {
+    findAll({ planId }: GetPlanItemsDto) {
         return this.planItemRepository.find({
-            where: { sku, region },
+            where: { plan: { id: planId } },
         });
     }
 
