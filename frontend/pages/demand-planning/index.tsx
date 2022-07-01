@@ -66,13 +66,7 @@ const DemandPlanning: NextPage = () => {
             <HStack justifyContent="stretch" spacing={8}>
                 {planLists}
             </HStack>
-            <PlanForm
-                isOpen={isOpen}
-                onClose={() => {
-                    onClose();
-                    getPlans();
-                }}
-            >
+            <PlanForm isOpen={isOpen} onClose={onClose} callback={getPlans}>
                 {}
             </PlanForm>
         </>

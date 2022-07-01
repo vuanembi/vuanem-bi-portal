@@ -28,7 +28,11 @@ type Vendor = {
     name: string;
 };
 
-const PlanForm = ({ isOpen, onClose }: ModalProps) => {
+type PlanFormProps = ModalProps & {
+    callback: () => void;
+};
+
+const PlanForm = ({ isOpen, onClose, callback }: PlanFormProps) => {
     const [vendors, setVendors] = useState<Vendor[]>([]);
 
     const getVendors = () =>
@@ -56,7 +60,10 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
         e.preventDefault();
         apiClient
             .post('/plan', { name, vendorId, startOfForecastWeek })
-            .then(() => onClose());
+            .then(() => {
+                callback();
+                onClose();
+            });
     };
 
     const vendorOptions = vendors.map((vendor) => (
