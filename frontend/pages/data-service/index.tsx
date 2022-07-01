@@ -7,8 +7,8 @@ import { SiGooglesheets } from 'react-icons/si';
 
 import type { Entity } from '../../common/bigquery';
 import getApiClient from '../../lib/api';
-import List from '../../page-component/data-service/List';
-import Workbench from '../../page-component/data-service/Workbench';
+import List from '../../feature/data-service/List';
+import Workbench from '../../feature/data-service/Workbench';
 
 const DataService: NextPage = () => {
     const [datasets, setDatasets] = useState<Entity[]>([]);
