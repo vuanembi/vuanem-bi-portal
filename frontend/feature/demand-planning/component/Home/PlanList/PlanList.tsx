@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 
 import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
-import { planStatusStyles } from '../../../../page-lib/demand-planning';
+import { planStatusStyles } from '../../../lib';
 
 import Plan, { PlanProps } from '../Plan/Plan';
-import Search from '../../../../components/Search';
+import Search from '../../../../../components/Search';
 
 export type PlanListProps = {
     isLoaded: boolean;

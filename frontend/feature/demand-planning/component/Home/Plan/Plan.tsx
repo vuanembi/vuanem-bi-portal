@@ -3,7 +3,7 @@ import { VStack, HStack, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { planStatusStyles } from '../../../../page-lib/demand-planning';
+import { planStatusStyles } from '../../../lib';
 
 dayjs.extend(utc);
 

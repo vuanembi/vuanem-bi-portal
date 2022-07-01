@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 
 import { Flex, HStack, Button, useDisclosure } from '@chakra-ui/react';
 
-import { apiClient, planStatusStyles } from '../../page-lib/demand-planning';
+import { apiClient, planStatusStyles } from '../../feature/demand-planning/lib';
 
-import type { PlanProps } from '../../page-component/demand-planning/Home/Plan/Plan';
-import PlanList from '../../page-component/demand-planning/Home/PlanList/PlanList';
-import PlanForm from '../../page-component/demand-planning/Home/PlanForm/PlanForm';
+import type { PlanProps } from '../../feature/demand-planning/component/Home/Plan/Plan';
+import PlanList from '../../feature/demand-planning/component/Home/PlanList/PlanList';
+import PlanForm from '../../feature/demand-planning/component/Home/PlanForm/PlanForm';
 
 const DemandPlanning: NextPage = () => {
     const [plans, setPlans] = useState<PlanProps[]>([]);
