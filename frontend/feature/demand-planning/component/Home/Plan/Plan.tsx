@@ -1,4 +1,7 @@
-import { VStack, HStack, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+
+import { VStack, LinkBox, LinkOverlay, Text } from '@chakra-ui/react';
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -18,11 +21,14 @@ export type PlanProps = {
     updatedAt: Date;
 };
 
-const Plan = ({ name, updatedAt, status }: PlanProps) => {
+const Plan = ({ id, name, updatedAt, status }: PlanProps) => {
     const { color } = usePlanStatus(status.name);
+
+    const { pathname } = useRouter();
 
     return (
         <VStack
+            as={LinkBox}
             flex="1"
             p={5}
             borderWidth={1}
@@ -32,11 +38,11 @@ const Plan = ({ name, updatedAt, status }: PlanProps) => {
                 bgColor: color,
             }}
         >
-            <HStack>
-                <Text fontWeight="bold" userSelect="none">
+            <NextLink href={`${pathname}/${id}`} passHref>
+                <LinkOverlay fontWeight="bold" userSelect="none">
                     {name.slice(0, 25)}
-                </Text>
-            </HStack>
+                </LinkOverlay>
+            </NextLink>
             <Text fontSize="sm" userSelect="none">
                 {dayjs.utc(updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}
             </Text>
