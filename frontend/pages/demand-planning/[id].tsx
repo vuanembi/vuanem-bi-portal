@@ -1,18 +1,17 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { useState, useEffect } from 'react';
 
 import { Flex, VStack, HStack, Button, useDisclosure } from '@chakra-ui/react';
 
 import { apiClient } from '../../feature/demand-planning/lib';
 
-import Info from '../../feature/demand-planning/component/PlanDetails/Header/InfoBar';
+import Header from '../../feature/demand-planning/component/PlanDetails/Header/Header';
 
 import { Plan as PlanPageProps } from '../../feature/demand-planning/type';
 
 const Plan: NextPage<{ plan: PlanPageProps }> = ({ plan }) => {
     return (
         <VStack alignItems="stretch">
-            <Info {...plan} />
+            <Header{...plan} />
             <h1>{JSON.stringify(plan)}</h1>
         </VStack>
     );
