@@ -38,7 +38,7 @@ const Info = ({ name, startOfForecastWeek, status, updatedAt }: Plan) => {
                 <StatLabel>Status</StatLabel>
                 <StatNumber>{label}</StatNumber>
                 <StatHelpText mb={0}>
-                    {dayjs.utc(updatedAt).format('YYYY-MM-DD HH:mm:ss')}
+                    {dayjs.utc(updatedAt).local().format('YYYY-MM-DD HH:mm')}
                 </StatHelpText>
             </Stat>
         </StatGroup>
