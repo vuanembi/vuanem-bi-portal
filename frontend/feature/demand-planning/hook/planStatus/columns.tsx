@@ -63,16 +63,19 @@ const columns: { [accessor: string]: ColumnOptions } = {
         Header: 'Qty. Demand Purchasing',
         accessor: 'qtyDemandPurchasing',
         isNumeric: true,
+        width: 200,
     },
     qtyDemand: {
         Header: 'Qty. Demand',
         accessor: 'qtyDemand',
         isNumeric: true,
+        width: 100,
     },
     qtySupply: {
         Header: 'Qty. Supply',
         accessor: 'qtySupply',
         isNumeric: true,
+        width: 100,
     },
 };
 
