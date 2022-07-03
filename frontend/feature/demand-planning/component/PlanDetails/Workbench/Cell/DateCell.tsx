@@ -3,12 +3,12 @@ import { Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { CellProps } from './Cell';
+import { CellProps } from './cell.type';
 
 dayjs.extend(utc);
 
-const DateCell = ({ value }: CellProps) => (
+const Date = ({ value }: CellProps) => (
     <Text>{dayjs.utc(value).local().format('YYYY-MM-DD')}</Text>
 );
 
-export default DateCell;
+export default Date;

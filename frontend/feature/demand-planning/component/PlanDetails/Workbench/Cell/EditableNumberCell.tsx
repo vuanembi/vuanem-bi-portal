@@ -8,13 +8,9 @@ import {
 
 import { clamp } from 'lodash';
 
-import { CellProps } from './Cell';
+import { CellProps } from './cell.type';
 
-export const EditableNumberCell = ({
-    value: initialValue,
-    row,
-    column,
-}: CellProps) => {
+export const EditNumber = ({ value: initialValue, row, column }: CellProps) => {
     const [value, setValue] = useState(initialValue);
 
     const onChange: UseCounterProps['onChange'] = (_, valueAsNumber) => {
@@ -42,4 +38,4 @@ export const EditableNumberCell = ({
     );
 };
 
-export default EditableNumberCell;
+export default EditNumber;

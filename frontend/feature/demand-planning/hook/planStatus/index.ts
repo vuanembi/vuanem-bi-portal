@@ -1,5 +1,11 @@
 import type { Column } from 'react-table';
 
+import {
+    Regular,
+    Date,
+    EditNumber,
+} from '../../component/PlanDetails/Workbench/Cell';
+
 import type { PlanItem } from '../../type';
 import columns from './columns';
 
@@ -26,13 +32,14 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         columns: [
             columns.sku,
             columns.startOfWeek,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.discount,
-            columns.workingDays,
-            columns.inventory,
-            columns.moq,
-            columns.leadTime,
+            columns.region,
+            {...columns.avgItemDiscount, Cell: EditNumber},
+            {...columns.avgOrderDiscount, Cell: EditNumber},
+            {...columns.discount, Cell: EditNumber},
+            {...columns.workingDays, Cell: EditNumber},
+            {...columns.inventory, Cell: EditNumber},
+            {...columns.moq, Cell: EditNumber},
+            {...columns.leadTime, Cell: EditNumber},
         ],
     },
     forecasted: {
@@ -47,13 +54,18 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         columns: [
             columns.sku,
             columns.startOfWeek,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.discount,
-            columns.workingDays,
-            columns.inventory,
-            columns.moq,
-            columns.leadTime,
+            columns.region,
+            {...columns.avgItemDiscount, Cell: Regular},
+            {...columns.avgOrderDiscount, Cell: Regular},
+            {...columns.discount, Cell: Regular},
+            {...columns.workingDays, Cell: Regular},
+            {...columns.inventory, Cell: Regular},
+            {...columns.moq, Cell: Regular},
+            {...columns.leadTime, Cell: Regular},
+            columns.qtyDemandML,
+            {...columns.qtyDemandPurchasing, Cell: EditNumber},
+            {...columns.qtyDemand, Cell: EditNumber},
+            {...columns.qtySupply, Cell: EditNumber},
         ],
     },
     reviewed: {
@@ -62,13 +74,18 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         columns: [
             columns.sku,
             columns.startOfWeek,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.discount,
-            columns.workingDays,
-            columns.inventory,
-            columns.moq,
-            columns.leadTime,
+            columns.region,
+            {...columns.avgItemDiscount, Cell: Regular},
+            {...columns.avgOrderDiscount, Cell: Regular},
+            {...columns.discount, Cell: Regular},
+            {...columns.workingDays, Cell: Regular},
+            {...columns.inventory, Cell: Regular},
+            {...columns.moq, Cell: Regular},
+            {...columns.leadTime, Cell: Regular},
+            {...columns.qtyDemandML, Cell: Regular},
+            {...columns.qtyDemandPurchasing, Cell: EditNumber},
+            {...columns.qtyDemand, Cell: EditNumber},
+            {...columns.qtySupply, Cell: EditNumber},
         ],
     },
 };

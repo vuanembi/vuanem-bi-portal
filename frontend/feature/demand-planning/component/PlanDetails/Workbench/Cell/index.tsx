@@ -1,4 +1,9 @@
-import DateCell from './DateCell';
-import EditableNumberCell from './EditableNumberCell';
+import Regular from './Regular';
+import Date from './DateCell';
+import EditNumber from './EditableNumberCell';
 
-export { DateCell, EditableNumberCell };
+export {
+    Regular,
+    Date,
+    EditNumber,
+};

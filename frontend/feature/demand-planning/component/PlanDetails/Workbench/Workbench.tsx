@@ -5,7 +5,7 @@ import { TableContainer } from '@chakra-ui/react';
 import { Column } from 'react-table';
 
 import Table from './Table';
-import EditableNumberCell from './Cell/EditableNumberCell';
+import EditNumber from './Cell/EditableNumberCell';
 
 import { apiClient } from '../../../lib';
 import { Plan, PlanItem } from '../../../type';
