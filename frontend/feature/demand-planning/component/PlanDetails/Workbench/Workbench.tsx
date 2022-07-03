@@ -1,11 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 import { TableContainer } from '@chakra-ui/react';
 
-import { Column } from 'react-table';
-
 import Table from './Table';
-import EditNumber from './Cell/EditableNumberCell';
 
 import { apiClient } from '../../../lib';
 import { Plan, PlanItem } from '../../../type';
@@ -27,18 +24,18 @@ const Workbench = (plan: Plan) => {
     useEffect(() => {
         apiClient
             .get<PlanItem[]>('/plan-item', { params: { planId: plan.id } })
-            .then(({ data }) => setPlanItems(data));
+            .then(({ data }) => setPlanItems(Array(2).fill(data).flat()));
     }, [plan]);
 
     return (
         <TableContainer
             h="80vh"
+            p={0}
             overflowY="scroll"
-            p={1}
             borderWidth="1px"
             borderColor={color}
         >
-            <Table columns={columns} data={planItems} />
+            <Table plan={plan} columns={columns} data={planItems} />
         </TableContainer>
     );
 };
