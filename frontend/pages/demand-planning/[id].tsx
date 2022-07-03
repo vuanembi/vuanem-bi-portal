@@ -21,7 +21,10 @@ const Plan: NextPage<{ plan: PlanPageProps }> = ({ plan }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { id } = context.query;
 
-    const plan = await apiClient.get(`/plan/${id}`).then(({ data }) => data);
+    const plan = await apiClient
+        .get(`/plan/${id}`)
+        .then(({ data }) => data)
+        .catch((err) => console.log(err));
 
     return {
         props: {
