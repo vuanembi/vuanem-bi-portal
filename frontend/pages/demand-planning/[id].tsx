@@ -5,7 +5,7 @@ import { VStack } from '@chakra-ui/react';
 import { apiClient } from '../../feature/demand-planning/lib';
 
 import Header from '../../feature/demand-planning/component/PlanDetails/Header/Header';
-import ItemTable from '../../feature/demand-planning/component/PlanDetails/Table/Table';
+import Workbench from '../../feature/demand-planning/component/PlanDetails/Workbench/Workbench';
 
 import { Plan as PlanPageProps } from '../../feature/demand-planning/type';
 
@@ -13,7 +13,7 @@ const Plan: NextPage<{ plan: PlanPageProps }> = ({ plan }) => {
     return (
         <VStack alignItems="stretch">
             <Header {...plan} />
-            <ItemTable {...plan} />
+            <Workbench {...plan} />
         </VStack>
     );
 };
