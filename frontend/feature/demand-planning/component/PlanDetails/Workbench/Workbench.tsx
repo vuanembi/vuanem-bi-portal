@@ -40,6 +40,8 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
 
         if (updatePlanItem[update.key] === update.value) return;
 
+        console.log({ x: updatePlanItem[update.key], y: update.value });
+
         setUpdates(updates + 1);
 
         const updatedPlanItem = {

@@ -2,7 +2,7 @@ import type { Column } from 'react-table';
 
 import {
     Regular,
-    EditNumber,
+    editNumber,
 } from '../../component/PlanDetails/Workbench/Cell';
 
 import { apiClient } from '../../lib';
@@ -22,7 +22,7 @@ export type PlanStatusStyle = {
 };
 
 const handlePlanStatusUpdate = (endpoint: string) => (id: PlanItem['id']) =>
-    apiClient.put(`/plan/${id}/${endpoint}`);
+    apiClient.post(`/plan/${id}/${endpoint}`);
 
 export const planStatuses: { [status: string]: PlanStatusStyle } = {
     draft: {
@@ -36,13 +36,13 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             columns.sku,
             columns.startOfWeek,
             columns.region,
-            { ...columns.avgItemDiscount, Cell: EditNumber },
-            { ...columns.avgOrderDiscount, Cell: EditNumber },
-            { ...columns.discount, Cell: EditNumber },
-            { ...columns.workingDays, Cell: EditNumber },
-            { ...columns.inventory, Cell: EditNumber },
-            { ...columns.moq, Cell: EditNumber },
-            { ...columns.leadTime, Cell: EditNumber },
+            { ...columns.avgItemDiscount, Cell: editNumber(2) },
+            { ...columns.avgOrderDiscount, Cell: editNumber(2) },
+            { ...columns.discount, Cell: editNumber(2) },
+            { ...columns.workingDays, Cell: editNumber(2) },
+            { ...columns.inventory, Cell: editNumber(2) },
+            { ...columns.moq, Cell: editNumber(2) },
+            { ...columns.leadTime, Cell: editNumber(2) },
         ],
     },
     forecasted: {
@@ -64,9 +64,9 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             { ...columns.moq, Cell: Regular },
             { ...columns.leadTime, Cell: Regular },
             columns.qtyDemandML,
-            { ...columns.qtyDemandPurchasing, Cell: EditNumber },
-            { ...columns.qtyDemand, Cell: EditNumber },
-            { ...columns.qtySupply, Cell: EditNumber },
+            { ...columns.qtyDemandPurchasing, Cell: editNumber(0) },
+            { ...columns.qtyDemand, Cell: editNumber(0) },
+            { ...columns.qtySupply, Cell: editNumber(0) },
         ],
     },
     reviewed: {
@@ -84,9 +84,9 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             { ...columns.moq, Cell: Regular },
             { ...columns.leadTime, Cell: Regular },
             { ...columns.qtyDemandML, Cell: Regular },
-            { ...columns.qtyDemandPurchasing, Cell: EditNumber },
-            { ...columns.qtyDemand, Cell: EditNumber },
-            { ...columns.qtySupply, Cell: EditNumber },
+            { ...columns.qtyDemandPurchasing, Cell: Regular },
+            { ...columns.qtyDemand, Cell: Regular },
+            { ...columns.qtySupply, Cell: Regular },
         ],
     },
 };

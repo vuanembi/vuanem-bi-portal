@@ -1,9 +1,9 @@
 import Regular from './Regular';
 import Date from './DateCell';
-import EditNumber from './EditableNumberCell';
+import editNumber from './EditableNumberCell';
 
 export {
     Regular,
     Date,
-    EditNumber,
+    editNumber,
 };
