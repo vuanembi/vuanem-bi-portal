@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { PlanService } from './plan.service';
@@ -22,5 +22,15 @@ export class PlanController {
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.planService.findOne(+id);
+    }
+
+    @Put(':id/forecast')
+    forecast(@Param('id') id: string) {
+        return this.planService.forecast(+id);
+    }
+
+    @Put(':id/review')
+    review(@Param('id') id: string) {
+        return this.planService.review(+id);
     }
 }

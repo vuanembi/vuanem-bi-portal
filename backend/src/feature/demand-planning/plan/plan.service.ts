@@ -81,4 +81,16 @@ export class PlanService {
     findOne(id: number) {
         return this.planRepository.findOneBy({ id });
     }
+
+    async forecast(id: number) {
+        return this.planStatusRepository
+            .preload({ id: 1 })
+            .then((status) => this.planRepository.update(id, { status }));
+    }
+
+    async review(id: number) {
+        return this.planStatusRepository
+            .preload({ id: 2 })
+            .then((status) => this.planRepository.update(id, { status }));
+    }
 }
