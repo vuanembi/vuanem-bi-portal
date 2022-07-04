@@ -24,7 +24,7 @@ type WorkbenchProps = {
 const Workbench = ({ setUpdates }: WorkbenchProps) => {
     const { plan, updates } = useContext(PlanContext);
 
-    const { color, columns } = usePlanStatus(plan.status.name);
+    const { color, columns } = usePlanStatus(plan.status);
     const [planItems, setPlanItems] = useState<PlanItem[]>([]);
 
     useEffect(() => {

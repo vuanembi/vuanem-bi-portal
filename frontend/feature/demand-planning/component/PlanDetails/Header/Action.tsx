@@ -11,7 +11,7 @@ const Action = () => {
     const { plan } = useContext(PlanContext);
 
     const { id, status } = plan;
-    const { color, action } = usePlanStatus(status.name);
+    const { color, action } = usePlanStatus(status);
 
     const [loading, setLoading] = useState(false);
 

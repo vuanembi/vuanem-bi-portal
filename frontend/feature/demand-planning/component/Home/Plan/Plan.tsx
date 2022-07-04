@@ -7,22 +7,12 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import usePlanStatus from '../../../hook/planStatus';
+import { Plan as PlanProps } from '../../../types'
 
 dayjs.extend(utc);
 
-export type PlanProps = {
-    id: string;
-    name: string;
-    status: {
-        name: string;
-    };
-    vendor: string;
-    createdAt: Date;
-    updatedAt: Date;
-};
-
 const Plan = ({ id, name, updatedAt, status }: PlanProps) => {
-    const { color } = usePlanStatus(status.name);
+    const { color } = usePlanStatus(status);
 
     const { pathname } = useRouter();
 

@@ -15,7 +15,7 @@ import Action from './Action';
 
 const Header = () => {
     const { plan } = useContext(PlanContext);
-    const { color } = usePlanStatus(plan.status.name);
+    const { color } = usePlanStatus(plan.status);
 
     const home = useRouter().pathname.split('/')[1];
 

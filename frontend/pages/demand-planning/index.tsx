@@ -7,12 +7,13 @@ import { apiClient } from '../../feature/demand-planning/lib';
 
 import { planStatuses } from '../../feature/demand-planning/hook/planStatus';
 
-import type { PlanProps } from '../../feature/demand-planning/component/Home/Plan/Plan';
 import PlanList from '../../feature/demand-planning/component/Home/PlanList/PlanList';
 import PlanForm from '../../feature/demand-planning/component/Home/PlanForm/PlanForm';
 
+import { Plan } from '../../feature/demand-planning/types'
+
 const DemandPlanning: NextPage = () => {
-    const [plans, setPlans] = useState<PlanProps[]>([]);
+    const [plans, setPlans] = useState<Plan[]>([]);
     const [plansLoaded, setPlansLoaded] = useState(false);
 
     const getPlans = () => {
@@ -31,7 +32,7 @@ const DemandPlanning: NextPage = () => {
         .map(([status, style]) => ({ status, ...style }))
         .map((planList) => ({
             ...planList,
-            data: plans.filter((plan) => plan.status.name === planList.status),
+            data: plans.filter((plan) => plan.status === planList.status),
         }))
         .map((planList) => (
             <PlanList

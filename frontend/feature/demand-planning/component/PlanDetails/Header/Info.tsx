@@ -24,7 +24,7 @@ const Info = () => {
     const { plan, updates } = useContext(PlanContext);
 
     const { name, startOfForecastWeek, status, updatedAt } = plan;
-    const { color, label } = usePlanStatus(status.name);
+    const { color, label } = usePlanStatus(status);
 
     const Done = () => <Icon as={IoMdCloudDone} color={color} fontSize="2xl" />;
 

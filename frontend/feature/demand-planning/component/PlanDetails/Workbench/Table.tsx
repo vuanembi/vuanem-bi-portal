@@ -35,7 +35,7 @@ type TableProps = {
 };
 
 const Table = ({ plan, columns, data, handleUpdate }: TableProps) => {
-    const { color } = usePlanStatus(plan.status.name);
+    const { color } = usePlanStatus(plan.status);
 
     const getRowId = ({ id }: PlanItem) => id;
 
