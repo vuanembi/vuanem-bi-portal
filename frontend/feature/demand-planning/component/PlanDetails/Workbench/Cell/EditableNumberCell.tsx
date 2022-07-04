@@ -7,7 +7,6 @@ import {
 } from '@chakra-ui/react';
 
 import { CellProps } from './cell.type';
-import { PlanItem } from '../../../../types';
 
 export const EditNumber = ({
     value: initialValue,
@@ -15,17 +14,24 @@ export const EditNumber = ({
     column,
     handleUpdate,
 }: CellProps) => {
-    const [value, setValue] = useState(initialValue.toString());
+    const [value, setValue] = useState(initialValue);
 
     const onChange: UseCounterProps['onChange'] = (valueAsString) => {
         setValue(valueAsString);
     };
 
-    const onBlur = () =>
+    const onBlur = () => {
         handleUpdate({
             index: row.index,
-            item: { ...row.values, [column.id]: +value, id: row.id },
+            item: {
+                id: row.id,
+                update: {
+                    key: column.id,
+                    value: +value,
+                },
+            },
         });
+    };
 
     useEffect(() => {
         setValue(initialValue);

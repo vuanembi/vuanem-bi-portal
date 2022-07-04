@@ -2,22 +2,27 @@ import type { Column } from 'react-table';
 
 import {
     Regular,
-    Date,
     EditNumber,
 } from '../../component/PlanDetails/Workbench/Cell';
 
-import type { PlanItem } from '../../types';
+import { apiClient } from '../../lib';
+
 import columns from './columns';
+import type { PlanItem } from '../../types';
+import { AxiosResponse } from 'axios';
 
 export type PlanStatusStyle = {
     label: string;
     color: string;
     action?: {
         label: string;
-        handler: () => void;
+        handler: (id: PlanItem['id']) => Promise<AxiosResponse>;
     };
     columns: Column<PlanItem>[];
 };
+
+const handlePlanStatusUpdate = (endpoint: string) => (id: PlanItem['id']) =>
+    apiClient.put(`/plan/${id}/${endpoint}`);
 
 export const planStatuses: { [status: string]: PlanStatusStyle } = {
     draft: {
@@ -25,21 +30,19 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         color: 'teal.300',
         action: {
             label: 'Forecast',
-            handler: () => {
-                console.log('forecast');
-            },
+            handler: handlePlanStatusUpdate('forecast'),
         },
         columns: [
             columns.sku,
             columns.startOfWeek,
             columns.region,
-            {...columns.avgItemDiscount, Cell: EditNumber},
-            {...columns.avgOrderDiscount, Cell: EditNumber},
-            {...columns.discount, Cell: EditNumber},
-            {...columns.workingDays, Cell: EditNumber},
-            {...columns.inventory, Cell: EditNumber},
-            {...columns.moq, Cell: EditNumber},
-            {...columns.leadTime, Cell: EditNumber},
+            { ...columns.avgItemDiscount, Cell: EditNumber },
+            { ...columns.avgOrderDiscount, Cell: EditNumber },
+            { ...columns.discount, Cell: EditNumber },
+            { ...columns.workingDays, Cell: EditNumber },
+            { ...columns.inventory, Cell: EditNumber },
+            { ...columns.moq, Cell: EditNumber },
+            { ...columns.leadTime, Cell: EditNumber },
         ],
     },
     forecasted: {
@@ -47,25 +50,23 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         color: 'blue.300',
         action: {
             label: 'Review',
-            handler: () => {
-                console.log('review');
-            },
+            handler: handlePlanStatusUpdate('review'),
         },
         columns: [
             columns.sku,
             columns.startOfWeek,
             columns.region,
-            {...columns.avgItemDiscount, Cell: Regular},
-            {...columns.avgOrderDiscount, Cell: Regular},
-            {...columns.discount, Cell: Regular},
-            {...columns.workingDays, Cell: Regular},
-            {...columns.inventory, Cell: Regular},
-            {...columns.moq, Cell: Regular},
-            {...columns.leadTime, Cell: Regular},
+            { ...columns.avgItemDiscount, Cell: Regular },
+            { ...columns.avgOrderDiscount, Cell: Regular },
+            { ...columns.discount, Cell: Regular },
+            { ...columns.workingDays, Cell: Regular },
+            { ...columns.inventory, Cell: Regular },
+            { ...columns.moq, Cell: Regular },
+            { ...columns.leadTime, Cell: Regular },
             columns.qtyDemandML,
-            {...columns.qtyDemandPurchasing, Cell: EditNumber},
-            {...columns.qtyDemand, Cell: EditNumber},
-            {...columns.qtySupply, Cell: EditNumber},
+            { ...columns.qtyDemandPurchasing, Cell: EditNumber },
+            { ...columns.qtyDemand, Cell: EditNumber },
+            { ...columns.qtySupply, Cell: EditNumber },
         ],
     },
     reviewed: {
@@ -75,17 +76,17 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             columns.sku,
             columns.startOfWeek,
             columns.region,
-            {...columns.avgItemDiscount, Cell: Regular},
-            {...columns.avgOrderDiscount, Cell: Regular},
-            {...columns.discount, Cell: Regular},
-            {...columns.workingDays, Cell: Regular},
-            {...columns.inventory, Cell: Regular},
-            {...columns.moq, Cell: Regular},
-            {...columns.leadTime, Cell: Regular},
-            {...columns.qtyDemandML, Cell: Regular},
-            {...columns.qtyDemandPurchasing, Cell: EditNumber},
-            {...columns.qtyDemand, Cell: EditNumber},
-            {...columns.qtySupply, Cell: EditNumber},
+            { ...columns.avgItemDiscount, Cell: Regular },
+            { ...columns.avgOrderDiscount, Cell: Regular },
+            { ...columns.discount, Cell: Regular },
+            { ...columns.workingDays, Cell: Regular },
+            { ...columns.inventory, Cell: Regular },
+            { ...columns.moq, Cell: Regular },
+            { ...columns.leadTime, Cell: Regular },
+            { ...columns.qtyDemandML, Cell: Regular },
+            { ...columns.qtyDemandPurchasing, Cell: EditNumber },
+            { ...columns.qtyDemand, Cell: EditNumber },
+            { ...columns.qtySupply, Cell: EditNumber },
         ],
     },
 };

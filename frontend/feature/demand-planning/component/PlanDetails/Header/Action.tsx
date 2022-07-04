@@ -1,4 +1,6 @@
-import { useContext } from 'react';
+import { useRouter } from 'next/router';
+
+import { useState, useContext } from 'react';
 
 import { VStack, Button } from '@chakra-ui/react';
 
@@ -11,10 +13,22 @@ const Action = () => {
     const { id, status } = plan;
     const { color, action } = usePlanStatus(status.name);
 
+    const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
+
+    const onAction = () => {
+        setLoading(true);
+        action?.handler(id).then(() => {
+            setLoading(false);
+            router.reload();
+        });
+    };
+
     return (
         <VStack flex="1" alignItems="stretch">
             {action ? (
-                <Button bgColor={color} onClick={action.handler}>
+                <Button bgColor={color} onClick={onAction} isLoading={loading}>
                     {action.label}
                 </Button>
             ) : (

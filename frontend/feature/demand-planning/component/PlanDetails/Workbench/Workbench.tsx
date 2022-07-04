@@ -8,7 +8,9 @@ import {
 
 import { TableContainer } from '@chakra-ui/react';
 
-import Table from './Table';
+import { isEqual, valuesIn } from 'lodash';
+
+import Table, { UpdateOptions } from './Table';
 
 import { apiClient } from '../../../lib';
 import usePlanStatus from '../../../hook/planStatus';
@@ -17,11 +19,6 @@ import { PlanItem } from '../../../types';
 
 type WorkbenchProps = {
     setUpdates: Dispatch<SetStateAction<number>>;
-};
-
-type UpdateOptions = {
-    index: number;
-    item: PlanItem;
 };
 
 const Workbench = ({ setUpdates }: WorkbenchProps) => {
@@ -36,15 +33,26 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
             .then(({ data }) => setPlanItems(Array(2).fill(data).flat()));
     }, [plan]);
 
-    const handleUpdate = ({ index, item }: UpdateOptions) => {
+    const handleUpdate = ({ index, item: { id, update } }: UpdateOptions) => {
+        const updatePlanItem = planItems.find((_, i) => i === index);
+
+        if (!updatePlanItem) return;
+
+        if (updatePlanItem[update.key] === update.value) return;
+
         setUpdates(updates + 1);
 
+        const updatedPlanItem = {
+            ...updatePlanItem,
+            [update.key]: update.value,
+        };
+
         const updateData = planItems.map((data, i) =>
-            i === index ? item : data,
+            i === index ? updatedPlanItem : data,
         );
 
         apiClient
-            .put(`plan-item/${item.id}`, item)
+            .put(`plan-item/${id}`, updatedPlanItem)
             .then(() => setUpdates(updates > 0 ? updates - 1 : 0));
 
         setPlanItems(updateData);

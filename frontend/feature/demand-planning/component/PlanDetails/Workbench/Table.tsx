@@ -16,11 +16,22 @@ import { Column, useTable, useSortBy } from 'react-table';
 import { Plan, PlanItem } from '../../../types';
 import usePlanStatus from '../../../hook/planStatus';
 
+export type UpdateOptions = {
+    index: number;
+    item: {
+        id: PlanItem['id'];
+        update: {
+            key: keyof PlanItem;
+            value: any;
+        };
+    };
+};
+
 type TableProps = {
     plan: Plan;
     columns: Column<PlanItem>[];
     data: PlanItem[];
-    handleUpdate: (updateOptions: { index: number; item: PlanItem }) => void;
+    handleUpdate: (updateOptions: UpdateOptions) => void;
 };
 
 const Table = ({ plan, columns, data, handleUpdate }: TableProps) => {
