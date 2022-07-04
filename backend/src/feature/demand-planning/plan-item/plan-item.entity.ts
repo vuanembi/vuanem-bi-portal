@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, Index } from 'typeorm';
 
 import { EntityMeta } from '../../common/entity';
 
@@ -11,12 +11,15 @@ export class PlanItem extends EntityMeta {
 
     // Item
 
+    @Index()
     @Column()
     sku: string;
 
+    @Index()
     @Column()
     startOfWeek: Date;
 
+    @Index()
     @Column()
     region: string;
 

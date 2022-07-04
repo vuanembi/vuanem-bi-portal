@@ -9,12 +9,13 @@ export const config: DataSourceOptions = {
     type: 'postgres',
     host: process.env.PG_HOST || '',
     port: 5432,
-    database: 'postgres-dev',
+    database: process.env.PG_DB || '',
     username: process.env.PG_USER || '',
     password: process.env.PG_PASSWORD || '',
     synchronize: true,
     namingStrategy: new SnakeNamingStrategy(),
     entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
+    migrations: [__dirname + '/migration/**/*{.ts,.js}'],
 };
 
 @Module({
