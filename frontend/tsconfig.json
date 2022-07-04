@@ -21,11 +21,10 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "strictPropertyInitialization": false,
-        "paths": {
-            "@backend/*": [
-                "../backend/src/feature/*"
-            ],
-        },
+        "typeRoots": [
+            "node_modules/@types",
+            "feature/**/types"
+        ]
     },
     "include": [
         "next-env.d.ts",

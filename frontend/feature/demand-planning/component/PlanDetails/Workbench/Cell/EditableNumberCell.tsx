@@ -6,19 +6,26 @@ import {
     NumberInputField,
 } from '@chakra-ui/react';
 
-import { clamp } from 'lodash';
-
 import { CellProps } from './cell.type';
+import { PlanItem } from '../../../../types';
 
-export const EditNumber = ({ value: initialValue, row, column }: CellProps) => {
-    const [value, setValue] = useState(initialValue);
+export const EditNumber = ({
+    value: initialValue,
+    row,
+    column,
+    handleUpdate,
+}: CellProps) => {
+    const [value, setValue] = useState(initialValue.toString());
 
-    const onChange: UseCounterProps['onChange'] = (_, valueAsNumber) => {
-        console.log(column);
-        setValue(valueAsNumber);
+    const onChange: UseCounterProps['onChange'] = (valueAsString) => {
+        setValue(valueAsString);
     };
 
-    const onBlur = () => console.log({ initialValue, value });
+    const onBlur = () =>
+        handleUpdate({
+            index: row.index,
+            item: { ...row.values, [column.id]: +value, id: row.id },
+        });
 
     useEffect(() => {
         setValue(initialValue);
@@ -27,9 +34,10 @@ export const EditNumber = ({ value: initialValue, row, column }: CellProps) => {
     return (
         <NumberInput
             w={column.width}
-            className={clamp(column.id.toString().length, 10, 15).toString()}
             precision={2}
-            value={value || ''}
+            value={
+                value !== null && value !== undefined ? value.toString() : ''
+            }
             onChange={onChange}
             onBlur={onBlur}
         >

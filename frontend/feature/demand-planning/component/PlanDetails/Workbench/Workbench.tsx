@@ -5,17 +5,13 @@ import { TableContainer } from '@chakra-ui/react';
 import Table from './Table';
 
 import { apiClient } from '../../../lib';
-import { Plan, PlanItem } from '../../../type';
+import { Plan, PlanItem } from '../../../types';
 import usePlanStatus from '../../../hook/planStatus';
 
-declare module 'react-table' {
-    interface HeaderGroup {
-        isNumeric: boolean;
-    }
-    interface ColumnInstance {
-        isNumeric: boolean;
-    }
-}
+type UpdateOptions = {
+    index: number;
+    item: PlanItem;
+};
 
 const Workbench = (plan: Plan) => {
     const { color, columns } = usePlanStatus(plan.status.name);
@@ -27,6 +23,15 @@ const Workbench = (plan: Plan) => {
             .then(({ data }) => setPlanItems(Array(2).fill(data).flat()));
     }, [plan]);
 
+    const handleUpdate = ({ index, item }: UpdateOptions) => {
+        const updateData = planItems.map((data, i) =>
+            i === index ? item : data,
+        );
+
+        apiClient.put(`plan-item/${item.id}`, item);
+        setPlanItems(updateData);
+    };
+
     return (
         <TableContainer
             h="80vh"
@@ -35,7 +40,12 @@ const Workbench = (plan: Plan) => {
             borderWidth="1px"
             borderColor={color}
         >
-            <Table plan={plan} columns={columns} data={planItems} />
+            <Table
+                plan={plan}
+                columns={columns}
+                data={planItems}
+                handleUpdate={handleUpdate}
+            />
         </TableContainer>
     );
 };

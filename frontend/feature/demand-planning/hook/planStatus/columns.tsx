@@ -2,7 +2,7 @@ import type { Column } from 'react-table';
 
 import { Regular, Date } from '../../component/PlanDetails/Workbench/Cell';
 
-import type { PlanItem } from '../../type';
+import type { PlanItem } from '../../types';
 
 type ColumnOptions = Column<PlanItem> & { isNumeric?: boolean };
 

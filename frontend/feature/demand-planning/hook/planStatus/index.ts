@@ -6,7 +6,7 @@ import {
     EditNumber,
 } from '../../component/PlanDetails/Workbench/Cell';
 
-import type { PlanItem } from '../../type';
+import type { PlanItem } from '../../types';
 import columns from './columns';
 
 export type PlanStatusStyle = {

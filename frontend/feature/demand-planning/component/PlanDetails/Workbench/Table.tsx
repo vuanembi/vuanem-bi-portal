@@ -1,5 +1,7 @@
 /* eslint react/jsx-key: 0 */
 
+import { useMemo } from 'react';
+
 import {
     Table as ChakraTable,
     Thead,
@@ -11,29 +13,23 @@ import {
 
 import { Column, useTable, useSortBy } from 'react-table';
 
-import { Plan, PlanItem } from '../../../type';
+import { Plan, PlanItem } from '../../../types';
 import usePlanStatus from '../../../hook/planStatus';
-
-declare module 'react-table' {
-    interface HeaderGroup {
-        isNumeric: boolean;
-    }
-    interface ColumnInstance {
-        isNumeric: boolean;
-    }
-}
 
 type TableProps = {
     plan: Plan;
     columns: Column<PlanItem>[];
     data: PlanItem[];
+    handleUpdate: (updateOptions: { index: number; item: PlanItem }) => void;
 };
 
-const Table = ({ plan, columns, data }: TableProps) => {
+const Table = ({ plan, columns, data, handleUpdate }: TableProps) => {
     const { color } = usePlanStatus(plan.status.name);
 
+    const getRowId = ({ id }: PlanItem) => id;
+
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({ columns, data }, useSortBy);
+        useTable({ columns, data, getRowId, handleUpdate }, useSortBy);
 
     return (
         <ChakraTable
