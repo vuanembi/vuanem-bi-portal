@@ -1,6 +1,6 @@
 import type { NextPage, GetServerSideProps } from 'next';
 
-import { createContext, useState } from 'react';
+import { useState } from 'react';
 
 import { VStack } from '@chakra-ui/react';
 
@@ -16,13 +16,11 @@ import { Plan as PlanPageProps } from '../../feature/demand-planning/types';
 const Plan: NextPage<{ plan: PlanPageProps }> = ({ plan }) => {
     const [updates, setUpdates] = useState<number>(0);
 
-    
-
     return (
         <PlanContext.Provider value={{ plan, updates }}>
             <VStack alignItems="stretch">
-                <Header plan={plan} updates={updates} />
-                <Workbench {...plan} />
+                <Header />
+                <Workbench setUpdates={setUpdates} />
             </VStack>
         </PlanContext.Provider>
     );

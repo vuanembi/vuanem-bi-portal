@@ -1,19 +1,32 @@
-import { useState, useEffect } from 'react';
+import {
+    useState,
+    useEffect,
+    useContext,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 
 import { TableContainer } from '@chakra-ui/react';
 
 import Table from './Table';
 
 import { apiClient } from '../../../lib';
-import { Plan, PlanItem } from '../../../types';
 import usePlanStatus from '../../../hook/planStatus';
+import { PlanContext } from '../../../context';
+import { PlanItem } from '../../../types';
+
+type WorkbenchProps = {
+    setUpdates: Dispatch<SetStateAction<number>>;
+};
 
 type UpdateOptions = {
     index: number;
     item: PlanItem;
 };
 
-const Workbench = (plan: Plan) => {
+const Workbench = ({ setUpdates }: WorkbenchProps) => {
+    const { plan, updates } = useContext(PlanContext);
+
     const { color, columns } = usePlanStatus(plan.status.name);
     const [planItems, setPlanItems] = useState<PlanItem[]>([]);
 
@@ -24,11 +37,16 @@ const Workbench = (plan: Plan) => {
     }, [plan]);
 
     const handleUpdate = ({ index, item }: UpdateOptions) => {
+        setUpdates(updates + 1);
+
         const updateData = planItems.map((data, i) =>
             i === index ? item : data,
         );
 
-        apiClient.put(`plan-item/${item.id}`, item);
+        apiClient
+            .put(`plan-item/${item.id}`, item)
+            .then(() => setUpdates(updates > 0 ? updates - 1 : 0));
+
         setPlanItems(updateData);
     };
 
