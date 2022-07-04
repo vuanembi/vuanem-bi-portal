@@ -4,7 +4,13 @@ import { EntityMeta } from '../../common/entity';
 
 import { PlanItem } from '../plan-item/plan-item.entity';
 import { Vendor } from '../vendor/vendor.entity';
-import { PlanStatus } from '../plan-status/plan-status.entity';
+
+export enum PlanStatus {
+    DRAFT = 'draft',
+    FORECASTING = 'forecasting',
+    FORECASTED = 'forecasted',
+    REVIEWED = 'reviewed',
+}
 
 @Entity()
 export class Plan extends EntityMeta {
@@ -17,7 +23,11 @@ export class Plan extends EntityMeta {
     @ManyToOne(() => Vendor, ({ id }) => id, { eager: true })
     vendor: Vendor;
 
-    @ManyToOne(() => PlanStatus, ({ id }) => id, { eager: true })
+    @Column({
+        type: 'enum',
+        enum: PlanStatus,
+        default: PlanStatus.DRAFT,
+    })
     status: PlanStatus;
 
     @OneToMany(() => PlanItem, ({ plan }) => plan, {

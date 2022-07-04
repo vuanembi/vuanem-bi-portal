@@ -1,4 +1,4 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BigQueryProvider } from '../../provider/warehouse/bigquery.service';
@@ -11,28 +11,13 @@ import { PlanItem } from './plan-item/plan-item.entity';
 import { PlanItemService } from './plan-item/plan-item.service';
 import { PlanItemController } from './plan-item/plan-item.controller';
 
-import { PlanStatus } from './plan-status/plan-status.entity';
-import { PlanStatusService } from './plan-status/plan-status.service';
-
 import { Vendor } from './vendor/vendor.entity';
 import { VendorService } from './vendor/vendor.service';
 import { VendorController } from './vendor/vendor.controller';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Plan, PlanItem, PlanStatus, Vendor])],
-    providers: [
-        BigQueryProvider,
-        PlanService,
-        PlanItemService,
-        PlanStatusService,
-        VendorService,
-    ],
+    imports: [TypeOrmModule.forFeature([Plan, PlanItem, Vendor])],
+    providers: [BigQueryProvider, PlanService, PlanItemService, VendorService],
     controllers: [PlanController, PlanItemController, VendorController],
 })
-export class DemandPlanningModule implements OnApplicationBootstrap {
-    constructor(private planStatusService: PlanStatusService) {}
-
-    async onApplicationBootstrap() {
-        await Promise.all(this.planStatusService.seed());
-    }
-}
+export class DemandPlanningModule {}

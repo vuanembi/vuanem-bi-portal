@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Plan } from './plan.entity';
-import { CreatePlanDto } from './plan.dto';
+import dayjs from 'dayjs';
 
-import { PlanStatus } from '../plan-status/plan-status.entity';
+import { Plan, PlanStatus } from './plan.entity';
+import { CreatePlanDto } from './plan.dto';
 
 import { PlanItem } from '../plan-item/plan-item.entity';
 import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
@@ -13,7 +13,6 @@ import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
 import { Vendor } from '../vendor/vendor.entity';
 
 import { faker } from '@faker-js/faker';
-import { range } from 'lodash';
 
 const mockFloat = () =>
     faker.datatype.number({
@@ -22,27 +21,32 @@ const mockFloat = () =>
         precision: 0.01,
     });
 
-const createMockPlanItem = (): CreatePlanItemDto => ({
-    sku: faker.random.numeric(13),
-    startOfWeek: faker.date.soon(),
-    region: 'north',
-    avgItemDiscount: mockFloat(),
-    avgOrderDiscount: mockFloat(),
-    discount: mockFloat(),
-    workingDays: faker.datatype.number(),
-    inventory: faker.datatype.number(),
-    moq: faker.datatype.number(),
-    leadTime: faker.datatype.number(),
-});
+const createMockPlanItems = (): CreatePlanItemDto[] => {
+    const sku = faker.random.numeric(13);
+    const startOfWeeks = Array(8)
+        .fill(faker.date.soon())
+        .map((date) => dayjs(date).startOf('date').toDate());
+    const region = 'north';
+
+    return startOfWeeks.map((startOfWeek) => ({
+        sku,
+        startOfWeek,
+        region,
+        avgItemDiscount: mockFloat(),
+        avgOrderDiscount: mockFloat(),
+        discount: mockFloat(),
+        workingDays: faker.datatype.number(),
+        inventory: faker.datatype.number(),
+        moq: faker.datatype.number(),
+        leadTime: faker.datatype.number(),
+    }));
+};
 
 @Injectable()
 export class PlanService {
     constructor(
         @InjectRepository(Plan)
         private planRepository: Repository<Plan>,
-
-        @InjectRepository(PlanStatus)
-        private planStatusRepository: Repository<PlanStatus>,
 
         @InjectRepository(PlanItem)
         private planItemRepository: Repository<PlanItem>,
@@ -52,9 +56,13 @@ export class PlanService {
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
-        const [itemData, status, vendor] = await Promise.all([
-            Promise.resolve(range(1, 10).map(() => createMockPlanItem())),
-            this.planStatusRepository.preload({ id: 0 }),
+        const [itemData, vendor] = await Promise.all([
+            Promise.resolve(
+                Array(4)
+                    .fill(null)
+                    .map(() => createMockPlanItems())
+                    .flat(),
+            ),
             this.vendorRepository.preload({
                 id: createPlanDto.vendorId,
             }),
@@ -66,7 +74,6 @@ export class PlanService {
 
         const plan = this.planRepository.create({
             ...createPlanDto,
-            status,
             vendor,
             items: planItems,
         });
@@ -83,14 +90,14 @@ export class PlanService {
     }
 
     async forecast(id: number) {
-        return this.planStatusRepository
-            .preload({ id: 1 })
-            .then((status) => this.planRepository.update(id, { status }));
+        return this.planRepository.update(id, {
+            status: PlanStatus.FORECASTED,
+        });
     }
 
     async review(id: number) {
-        return this.planStatusRepository
-            .preload({ id: 2 })
-            .then((status) => this.planRepository.update(id, { status }));
+        return this.planRepository.update(id, {
+            status: PlanStatus.REVIEWED,
+        });
     }
 }
