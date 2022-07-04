@@ -1,15 +1,14 @@
+import { useContext } from 'react';
+
 import { VStack, Button } from '@chakra-ui/react';
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
 import usePlanStatus from '../../../hook/planStatus';
+import { PlanContext } from '../../../context';
 
-import { Plan } from '../../../type';
+const Action = () => {
+    const { plan } = useContext(PlanContext);
 
-dayjs.extend(utc);
-
-const Action = ({ id, status }: Plan) => {
+    const { id, status } = plan;
     const { color, action } = usePlanStatus(status.name);
 
     return (

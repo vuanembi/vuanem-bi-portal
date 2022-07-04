@@ -1,17 +1,20 @@
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
+import { useContext } from 'react';
+
 import { Center, HStack, Icon, LinkBox, LinkOverlay } from '@chakra-ui/react';
 
 import { FaHome } from 'react-icons/fa';
 
-import { Plan } from '../../../type';
 import usePlanStatus from '../../../hook/planStatus';
+import { PlanContext } from '../../../context';
 
 import Info from './Info';
 import Action from './Action';
 
-const Header = (plan: Plan) => {
+const Header = () => {
+    const { plan } = useContext(PlanContext);
     const { color } = usePlanStatus(plan.status.name);
 
     const home = useRouter().pathname.split('/')[1];
@@ -28,8 +31,8 @@ const Header = (plan: Plan) => {
                     <LinkOverlay />
                 </NextLink>
             </Center>
-            <Info {...plan} />
-            <Action {...plan} />
+            <Info />
+            <Action />
         </HStack>
     );
 };

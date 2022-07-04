@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import {
     HStack,
     Stat,
@@ -5,19 +7,26 @@ import {
     StatNumber,
     StatHelpText,
     StatGroup,
+    Icon,
+    Spinner,
 } from '@chakra-ui/react';
+import { IoMdCloudDone } from 'react-icons/io';
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import usePlanStatus from '../../../hook/planStatus';
-
-import { Plan } from '../../../type';
+import { PlanContext } from '../../../context';
 
 dayjs.extend(utc);
 
-const Info = ({ name, startOfForecastWeek, status, updatedAt }: Plan) => {
+const Info = () => {
+    const { plan, updates } = useContext(PlanContext);
+
+    const { name, startOfForecastWeek, status, updatedAt } = plan;
     const { color, label } = usePlanStatus(status.name);
+
+    const Done = () => <Icon as={IoMdCloudDone} color={color} fontSize="2xl" />;
 
     return (
         <StatGroup
@@ -41,6 +50,7 @@ const Info = ({ name, startOfForecastWeek, status, updatedAt }: Plan) => {
                     {dayjs.utc(updatedAt).local().format('YYYY-MM-DD HH:mm')}
                 </StatHelpText>
             </Stat>
+            {updates > 0 ? <Spinner color={color}/> : <Done />}
         </StatGroup>
     );
 };
