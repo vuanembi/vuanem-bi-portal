@@ -2,7 +2,9 @@ import { useRouter } from 'next/router';
 
 import { useState, useContext } from 'react';
 
-import { VStack, Button } from '@chakra-ui/react';
+import { VStack, Button, useDisclosure } from '@chakra-ui/react';
+
+import ConfirmModal from './ConfirmModal';
 
 import usePlanStatus from '../../../hook/planStatus';
 import { PlanContext } from '../../../context';
@@ -13,11 +15,14 @@ const Action = () => {
     const { id, status } = plan;
     const { color, action } = usePlanStatus(status);
 
+    const { isOpen, onClose, onToggle } = useDisclosure();
+
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
 
     const onAction = () => {
+        onClose();
         setLoading(true);
         action?.handler(id).then(() => {
             setLoading(false);
@@ -28,7 +33,11 @@ const Action = () => {
     return (
         <VStack flex="1" alignItems="stretch">
             {action ? (
-                <Button bgColor={color} onClick={onAction} isLoading={loading}>
+                <Button
+                    bgColor={color}
+                    onClick={() => onToggle()}
+                    isLoading={loading}
+                >
                     {action.label}
                 </Button>
             ) : (
@@ -37,6 +46,14 @@ const Action = () => {
             <Button color="white" bgColor="red.400">
                 Delete
             </Button>
+            <ConfirmModal
+                isOpen={isOpen}
+                onClose={onClose}
+                title={action?.label || 'Confirm'}
+                onSubmit={onAction}
+            >
+                {}
+            </ConfirmModal>
         </VStack>
     );
 };

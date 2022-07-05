@@ -42,14 +42,15 @@ const Info = () => {
             justifyContent="space-between"
             alignItems="flex-start"
             borderWidth="1px"
-            spacing={8}
             borderColor={color}
+            spacing={8}
         >
             <VStack
                 flex="1"
                 alignContent="stretch"
                 alignItems="space-between"
                 spacing={0}
+                pr={4}
             >
                 <Tooltip label="Plan" placement="left-start" {...tooltipProps}>
                     <Text fontWeight="bold">{name}</Text>
