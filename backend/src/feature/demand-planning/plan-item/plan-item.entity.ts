@@ -4,7 +4,13 @@ import { EntityMeta } from '../../common/entity';
 
 import { Plan } from '../plan/plan.entity';
 
-@Entity()
+@Entity({
+    orderBy: {
+        sku: 'ASC',
+        region: 'ASC',
+        startOfWeek: 'ASC',
+    },
+})
 export class PlanItem extends EntityMeta {
     @ManyToOne(() => Plan, ({ items }) => items, { onDelete: 'CASCADE' })
     plan: Plan;

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
 import { Plan, PlanStatus } from './plan.entity';
 import { CreatePlanDto } from './plan.dto';
@@ -21,11 +21,11 @@ const mockFloat = () =>
         precision: 0.01,
     });
 
-const createMockPlanItems = (): CreatePlanItemDto[] => {
+const createMockPlanItems = (date: Date): CreatePlanItemDto[] => {
     const sku = faker.random.numeric(13);
     const startOfWeeks = Array(8)
-        .fill(faker.date.soon())
-        .map((date) => dayjs(date).startOf('date').toDate());
+        .fill(undefined)
+        .map((_, i) => dayjs(date).add(i, 'week').toDate());
     const region = 'north';
 
     return startOfWeeks.map((startOfWeek) => ({
@@ -60,7 +60,9 @@ export class PlanService {
             Promise.resolve(
                 Array(4)
                     .fill(null)
-                    .map(() => createMockPlanItems())
+                    .map(() =>
+                        createMockPlanItems(createPlanDto.startOfForecastWeek),
+                    )
                     .flat(),
             ),
             this.vendorRepository.preload({

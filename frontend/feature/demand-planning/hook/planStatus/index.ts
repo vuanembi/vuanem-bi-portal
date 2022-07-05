@@ -22,7 +22,7 @@ export type PlanStatusStyle = {
 };
 
 const handlePlanStatusUpdate = (endpoint: string) => (id: PlanItem['id']) =>
-    apiClient.post(`/plan/${id}/${endpoint}`);
+    apiClient.put(`/plan/${id}/${endpoint}`);
 
 export const planStatuses: { [status: string]: PlanStatusStyle } = {
     draft: {

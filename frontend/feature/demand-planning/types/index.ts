@@ -3,6 +3,9 @@ export type Plan = {
     name: string;
     startOfForecastWeek: string;
     status: string;
+    vendor: {
+        name: string;
+    }
     createdAt: string;
     updatedAt: string;
 };
