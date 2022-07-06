@@ -11,4 +11,11 @@ declare module 'react-table' {
         getRowId: <T>(row) => number;
         [key: string]: any;
     }
+    interface TableState {
+        expanded: boolean;
+    }
+    interface Row {
+        canExpand: boolean;
+        isExpanded: boolean;
+    }
 }

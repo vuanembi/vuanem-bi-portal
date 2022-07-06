@@ -6,57 +6,49 @@ import {
     NumberInputField,
 } from '@chakra-ui/react';
 
-import { CellProps } from './cell.type';
+import withNulls from './withNulls';
+import { TableMeta, CellProps, ColumnMeta } from '../Table.type';
+import { PlanItem as PlanItemProps } from '../../../../types';
 
-export const editNumber = (precision: number = 2) =>
-    function EditNumber({
-        value: initialValue,
-        row,
-        column,
-        handleUpdate,
-    }: CellProps) {
-        const [value, setValue] = useState(initialValue);
+const EditableNumberCell = ({ row, column, table, getValue }: CellProps) => {
+    const { width } = column.columnDef.meta as ColumnMeta;
 
-        const onChange: UseCounterProps['onChange'] = (valueAsString) => {
-            setValue(valueAsString);
-        };
+    const initialValue = getValue() as string;
+    const [value, setValue] = useState(initialValue);
 
-        const onBlur = () => {
-            value === null && setValue('0.00');
-
-            handleUpdate({
-                index: row.index,
-                item: {
-                    id: row.id,
-                    update: {
-                        key: column.id,
-                        value: +value,
-                    },
-                },
-            });
-        };
-
-        useEffect(() => {
-            setValue(initialValue);
-        }, [initialValue]);
-
-        return (
-            <NumberInput
-                isRequired
-                w={column.width}
-                defaultValue={initialValue}
-                precision={precision}
-                value={
-                    value !== null && value !== undefined
-                        ? value.toString()
-                        : ''
-                }
-                onChange={onChange}
-                onBlur={onBlur}
-            >
-                <NumberInputField textAlign="right" p={4} />
-            </NumberInput>
-        );
+    const onChange: UseCounterProps['onChange'] = (valueAsString) => {
+        setValue(valueAsString);
     };
 
-export default editNumber;
+    const onBlur = () => {
+        (table.options.meta as TableMeta).handleUpdate({
+            index: row.index,
+            item: {
+                id: +row.id,
+                update: {
+                    key: column.id as keyof PlanItemProps,
+                    value: +value,
+                },
+            },
+        });
+    };
+
+    useEffect(() => {
+        setValue(initialValue);
+    }, [initialValue]);
+
+    return initialValue ? (
+        <NumberInput
+            isRequired
+            w={width}
+            defaultValue={initialValue}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+        >
+            <NumberInputField textAlign="right" p={4} />
+        </NumberInput>
+    ) : null;
+};
+
+export default withNulls(EditableNumberCell);

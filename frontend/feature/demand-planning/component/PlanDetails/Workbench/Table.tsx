@@ -1,6 +1,4 @@
-/* eslint react/jsx-key: 0 */
-
-import { useMemo } from 'react';
+import { useState } from 'react';
 
 import {
     Table as ChakraTable,
@@ -11,50 +9,52 @@ import {
     Td,
 } from '@chakra-ui/react';
 
-import { Column, useTable, useSortBy } from 'react-table';
+import {
+    ExpandedState,
+    useReactTable,
+    getCoreRowModel,
+    getExpandedRowModel,
+    flexRender,
+} from '@tanstack/react-table';
 
-import { Plan, PlanItem } from '../../../types';
+import { TableMeta, TableProps, ColumnMeta } from './Table.type';
 import usePlanStatus from '../../../hook/planStatus';
-
-export type UpdateOptions = {
-    index: number;
-    item: {
-        id: PlanItem['id'];
-        update: {
-            key: keyof PlanItem;
-            value: any;
-        };
-    };
-};
-
-type TableProps = {
-    plan: Plan;
-    columns: Column<PlanItem>[];
-    data: PlanItem[];
-    handleUpdate: (updateOptions: UpdateOptions) => void;
-};
 
 const Table = ({ plan, columns, data, handleUpdate }: TableProps) => {
     const { color } = usePlanStatus(plan.status);
 
-    const getRowId = ({ id }: PlanItem) => id;
+    const [expanded, setExpanded] = useState<ExpandedState>({});
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({ columns, data, getRowId, handleUpdate }, useSortBy);
+    const table = useReactTable({
+        columns,
+        data,
+        state: {
+            expanded,
+        },
+        onExpandedChange: setExpanded,
+        getSubRows: (row: any) => row.subRows,
+        getCoreRowModel: getCoreRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
+        meta: {
+            handleUpdate,
+        } as TableMeta,
+        debugTable: true,
+    });
 
     return (
-        <ChakraTable
-            {...getTableProps()}
-            style={{ borderCollapse: 'separate' }}
-        >
+        <ChakraTable style={{ borderCollapse: 'separate' }}>
             <Thead>
-                {headerGroups.map((headerGroup) => (
-                    <Tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
+                {table.getHeaderGroups().map((headerGroup) => (
+                    <Tr key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
                             <Th
-                                {...column.getHeaderProps()}
+                                key={header.id}
+                                colSpan={header.colSpan}
                                 position="sticky"
-                                isNumeric={column.isNumeric}
+                                isNumeric={
+                                    (header.column.columnDef.meta as ColumnMeta)
+                                        ?.isNumeric
+                                }
                                 top={0}
                                 bgColor="white"
                                 borderColor={color}
@@ -62,28 +62,34 @@ const Table = ({ plan, columns, data, handleUpdate }: TableProps) => {
                                 borderRadius={0}
                                 zIndex={2}
                             >
-                                {column.render('Header')}
+                                {flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext(),
+                                )}
                             </Th>
                         ))}
                     </Tr>
                 ))}
             </Thead>
-            <Tbody {...getTableBodyProps()}>
-                {rows.map((row) => {
-                    prepareRow(row);
-                    return (
-                        <Tr {...row.getRowProps()}>
-                            {row.cells.map((cell) => (
-                                <Td
-                                    {...cell.getCellProps()}
-                                    isNumeric={cell.column.isNumeric}
-                                >
-                                    {cell.render('Cell')}
-                                </Td>
-                            ))}
-                        </Tr>
-                    );
-                })}
+            <Tbody>
+                {table.getRowModel().rows.map((row) => (
+                    <Tr key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                            <Td
+                                key={cell.id}
+                                isNumeric={
+                                    (cell.column.columnDef.meta as ColumnMeta)
+                                        ?.isNumeric
+                                }
+                            >
+                                {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext(),
+                                )}
+                            </Td>
+                        ))}
+                    </Tr>
+                ))}
             </Tbody>
         </ChakraTable>
     );

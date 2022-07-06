@@ -6,7 +6,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => (
     <Container
         as={Flex}
         h="100vh"
-        w="100vw"
+        minW="80vw"
         pt="5vh"
         pb="10vh"
         alignItems="stretch"

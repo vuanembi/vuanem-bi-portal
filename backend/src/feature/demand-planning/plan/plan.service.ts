@@ -26,20 +26,22 @@ const createMockPlanItems = (date: Date): CreatePlanItemDto[] => {
     const startOfWeeks = Array(8)
         .fill(undefined)
         .map((_, i) => dayjs(date).add(i, 'week').toDate());
-    const region = 'north';
+    const regions = ['north', 'south'];
 
-    return startOfWeeks.map((startOfWeek) => ({
-        sku,
-        startOfWeek,
-        region,
-        avgItemDiscount: mockFloat(),
-        avgOrderDiscount: mockFloat(),
-        discount: mockFloat(),
-        workingDays: faker.datatype.number(),
-        inventory: faker.datatype.number(),
-        moq: faker.datatype.number(),
-        leadTime: faker.datatype.number(),
-    }));
+    return regions.flatMap((region) =>
+        startOfWeeks.map((startOfWeek) => ({
+            sku,
+            startOfWeek,
+            region,
+            avgItemDiscount: mockFloat(),
+            avgOrderDiscount: mockFloat(),
+            discount: mockFloat(),
+            workingDays: faker.datatype.number(),
+            inventory: faker.datatype.number(),
+            moq: faker.datatype.number(),
+            leadTime: faker.datatype.number(),
+        })),
+    );
 };
 
 @Injectable()

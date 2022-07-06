@@ -8,14 +8,15 @@ import {
 
 import { TableContainer } from '@chakra-ui/react';
 
-import { isEqual, valuesIn } from 'lodash';
+import { chain } from 'lodash';
 
-import Table, { UpdateOptions } from './Table';
+import Table from './Table';
+import type { UpdateOptions } from './Table.type';
 
 import { apiClient } from '../../../lib';
 import usePlanStatus from '../../../hook/planStatus';
 import { PlanContext } from '../../../context';
-import { PlanItem } from '../../../types';
+import { PlanItem, PlanItemGroup } from '../../../types';
 
 type WorkbenchProps = {
     setUpdates: Dispatch<SetStateAction<number>>;
@@ -26,12 +27,33 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
 
     const { color, columns } = usePlanStatus(plan.status);
     const [planItems, setPlanItems] = useState<PlanItem[]>([]);
+    const [planItemGroups, setPlanItemGroups] = useState<PlanItemGroup[]>([]);
 
     useEffect(() => {
         apiClient
             .get<PlanItem[]>('/plan-item', { params: { planId: plan.id } })
-            .then(({ data }) => setPlanItems(Array(2).fill(data).flat()));
+            .then(({ data }) => setPlanItems(data));
     }, [plan]);
+
+    useEffect(() => {
+        const group = chain(planItems)
+            .groupBy(({ sku }) => sku)
+            .toPairs()
+            .map(([sku, values]) => ({
+                sku,
+                subRows: chain(values)
+                    .groupBy(({ region }) => region)
+                    .toPairs()
+                    .map(([region, values]) => ({
+                        region,
+                        subRows: values,
+                    }))
+                    .value(),
+            }))
+            .value() as PlanItemGroup[];
+
+        setPlanItemGroups(group);
+    }, [planItems]);
 
     const handleUpdate = ({ index, item: { id, update } }: UpdateOptions) => {
         const updatePlanItem = planItems.find((_, i) => i === index);
@@ -39,8 +61,6 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
         if (!updatePlanItem) return;
 
         if (updatePlanItem[update.key] === update.value) return;
-
-        console.log({ x: updatePlanItem[update.key], y: update.value });
 
         setUpdates(updates + 1);
 
@@ -68,12 +88,14 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
             borderWidth="1px"
             borderColor={color}
         >
-            <Table
-                plan={plan}
-                columns={columns}
-                data={planItems}
-                handleUpdate={handleUpdate}
-            />
+            {planItemGroups.length > 0 ? (
+                <Table
+                    plan={plan}
+                    columns={columns}
+                    data={planItemGroups}
+                    handleUpdate={handleUpdate}
+                />
+            ) : null}
         </TableContainer>
     );
 };

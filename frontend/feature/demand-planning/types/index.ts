@@ -5,7 +5,7 @@ export type Plan = {
     status: string;
     vendor: {
         name: string;
-    }
+    };
     createdAt: string;
     updatedAt: string;
 };
@@ -14,8 +14,8 @@ export type PlanItem = {
     id: number;
     planId: number;
     sku: string;
-    startOfWeek: Date;
     region: string;
+    startOfWeek: Date;
     avgItemDiscount: number;
     avgOrderDiscount: number;
     discount: number;
@@ -27,4 +27,11 @@ export type PlanItem = {
     qtyDemandPurchasing: number | null;
     qtyDemand: number | null;
     qtySupply: number | null;
+    subRows: PlanItem[];
+};
+
+export type PlanItemGroup = Partial<PlanItem> & {
+    subRows: (Partial<PlanItem> & {
+        subRows: PlanItem[];
+    })[];
 };

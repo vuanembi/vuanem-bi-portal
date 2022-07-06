@@ -11,9 +11,6 @@ export default extendTheme({
                 borderStyle: 'solid',
                 borderRadius: 'md',
             },
-            body: {
-                // backgroundColor: 'gray.50',
-            },
             '.shadow': {
                 boxShadow: 'base',
             },
@@ -38,7 +35,7 @@ export default extendTheme({
     components: {
         Container: {
             baseStyle: {
-                maxW: 'container.xl',
+                minW: 'container.xl',
             },
         },
         Link: {
