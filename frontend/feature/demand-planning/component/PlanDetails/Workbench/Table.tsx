@@ -32,6 +32,7 @@ const Table = ({ plan, columns, data, handleUpdate }: TableProps) => {
             expanded,
         },
         onExpandedChange: setExpanded,
+        getRowId: (row: any) => row.id,
         getSubRows: (row: any) => row.subRows,
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),

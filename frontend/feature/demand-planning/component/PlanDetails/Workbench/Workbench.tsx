@@ -75,7 +75,7 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
 
         apiClient
             .put(`plan-item/${id}`, updatedPlanItem)
-            .then(() => setUpdates(updates > 0 ? updates - 1 : 0));
+            .finally(() => setUpdates(updates > 0 ? updates - 1 : 0));
 
         setPlanItems(updateData);
     };

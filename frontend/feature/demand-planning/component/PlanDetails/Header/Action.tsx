@@ -34,6 +34,7 @@ const Action = () => {
         <VStack flex="1" alignItems="stretch">
             {action ? (
                 <Button
+                    color="white"
                     bgColor={color}
                     onClick={() => onToggle()}
                     isLoading={loading}
