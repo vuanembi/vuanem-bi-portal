@@ -1,6 +1,14 @@
 import { useContext } from 'react';
 
-import { HStack, VStack, Text, Icon, Spinner, Tooltip } from '@chakra-ui/react';
+import {
+    HStack,
+    VStack,
+    Text,
+    Icon,
+    Spinner,
+    Tooltip,
+    chakra,
+} from '@chakra-ui/react';
 import { IoMdCloudDone } from 'react-icons/io';
 
 import dayjs from 'dayjs';
@@ -14,7 +22,8 @@ dayjs.extend(utc);
 const Info = () => {
     const { plan, updates } = useContext(PlanContext);
 
-    const { name, startOfForecastWeek, status, vendor, updatedAt } = plan;
+    const { name, startOfForecastWeek, status, vendor, createdAt, updatedAt } =
+        plan;
     const { color } = usePlanStatus(status);
 
     const tooltipProps = {
@@ -30,28 +39,20 @@ const Info = () => {
 
     const Done = () => (
         <Tooltip label="Synced" {...tooltipProps}>
-            <span>
+            <chakra.span lineHeight={0}>
                 <Icon as={IoMdCloudDone} color={color} fontSize="2xl" />
-            </span>
+            </chakra.span>
         </Tooltip>
     );
     return (
         <HStack
-            flex="1"
-            p={2}
+            flexBasis="80%"
             justifyContent="space-between"
-            alignItems="flex-start"
             borderWidth="1px"
             borderColor={color}
-            spacing={8}
+            p={2}
         >
-            <VStack
-                flex="1"
-                alignContent="stretch"
-                alignItems="space-between"
-                spacing={0}
-                pr={4}
-            >
+            <VStack alignItems="flex-start" flexBasis="70%" spacing={0}>
                 <Tooltip label="Plan" placement="left-start" {...tooltipProps}>
                     <Text fontWeight="bold">{name}</Text>
                 </Tooltip>
@@ -62,16 +63,32 @@ const Info = () => {
                 >
                     <Text>{vendor.name}</Text>
                 </Tooltip>
+                <Tooltip
+                    label="Start of Forecast Week"
+                    placement="left-start"
+                    {...tooltipProps}
+                >
+                    <Text>
+                        {dayjs(startOfForecastWeek).format('YYYY-MM-DD')}
+                    </Text>
+                </Tooltip>
+            </VStack>
+            <VStack alignItems="stretch" flexBasis="30%" spacing={0}>
+                <Tooltip
+                    label="Created At"
+                    placement="left-start"
+                    {...tooltipProps}
+                >
+                    <Text>{dayjs(createdAt).format('YYYY-MM-DD HH:mm')}</Text>
+                </Tooltip>
+                <Tooltip
+                    label="Status"
+                    placement="left-start"
+                    {...tooltipProps}
+                >
+                    <Text textTransform="capitalize">{status}</Text>
+                </Tooltip>
                 <HStack justifyContent="space-between">
-                    <Tooltip
-                        label="Start of Forecast Week"
-                        placement="left-start"
-                        {...tooltipProps}
-                    >
-                        <Text>
-                            {dayjs(startOfForecastWeek).format('YYYY-MM-DD')}
-                        </Text>
-                    </Tooltip>
                     <Tooltip
                         label="Updated At"
                         placement="left-start"
@@ -84,9 +101,9 @@ const Info = () => {
                                 .format('YYYY-MM-DD HH:mm')}
                         </Text>
                     </Tooltip>
+                    {updates > 0 ? <Loading /> : <Done />}
                 </HStack>
             </VStack>
-            {updates > 0 ? <Loading /> : <Done />}
         </HStack>
     );
 };
