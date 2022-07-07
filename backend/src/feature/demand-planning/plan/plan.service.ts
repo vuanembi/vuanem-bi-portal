@@ -90,7 +90,18 @@ export class PlanService {
     }
 
     findOne(id: number) {
-        return this.planRepository.findOneBy({ id });
+        return this.planRepository.findOneByOrFail({ id });
+    }
+
+    async findOneItems(id: number) {
+        return this.planRepository
+            .findOneOrFail({
+                where: { id },
+                relations: {
+                    items: true,
+                },
+            })
+            .then(({ items }) => items);
     }
 
     async forecast(id: number) {
