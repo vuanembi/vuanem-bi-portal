@@ -1,20 +1,15 @@
-import {
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-} from 'typeorm';
+import { Property, PrimaryKey } from '@mikro-orm/core';
 
-export class EntityMeta {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class Record {
+    @PrimaryKey()
+    id!: number;
 
-    @DeleteDateColumn({type: 'timestamptz'})
+    @Property({ columnType: 'timestamptz' })
     deletedAt: boolean;
 
-    @CreateDateColumn({type: 'timestamptz'})
-    createdAt: Date;
+    @Property({ columnType: 'timestamptz' })
+    createdAt: Date = new Date();
 
-    @UpdateDateColumn({type: 'timestamptz'})
-    updatedAt: Date;
+    @Property({ columnType: 'timestamptz', onUpdate: () => new Date() })
+    updatedAt: Date = new Date();
 }

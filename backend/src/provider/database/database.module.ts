@@ -1,26 +1,32 @@
-import 'dotenv/config';
-
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-export const config: DataSourceOptions = {
-    type: 'postgres',
-    host: process.env.PG_HOST || '',
+import { ConfigService } from '@nestjs/config';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Options } from '@mikro-orm/core';
+
+const configService = new ConfigService();
+
+const MikroOrmConfig: Options = {
+    type: 'postgresql',
+    dbName: configService.get('PG_DB'),
+    user: configService.get('PG_USER'),
+    password: configService.get('PG_PASSWORD'),
+    host: configService.get('PG_HOST'),
     port: 5432,
-    database: process.env.PG_DB || '',
-    username: process.env.PG_USER || '',
-    password: process.env.PG_PASSWORD || '',
-    synchronize: true,
-    namingStrategy: new SnakeNamingStrategy(),
-    entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-    migrations: [__dirname + '/migration/**/*{.ts,.js}'],
+    persistOnCreate: true,
+    entities: [__dirname + '/../../**/*.entity.js'],
+    entitiesTs: [__dirname + '/../../**/*.entity.ts'],
+    migrations: {
+        path: process.cwd() + '/migrations',
+        glob: '!(*.d).{js,ts}',
+        transactional: true,
+        emit: 'ts',
+    },
 };
 
+export default MikroOrmConfig;
+
 @Module({
-    imports: [TypeOrmModule.forRoot(config)],
+    imports: [MikroOrmModule.forRoot(MikroOrmConfig)],
 })
 export class DatabaseModule {}
-
-export default new DataSource(config);
