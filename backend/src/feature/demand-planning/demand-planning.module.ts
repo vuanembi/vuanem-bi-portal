@@ -3,6 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BigQueryProvider } from '../../provider/warehouse/bigquery.service';
 
+import { Class } from './class/class.entity';
+
+import { Item } from './item/item.entity';
+
 import { Plan } from './plan/plan.entity';
 import { PlanService } from './plan/plan.service';
 import { PlanController } from './plan/plan.controller';
@@ -16,7 +20,7 @@ import { VendorService } from './vendor/vendor.service';
 import { VendorController } from './vendor/vendor.controller';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Plan, PlanItem, Vendor])],
+    imports: [TypeOrmModule.forFeature([Class, Item, Plan, PlanItem, Vendor])],
     providers: [BigQueryProvider, PlanService, PlanItemService, VendorService],
     controllers: [PlanController, PlanItemController, VendorController],
 })

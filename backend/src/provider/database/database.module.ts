@@ -12,10 +12,10 @@ export const config: DataSourceOptions = {
     database: process.env.PG_DB || '',
     username: process.env.PG_USER || '',
     password: process.env.PG_PASSWORD || '',
-    synchronize: true,
+    // synchronize: true,
     namingStrategy: new SnakeNamingStrategy(),
     entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-    migrations: [__dirname + '/migration/**/*{.ts,.js}'],
+    migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
 };
 
 @Module({
