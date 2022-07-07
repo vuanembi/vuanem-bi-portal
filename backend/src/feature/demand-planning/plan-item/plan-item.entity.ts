@@ -48,6 +48,11 @@ export class PlanItem extends Record {
     @Property({ nullable: true })
     qtySupply: number | null;
 
-    @ManyToOne({ entity: () => Plan, mapToPk: true, cascade: [Cascade.REMOVE] })
+    @ManyToOne({
+        entity: () => Plan,
+        mapToPk: true,
+        nullable: false,
+        cascade: [Cascade.REMOVE],
+    })
     plan: Plan;
 }

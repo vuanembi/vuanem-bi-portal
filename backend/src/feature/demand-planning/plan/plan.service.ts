@@ -58,7 +58,7 @@ export class PlanService {
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
-        const [itemData, vendor] = await Promise.all([
+        const [itemsData, vendor] = await Promise.all([
             Promise.resolve(
                 Array(4)
                     .fill(null)
@@ -70,18 +70,24 @@ export class PlanService {
             this.vendorRepository.getReference(createPlanDto.vendorId),
         ]);
 
-        const planItems = itemData.map((item) =>
-            this.planItemRepository.create(item),
-        );
-
         const plan = this.planRepository.create({
             ...createPlanDto,
             status: PlanStatus.DRAFT,
             vendor,
-            items: planItems,
         });
 
-        return this.planRepository.persistAndFlush(plan).then(() => plan);
+        this.planRepository.persist(plan);
+        this.planRepository.flush();
+
+        itemsData.forEach((itemData) => {
+            const item = this.planItemRepository.create({ ...itemData, plan });
+            this.planItemRepository.flush();
+            plan.items.add(item);
+        });
+
+        plan
+
+        return this.planItemRepository.flush().then(() => plan);
     }
 
     async findAll() {
@@ -94,6 +100,16 @@ export class PlanService {
 
     findOne(id: number) {
         return this.planRepository.findOneOrFail({ id });
+    }
+
+    async findOneItems(id: number) {
+        return this.planRepository
+            .findOneOrFail({ id }, { populate: ['items'] })
+            .then(async (plan) => {
+                // await plan.items.init();
+                console.log(plan.items.getItems());
+                return plan.items.getItems();
+            });
     }
 
     async forecast(id: number) {

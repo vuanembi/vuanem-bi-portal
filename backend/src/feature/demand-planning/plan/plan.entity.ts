@@ -5,6 +5,8 @@ import {
     Collection,
     OneToMany,
     ManyToOne,
+    Cascade,
+    LoadStrategy,
 } from '@mikro-orm/core';
 
 import { Record } from '../../common/entity';
@@ -32,6 +34,11 @@ export class Plan extends Record {
     @ManyToOne(() => Vendor)
     vendor: Vendor;
 
-    @OneToMany(() => PlanItem, ({ plan }) => plan   )
+    @OneToMany({
+        entity: () => PlanItem,
+        mappedBy: ({ plan }) => plan,
+        cascade: [Cascade.ALL],
+        strategy: LoadStrategy.JOINED,
+    })
     items = new Collection<PlanItem>(this);
 }
