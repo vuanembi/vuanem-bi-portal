@@ -13,7 +13,6 @@ const MikroOrmConfig: Options = {
     password: configService.get('PG_PASSWORD'),
     host: configService.get('PG_HOST'),
     port: 5432,
-    persistOnCreate: true,
     entities: [__dirname + '/../../**/*.entity.js'],
     entitiesTs: [__dirname + '/../../**/*.entity.ts'],
     migrations: {

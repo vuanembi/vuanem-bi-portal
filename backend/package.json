@@ -9,7 +9,7 @@
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
         "start:prod": "node dist/main",
-        "mikero-orm:migration:create -p src/provider/database/migrations",
+        "mikero-orm:migration:create": "mikro-orm migration:create -p src/provider/database/migrations",
         "typeorm": "typeorm-ts-node-commonjs -d ./src/provider/database/database.module.ts",
         "typeorm:schema:drop": "npm run typeorm -- schema:drop",
         "typeorm:schema:sync": "npm run typeorm -- schema:sync"

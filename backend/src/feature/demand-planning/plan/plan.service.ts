@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository, QueryOrder } from '@mikro-orm/core';
 
 import * as dayjs from 'dayjs';
 
@@ -48,13 +48,13 @@ const createMockPlanItems = (date: Date): CreatePlanItemDto[] => {
 export class PlanService {
     constructor(
         @InjectRepository(Plan)
-        private planRepository: Repository<Plan>,
+        private planRepository: EntityRepository<Plan>,
 
         @InjectRepository(PlanItem)
-        private planItemRepository: Repository<PlanItem>,
+        private planItemRepository: EntityRepository<PlanItem>,
 
         @InjectRepository(Vendor)
-        private vendorRepository: Repository<Vendor>,
+        private vendorRepository: EntityRepository<Vendor>,
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
@@ -67,9 +67,7 @@ export class PlanService {
                     )
                     .flat(),
             ),
-            this.vendorRepository.preload({
-                id: createPlanDto.vendorId,
-            }),
+            this.vendorRepository.getReference(createPlanDto.vendorId),
         ]);
 
         const planItems = itemData.map((item) =>
@@ -82,26 +80,32 @@ export class PlanService {
             items: planItems,
         });
 
-        return this.planRepository.save(plan);
+        return this.planRepository.persistAndFlush(plan).then(() => plan);
     }
 
     async findAll() {
-        return this.planRepository.find();
+        return this.planRepository.findAll({
+            orderBy: {
+                createdAt: QueryOrder.DESC,
+            },
+        });
     }
 
     findOne(id: number) {
-        return this.planRepository.findOneBy({ id });
+        return this.planRepository.findOneOrFail({ id });
     }
 
     async forecast(id: number) {
-        return this.planRepository.update(id, {
-            status: PlanStatus.FORECASTED,
+        return this.findOne(id).then(async (plan) => {
+            this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
+            await this.planRepository.persistAndFlush(plan);
         });
     }
 
     async review(id: number) {
-        return this.planRepository.update(id, {
-            status: PlanStatus.REVIEWED,
+        return this.findOne(id).then(async (plan) => {
+            this.planRepository.assign(plan, { status: PlanStatus.REVIEWED });
+            await this.planRepository.persistAndFlush(plan);
         });
     }
 }

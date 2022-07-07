@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/core';
 
 import { PlanItem } from './plan-item.entity';
 import { GetPlanItemsDto, UpdatePlanItemDto } from './plan-item.dto';
@@ -9,20 +9,24 @@ import { GetPlanItemsDto, UpdatePlanItemDto } from './plan-item.dto';
 export class PlanItemService {
     constructor(
         @InjectRepository(PlanItem)
-        private readonly planItemRepository: Repository<PlanItem>,
+        private readonly planItemRepository: EntityRepository<PlanItem>,
     ) {}
 
     findAll({ planId }: GetPlanItemsDto) {
         return this.planItemRepository.find({
-            where: { plan: { id: planId } },
+            plan: { id: planId },
         });
     }
 
-    findOne(id: number) {
-        return this.planItemRepository.findOneBy({ id });
+    async findOne(id: number) {
+        return this.planItemRepository.findOneOrFail({ id });
     }
 
     async update(id: number, updatePlanItemDto: UpdatePlanItemDto) {
-        return this.planItemRepository.update(id, updatePlanItemDto);
+        return this.findOne(id).then(async (planItem) => {
+            this.planItemRepository.assign(planItem, updatePlanItemDto);
+            await this.planItemRepository.persistAndFlush(planItem);
+            return planItem;
+        });
     }
 }

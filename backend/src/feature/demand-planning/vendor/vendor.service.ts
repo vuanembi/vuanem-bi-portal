@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/core';
 
 import { BigQueryProvider } from '../../../provider/warehouse/bigquery.service';
 
@@ -12,7 +12,7 @@ export class VendorService {
         private readonly bigQueryProvider: BigQueryProvider,
 
         @InjectRepository(Vendor)
-        private readonly vendorRepository: Repository<Vendor>,
+        private readonly vendorRepository: EntityRepository<Vendor>,
     ) {}
 
     async sync() {
@@ -36,6 +36,6 @@ export class VendorService {
     }
 
     findAll() {
-        return this.vendorRepository.find();
+        return this.vendorRepository.findAll();
     }
 }
