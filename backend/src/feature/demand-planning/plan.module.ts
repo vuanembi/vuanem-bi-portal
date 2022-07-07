@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { BigQueryProvider } from '../../provider/warehouse/bigquery.service';
 
@@ -16,7 +16,7 @@ import { VendorService } from './vendor/vendor.service';
 import { VendorController } from './vendor/vendor.controller';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Plan, PlanItem, Vendor])],
+    imports: [MikroOrmModule.forFeature([Plan, PlanItem, Vendor])],
     providers: [BigQueryProvider, PlanService, PlanItemService, VendorService],
     controllers: [PlanController, PlanItemController, VendorController],
 })

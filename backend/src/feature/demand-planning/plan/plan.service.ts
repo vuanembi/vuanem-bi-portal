@@ -76,6 +76,7 @@ export class PlanService {
 
         const plan = this.planRepository.create({
             ...createPlanDto,
+            status: PlanStatus.DRAFT,
             vendor,
             items: planItems,
         });

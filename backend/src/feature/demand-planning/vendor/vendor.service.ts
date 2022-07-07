@@ -27,12 +27,24 @@ export class VendorService {
 
         return this.bigQueryProvider
             .query<Vendor>(sql.toQuery())
-            .then((vendors) =>
-                this.vendorRepository.upsert(vendors, {
-                    conflictPaths: ['id'],
-                    skipUpdateIfNoValuesChanged: true,
-                }),
-            );
+            .then(async (vendorsData) => {
+                const vendors = vendorsData.map((vendorData) =>
+                    this.vendorRepository
+                        .findOneOrFail({ id: vendorData.id })
+                        .then((vendor) => {
+                            this.vendorRepository.assign(vendor, vendor);
+                            this.vendorRepository.persist(vendor);
+                            return vendor;
+                        })
+                        .catch(() => this.vendorRepository.create(vendorData))
+                        .then((vendor) => {
+                            this.vendorRepository.persist(vendor);
+                            return vendor;
+                        }),
+                );
+                await this.vendorRepository.flush();
+                return vendors;
+            });
     }
 
     findAll() {

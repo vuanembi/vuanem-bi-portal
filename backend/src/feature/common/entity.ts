@@ -4,7 +4,7 @@ export class Record {
     @PrimaryKey()
     id!: number;
 
-    @Property({ columnType: 'timestamptz' })
+    @Property({ columnType: 'timestamptz', nullable: true })
     deletedAt: boolean;
 
     @Property({ columnType: 'timestamptz' })

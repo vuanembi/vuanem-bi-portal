@@ -1,4 +1,4 @@
-import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Cascade } from '@mikro-orm/core';
 
 import { Record } from '../../common/entity';
 
@@ -48,6 +48,6 @@ export class PlanItem extends Record {
     @Property({ nullable: true })
     qtySupply: number | null;
 
-    @ManyToOne({ entity: () => Plan, inversedBy: ({ items }) => items })
+    @ManyToOne({ entity: () => Plan, mapToPk: true, cascade: [Cascade.REMOVE] })
     plan: Plan;
 }

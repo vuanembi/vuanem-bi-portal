@@ -32,6 +32,6 @@ export class Plan extends Record {
     @ManyToOne(() => Vendor)
     vendor: Vendor;
 
-    @OneToMany(() => PlanItem, ({ plan }) => plan)
+    @OneToMany(() => PlanItem, ({ plan }) => plan   )
     items = new Collection<PlanItem>(this);
 }
