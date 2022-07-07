@@ -3,8 +3,6 @@ import {
     Catch,
     ExceptionFilter,
     HttpStatus,
-    NotFoundException,
-    InternalServerErrorException,
 } from '@nestjs/common';
 
 import { TypeORMError, EntityNotFoundError } from 'typeorm';
@@ -19,9 +17,10 @@ export class OrmFilter implements ExceptionFilter {
                 response
                     .status(HttpStatus.NOT_FOUND)
                     .json({ message: exception.message });
-                throw new NotFoundException();
             default:
-                throw new InternalServerErrorException();
+                response
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .json(exception);
         }
     }
 }
