@@ -18,7 +18,6 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
     findOneOrFailHandler: (id: string) => {
         return new NotFoundException();
     },
-    flushMode: FlushMode.ALWAYS,
     migrations: {
         tableName: 'migrations',
         path: 'src/provider/database/migrations',
@@ -28,6 +27,10 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
         allOrNothing: true,
         emit: 'ts',
     },
+    schemaGenerator: {
+        disableForeignKeys: false,
+    },
+    debug: true,
 });
 
 export default MikroOrmConfig(configService);

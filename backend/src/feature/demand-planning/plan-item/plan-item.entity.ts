@@ -50,7 +50,7 @@ export class PlanItem extends Record {
 
     @ManyToOne({
         entity: () => Plan,
-        mapToPk: true,
+        eager: false,
         nullable: false,
         cascade: [Cascade.REMOVE],
     })

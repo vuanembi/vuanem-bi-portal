@@ -9,14 +9,14 @@ import { Vendor } from './vendor.entity';
 @Injectable()
 export class VendorService {
     constructor(
-        private readonly bigQueryProvider: BigQueryProvider,
+        private readonly bigqueryProvider: BigQueryProvider,
 
         @InjectRepository(Vendor)
         private readonly vendorRepository: EntityRepository<Vendor>,
     ) {}
 
     async sync() {
-        const sql = this.bigQueryProvider
+        const sql = this.bigqueryProvider
             .build()
             .withSchema('IP_NetSuite')
             .from('VENDORS')
@@ -25,26 +25,22 @@ export class VendorService {
                 name: 'FULL_NAME',
             });
 
-        return this.bigQueryProvider
+        const upsert = (vendorData: Vendor) =>
+            this.vendorRepository
+                .findOneOrFail({ id: vendorData.id })
+                .then((vendor) => {
+                    this.vendorRepository.assign(vendor, vendor);
+                    return vendor;
+                })
+                .catch(() => this.vendorRepository.create(vendorData));
+
+        return this.bigqueryProvider
             .query<Vendor>(sql.toQuery())
-            .then(async (vendorsData) => {
-                const vendors = vendorsData.map((vendorData) =>
-                    this.vendorRepository
-                        .findOneOrFail({ id: vendorData.id })
-                        .then((vendor) => {
-                            this.vendorRepository.assign(vendor, vendor);
-                            this.vendorRepository.persist(vendor);
-                            return vendor;
-                        })
-                        .catch(() => this.vendorRepository.create(vendorData))
-                        .then((vendor) => {
-                            this.vendorRepository.persist(vendor);
-                            return vendor;
-                        }),
-                );
-                await this.vendorRepository.flush();
-                return vendors;
-            });
+            .then((vendorsData) =>
+                Promise.all(vendorsData.map(upsert)).then((vendors) =>
+                    this.vendorRepository.flush().then(() => vendors),
+                ),
+            );
     }
 
     findAll() {

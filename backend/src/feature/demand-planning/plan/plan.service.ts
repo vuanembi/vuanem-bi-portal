@@ -67,7 +67,7 @@ export class PlanService {
                     )
                     .flat(),
             ),
-            this.vendorRepository.getReference(createPlanDto.vendorId),
+            this.vendorRepository.findOneOrFail({ id: createPlanDto.vendorId }),
         ]);
 
         const plan = this.planRepository.create({
@@ -76,16 +76,9 @@ export class PlanService {
             vendor,
         });
 
-        this.planRepository.persist(plan);
-        this.planRepository.flush();
-
-        itemsData.forEach((itemData) => {
-            const item = this.planItemRepository.create({ ...itemData, plan });
-            this.planItemRepository.flush();
-            plan.items.add(item);
-        });
-
-        plan
+        itemsData.forEach((itemData) =>
+            this.planItemRepository.create({ ...itemData, plan }),
+        );
 
         return this.planItemRepository.flush().then(() => plan);
     }
