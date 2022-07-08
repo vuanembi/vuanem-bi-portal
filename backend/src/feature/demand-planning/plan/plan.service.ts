@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository, QueryOrder } from '@mikro-orm/core';
 
 import * as dayjs from 'dayjs';
 
@@ -9,8 +9,6 @@ import { CreatePlanDto } from './plan.dto';
 
 import { PlanItem } from '../plan-item/plan-item.entity';
 import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
-
-import { Vendor } from '../vendor/vendor.entity';
 
 import { faker } from '@faker-js/faker';
 
@@ -48,17 +46,14 @@ const createMockPlanItems = (date: Date): CreatePlanItemDto[] => {
 export class PlanService {
     constructor(
         @InjectRepository(Plan)
-        private planRepository: Repository<Plan>,
+        private planRepository: EntityRepository<Plan>,
 
         @InjectRepository(PlanItem)
-        private planItemRepository: Repository<PlanItem>,
-
-        @InjectRepository(Vendor)
-        private vendorRepository: Repository<Vendor>,
+        private planItemRepository: EntityRepository<PlanItem>,
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
-        const [itemData, vendor] = await Promise.all([
+        const itemsData = await Promise.all([
             Promise.resolve(
                 Array(4)
                     .fill(null)
@@ -67,41 +62,52 @@ export class PlanService {
                     )
                     .flat(),
             ),
-            this.vendorRepository.preload({
-                id: createPlanDto.vendorId,
-            }),
         ]);
-
-        const planItems = itemData.map((item) =>
-            this.planItemRepository.create(item),
-        );
 
         const plan = this.planRepository.create({
             ...createPlanDto,
-            vendor,
-            items: planItems,
+            status: PlanStatus.DRAFT,
         });
 
-        return this.planRepository.save(plan);
+        itemsData.forEach((itemData) =>
+            this.planItemRepository.create({ ...itemData, plan }),
+        );
+
+        return this.planItemRepository.flush().then(() => plan);
     }
 
     async findAll() {
-        return this.planRepository.find();
+        return this.planRepository.findAll({
+            orderBy: {
+                createdAt: QueryOrder.DESC,
+            },
+        });
     }
 
     findOne(id: number) {
-        return this.planRepository.findOneBy({ id });
+        return this.planRepository.findOneOrFail({ id });
     }
 
-    async forecast(id: number) {
-        return this.planRepository.update(id, {
-            status: PlanStatus.FORECASTED,
+    async findOneItems(id: number) {
+        return this.planRepository
+            .findOneOrFail({ id }, { populate: ['items'] })
+            .then(async (plan) => {
+                console.log(plan.items.getItems());
+                return plan.items.getItems();
+            });``
+    }
+
+    async forecast(id: number) {``
+        return this.findOne(id).then(async (plan) => {
+            this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
+            await this.planRepository.persistAndFlush(plan);
         });
     }
 
     async review(id: number) {
-        return this.planRepository.update(id, {
-            status: PlanStatus.REVIEWED,
+        return this.findOne(id).then(async (plan) => {
+            this.planRepository.assign(plan, { status: PlanStatus.REVIEWED });
+            await this.planRepository.persistAndFlush(plan);
         });
     }
 }

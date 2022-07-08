@@ -1,9 +1,14 @@
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
+import {
+    Entity,
+    Property,
+    Enum,
+    Collection,
+    OneToMany,
+    Cascade,
+} from '@mikro-orm/core';
 
-import { EntityMeta } from '../../common/entity';
-
+import { Record } from '../../common/entity';
 import { PlanItem } from '../plan-item/plan-item.entity';
-import { Vendor } from '../vendor/vendor.entity';
 
 export enum PlanStatus {
     DRAFT = 'draft',
@@ -13,26 +18,20 @@ export enum PlanStatus {
 }
 
 @Entity()
-export class Plan extends EntityMeta {
-    @Column({ type: 'date' })
+export class Plan extends Record {
+    @Property({ columnType: 'date' })
     startOfForecastWeek: Date;
 
-    @Column()
+    @Property()
     name: string;
 
-    @ManyToOne(() => Vendor, ({ id }) => id, { eager: true })
-    vendor: Vendor;
-
-    @Column({
-        type: 'enum',
-        enum: PlanStatus,
-        default: PlanStatus.DRAFT,
-    })
+    @Enum({ items: () => PlanStatus })
     status: PlanStatus;
 
-    @OneToMany(() => PlanItem, ({ plan }) => plan, {
-        cascade: true,
-        onDelete: 'CASCADE',
+    @OneToMany({
+        entity: () => PlanItem,
+        mappedBy: ({ plan }) => plan,
+        cascade: [Cascade.ALL],
     })
-    items: PlanItem[];
+    items = new Collection<PlanItem>(this);
 }

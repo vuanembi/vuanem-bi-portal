@@ -1,26 +1,47 @@
-import 'dotenv/config';
+import { Module, NotFoundException } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { FlushMode, Options } from '@mikro-orm/core';
 
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+const configService = new ConfigService();
 
-export const config: DataSourceOptions = {
-    type: 'postgres',
-    host: process.env.PG_HOST || '',
+const MikroOrmConfig = (configService: ConfigService): Options => ({
+    type: 'postgresql',
+    dbName: configService.get('PG_DB'),
+    user: configService.get('PG_USER'),
+    password: configService.get('PG_PASSWORD'),
+    host: configService.get('PG_HOST'),
     port: 5432,
-    database: process.env.PG_DB || '',
-    username: process.env.PG_USER || '',
-    password: process.env.PG_PASSWORD || '',
-    synchronize: true,
-    namingStrategy: new SnakeNamingStrategy(),
-    entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-    migrations: [__dirname + '/migration/**/*{.ts,.js}'],
-};
+    entities: [__dirname + '/../../**/*.entity.js'],
+    entitiesTs: [__dirname + '/../../**/*.entity.ts'],
+    persistOnCreate: true,
+    findOneOrFailHandler: (id: string) => {
+        return new NotFoundException();
+    },
+    migrations: {
+        tableName: 'migrations',
+        path: 'src/provider/database/migrations',
+        glob: '!(*.d).{js,ts}',
+        transactional: true,
+        disableForeignKeys: false,
+        allOrNothing: true,
+        emit: 'ts',
+    },
+    schemaGenerator: {
+        disableForeignKeys: false,
+    },
+    debug: true,
+});
 
 @Module({
-    imports: [TypeOrmModule.forRoot(config)],
+    imports: [
+        MikroOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: MikroOrmConfig,
+        }),
+    ],
 })
 export class DatabaseModule {}
 
-export default new DataSource(config);
+export default MikroOrmConfig(configService);

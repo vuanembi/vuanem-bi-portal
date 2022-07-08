@@ -1,66 +1,65 @@
-import { Entity, Column, ManyToOne, Index } from 'typeorm';
+import { Entity, Property, ManyToOne, Cascade } from '@mikro-orm/core';
 
-import { EntityMeta } from '../../common/entity';
+import { Record } from '../../common/entity';
 
+import { Item } from '../item/item.entity';
 import { Plan } from '../plan/plan.entity';
 
-@Entity({
-    orderBy: {
-        sku: 'ASC',
-        region: 'ASC',
-        startOfWeek: 'ASC',
-    },
-})
-export class PlanItem extends EntityMeta {
-    @ManyToOne(() => Plan, ({ items }) => items, { onDelete: 'CASCADE' })
-    plan: Plan;
-
-    // Item
-
-    @Index()
-    @Column()
+@Entity()
+export class PlanItem extends Record {
+    @Property()
     sku: string;
 
-    @Index()
-    @Column()
+    @Property()
     startOfWeek: Date;
 
-    @Index()
-    @Column()
+    @Property()
     region: string;
 
-    @Column({ type: 'float' })
+    @Property({ columnType: 'float' })
     avgItemDiscount: number;
 
-    @Column({ type: 'float' })
+    @Property({ columnType: 'float' })
     avgOrderDiscount: number;
 
-    @Column({ type: 'float' })
+    @Property({ columnType: 'float' })
     discount: number;
 
-    @Column()
+    @Property()
     workingDays: number;
 
-    @Column()
+    @Property()
     inventory: number;
 
-    @Column()
+    @Property()
     moq: number;
 
-    @Column()
+    @Property()
     leadTime: number;
 
-    // Forecast
-
-    @Column({ nullable: true })
+    @Property({ nullable: true })
     qtyDemandML: number | null;
 
-    @Column({ nullable: true })
+    @Property({ nullable: true })
     qtyDemandPurchasing: number | null;
 
-    @Column({ nullable: true })
+    @Property({ nullable: true })
     qtyDemand: number | null;
 
-    @Column({ nullable: true })
+    @Property({ nullable: true })
     qtySupply: number | null;
+
+    @ManyToOne({
+        entity: () => Item,
+        nullable: false,
+        cascade: [Cascade.PERSIST, Cascade.REMOVE],
+    })
+    item: Item;
+    
+    @ManyToOne({
+        entity: () => Plan,
+        nullable: false,
+        cascade: [Cascade.PERSIST, Cascade.REMOVE],
+    })
+    plan: Plan;
 }

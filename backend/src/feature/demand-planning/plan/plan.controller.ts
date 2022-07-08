@@ -24,6 +24,11 @@ export class PlanController {
         return this.planService.findOne(+id);
     }
 
+    @Get(':id/plan-item')
+    findOneItems(@Param('id') id: string) {
+        return this.planService.findOneItems(+id);
+    }
+
     @Put(':id/forecast')
     forecast(@Param('id') id: string) {
         return this.planService.forecast(+id);

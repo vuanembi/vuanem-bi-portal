@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/core';
 
 import { BigQueryProvider } from '../../../provider/warehouse/bigquery.service';
 
@@ -9,15 +9,14 @@ import { Vendor } from './vendor.entity';
 @Injectable()
 export class VendorService {
     constructor(
-        private readonly bigQueryProvider: BigQueryProvider,
+        private readonly bigqueryProvider: BigQueryProvider,
 
         @InjectRepository(Vendor)
-        private readonly vendorRepository: Repository<Vendor>,
+        private readonly vendorRepository: EntityRepository<Vendor>,
     ) {}
 
     async sync() {
-        const sql = this.bigQueryProvider
-            .build()
+        const sql = this.bigqueryProvider.qb
             .withSchema('IP_NetSuite')
             .from('VENDORS')
             .select({
@@ -25,17 +24,25 @@ export class VendorService {
                 name: 'FULL_NAME',
             });
 
-        return this.bigQueryProvider
+        const upsert = (vendorData: Vendor) =>
+            this.vendorRepository
+                .findOneOrFail({ id: vendorData.id })
+                .then((vendor) => {
+                    this.vendorRepository.assign(vendor, vendor);
+                    return vendor;
+                })
+                .catch(() => this.vendorRepository.create(vendorData));
+
+        return this.bigqueryProvider
             .query<Vendor>(sql.toQuery())
-            .then((vendors) =>
-                this.vendorRepository.upsert(vendors, {
-                    conflictPaths: ['id'],
-                    skipUpdateIfNoValuesChanged: true,
-                }),
+            .then((vendorsData) =>
+                Promise.all(vendorsData.map(upsert)).then((vendors) =>
+                    this.vendorRepository.flush().then(() => vendors),
+                ),
             );
     }
 
     findAll() {
-        return this.vendorRepository.find();
+        return this.vendorRepository.findAll();
     }
 }
