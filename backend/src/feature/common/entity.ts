@@ -13,3 +13,8 @@ export class Record {
     @Property({ columnType: 'timestamptz', onUpdate: () => new Date() })
     updatedAt: Date = new Date();
 }
+
+export class Dimension {
+    @PrimaryKey()
+    id: number;
+}

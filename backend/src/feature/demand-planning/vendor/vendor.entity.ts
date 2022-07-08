@@ -1,12 +1,9 @@
-import { Entity, Property, PrimaryKey } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/core';
 
-import { Record } from '../../common/entity';
+import { Dimension } from '../../common/entity';
 
 @Entity()
-export class Vendor {
-    @PrimaryKey()
-    id: number;
-    
+export class Vendor extends Dimension {
     @Property()
     name: string;
 }

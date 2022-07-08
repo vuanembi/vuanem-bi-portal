@@ -1,9 +1,9 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Property } from '@mikro-orm/core'
 
-import { EntityMeta } from '../../common/entity';
+import { Dimension } from '../../common/entity';
 
 @Entity()
-export class Class extends EntityMeta {
-    @Column()
+export class Class extends Dimension {
+    @Property()
     name: string;
 }

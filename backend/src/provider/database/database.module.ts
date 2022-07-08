@@ -33,8 +33,6 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
     debug: true,
 });
 
-export default MikroOrmConfig(configService);
-
 @Module({
     imports: [
         MikroOrmModule.forRootAsync({
@@ -45,3 +43,5 @@ export default MikroOrmConfig(configService);
     ],
 })
 export class DatabaseModule {}
+
+export default MikroOrmConfig(configService);

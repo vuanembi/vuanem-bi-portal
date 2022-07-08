@@ -58,7 +58,7 @@ export class PlanService {
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
-        const [itemsData, vendor] = await Promise.all([
+        const itemsData = await Promise.all([
             Promise.resolve(
                 Array(4)
                     .fill(null)
@@ -67,13 +67,11 @@ export class PlanService {
                     )
                     .flat(),
             ),
-            this.vendorRepository.findOneOrFail({ id: createPlanDto.vendorId }),
         ]);
 
         const plan = this.planRepository.create({
             ...createPlanDto,
             status: PlanStatus.DRAFT,
-            vendor,
         });
 
         itemsData.forEach((itemData) =>
