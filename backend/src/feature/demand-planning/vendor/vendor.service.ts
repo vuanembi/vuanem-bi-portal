@@ -16,8 +16,7 @@ export class VendorService {
     ) {}
 
     async sync() {
-        const sql = this.bigqueryProvider
-            .build()
+        const sql = this.bigqueryProvider.qb
             .withSchema('IP_NetSuite')
             .from('VENDORS')
             .select({

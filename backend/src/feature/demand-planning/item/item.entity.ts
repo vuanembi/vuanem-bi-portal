@@ -1,4 +1,10 @@
-import { Entity, Property, ManyToOne, ManyToMany } from '@mikro-orm/core';
+import {
+    Entity,
+    Property,
+    ManyToOne,
+    ManyToMany,
+    Collection,
+} from '@mikro-orm/core';
 
 import { Dimension } from '../../common/entity';
 import { Class } from '../class/class.entity';
@@ -16,14 +22,14 @@ export class Item extends Dimension {
     width: number;
 
     @Property()
-    height: number;
+    length: number;
 
     @Property()
     thickness: number;
 
     @ManyToOne(() => Class)
-    class: Class[];
+    class: Class;
 
     @ManyToMany(() => Vendor)
-    vendor: Vendor[];
+    vendor = new Collection<Vendor>(this);
 }

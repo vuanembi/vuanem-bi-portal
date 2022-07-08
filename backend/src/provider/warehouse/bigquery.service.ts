@@ -7,14 +7,11 @@ import dayjs from 'dayjs';
 @Injectable()
 export class BigQueryProvider {
     public client: BigQuery;
+    public qb = Knex({ client: 'mysql' });
     public exportDataset = 'temp_Export';
 
     constructor() {
         this.client = new BigQuery();
-    }
-
-    build() {
-        return Knex({ client: 'mysql' });
     }
 
     async query<T>(query: string): Promise<T[]> {
@@ -40,7 +37,7 @@ export class BigQueryProvider {
 
         await this.client
             .createQueryJob({
-                query: this.build()
+                query: this.qb
                     .withSchema(dataset)
                     .from(table)
                     .select()

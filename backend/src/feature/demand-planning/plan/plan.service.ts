@@ -10,8 +10,6 @@ import { CreatePlanDto } from './plan.dto';
 import { PlanItem } from '../plan-item/plan-item.entity';
 import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
 
-import { Vendor } from '../vendor/vendor.entity';
-
 import { faker } from '@faker-js/faker';
 
 const mockFloat = () =>
@@ -52,9 +50,6 @@ export class PlanService {
 
         @InjectRepository(PlanItem)
         private planItemRepository: EntityRepository<PlanItem>,
-
-        @InjectRepository(Vendor)
-        private vendorRepository: EntityRepository<Vendor>,
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
@@ -97,13 +92,12 @@ export class PlanService {
         return this.planRepository
             .findOneOrFail({ id }, { populate: ['items'] })
             .then(async (plan) => {
-                // await plan.items.init();
                 console.log(plan.items.getItems());
                 return plan.items.getItems();
-            });
+            });``
     }
 
-    async forecast(id: number) {
+    async forecast(id: number) {``
         return this.findOne(id).then(async (plan) => {
             this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
             await this.planRepository.persistAndFlush(plan);
