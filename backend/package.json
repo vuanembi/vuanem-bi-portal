@@ -8,13 +8,7 @@
         "start": "nest start",
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
-        "start:prod": "node dist/main",
-        "mikero-orm:migration:create": "mikro-orm migration:create -p src/provider/database/migrations",
-        "typeorm": "typeorm-ts-node-commonjs -d ./src/provider/database/database.module.ts",
-        "typeorm:migration:generate": "npm run typeorm -- migration:generate src/provider/database/migrations/migration",
-        "typeorm:migration:up": "npm run typeorm -- migration:up",
-        "typeorm:schema:drop": "npm run typeorm -- schema:drop",
-        "typeorm:schema:sync": "npm run typeorm -- schema:sync"
+        "start:prod": "node dist/main"
     },
     "dependencies": {
         "@faker-js/faker": "^7.3.0",
@@ -29,7 +23,6 @@
         "@nestjs/core": "^8.0.0",
         "@nestjs/platform-express": "^8.4.7",
         "@nestjs/swagger": "^5.2.1",
-        "@nestjs/typeorm": "^8.1.4",
         "dayjs": "^1.11.3",
         "faker-js": "^1.0.0",
         "knex": "^2.1.0",
@@ -38,9 +31,7 @@
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
-        "swagger-ui-express": "^4.4.0",
-        "typeorm": "^0.3.6",
-        "typeorm-naming-strategies": "^4.1.0"
+        "swagger-ui-express": "^4.4.0"
     },
     "devDependencies": {
         "@mikro-orm/cli": "^5.2.2",
@@ -76,7 +67,7 @@
             "ts"
         ],
         "rootDir": "src",
-        "testRegex": ".*\\.spec\\.ts$",
+        "testRegex": ".*\\.test\\.ts$",
         "transform": {
             "^.+\\.(t|j)s$": "ts-jest"
         },
