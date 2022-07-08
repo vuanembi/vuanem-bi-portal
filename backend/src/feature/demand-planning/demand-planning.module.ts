@@ -3,6 +3,10 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { BigQueryProvider } from '../../provider/warehouse/bigquery.service';
 
+import { Class } from './class/class.entity';
+
+import { Item } from './item/item.entity';
+
 import { Plan } from './plan/plan.entity';
 import { PlanService } from './plan/plan.service';
 import { PlanController } from './plan/plan.controller';
@@ -16,7 +20,7 @@ import { VendorService } from './vendor/vendor.service';
 import { VendorController } from './vendor/vendor.controller';
 
 @Module({
-    imports: [MikroOrmModule.forFeature([Plan, PlanItem, Vendor])],
+    imports: [MikroOrmModule.forFeature([Class, Item, Plan, PlanItem, Vendor])],
     providers: [BigQueryProvider, PlanService, PlanItemService, VendorService],
     controllers: [PlanController, PlanItemController, VendorController],
 })
