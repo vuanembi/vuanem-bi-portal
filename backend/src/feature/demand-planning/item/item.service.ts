@@ -91,24 +91,23 @@ export class ItemService {
                     });
                     return item;
                 })
-                .catch(() => {
-                    const item = this.itemRepository.create({
+                .catch(() =>
+                    this.itemRepository.create({
                         ...itemData,
                         class: class_,
                         vendor: vendors,
-                    });
-                    return item;
-                });
+                    }),
+                );
         };
 
         return this.bigqueryProvider
             .query<ItemData>(sql.toQuery())
-            .then(async (itemsData) => {
-                console.log(itemsData.length);
-                const items = await Promise.all(itemsData.map(upsert));
-                await this.itemRepository.flush();
-                return items;
-            });
+            .then((itemsData) =>
+                Promise.all(itemsData.map(upsert)).then((items) =>
+                    this.itemRepository.persistAndFlush(items),
+                ),
+            )
+            .finally(() => this.itemRepository.count());
     }
 
     findAll() {

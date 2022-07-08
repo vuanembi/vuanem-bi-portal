@@ -10,7 +10,7 @@ export class ItemController {
 
     @Post()
     async sync() {
-        return this.itemService.sync().then(() => this.findAll());
+        return this.itemService.sync();
     }
 
     @Get()

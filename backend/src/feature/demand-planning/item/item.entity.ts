@@ -27,7 +27,7 @@ export class Item extends Dimension {
     @Property()
     thickness: number;
 
-    @ManyToOne(() => Class)
+    @ManyToOne({ entity: () => Class, eager: true })
     class: Class;
 
     @ManyToMany(() => Vendor)

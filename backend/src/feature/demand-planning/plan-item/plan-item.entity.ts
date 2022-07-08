@@ -8,9 +8,6 @@ import { Plan } from '../plan/plan.entity';
 @Entity()
 export class PlanItem extends Record {
     @Property()
-    sku: string;
-
-    @Property()
     startOfWeek: Date;
 
     @Property()

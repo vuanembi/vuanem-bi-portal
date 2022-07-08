@@ -14,7 +14,6 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
     port: 5432,
     entities: [__dirname + '/../../**/*.entity.js'],
     entitiesTs: [__dirname + '/../../**/*.entity.ts'],
-    persistOnCreate: true,
     findOneOrFailHandler: (id: string) => {
         return new NotFoundException();
     },

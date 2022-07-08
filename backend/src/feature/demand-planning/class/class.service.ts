@@ -19,8 +19,12 @@ export class ClassService {
         const sql = this.bigqueryProvider.qb
             .withSchema('IP_NetSuite')
             .from('CLASSES')
+            .whereNotNull('PRODUCT_GROUP_CODE')
+            .whereNotNull('NAME')
+            .whereRaw(`starts_with(NAME, '11')`)
             .select({
                 id: 'CLASS_ID',
+                sku: 'PRODUCT_GROUP_CODE',
                 name: 'NAME',
             });
 
