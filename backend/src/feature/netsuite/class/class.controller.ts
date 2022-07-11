@@ -3,14 +3,14 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { ClassService } from './class.service';
 
-@ApiTags('Demand Planning / Class')
+@ApiTags('NetSuite / Class')
 @Controller('class')
 export class ClassController {
     constructor(private readonly classService: ClassService) {}
 
     @Post()
     async sync() {
-        return this.classService.sync().then(() => this.findAll());
+        return this.classService.sync();
     }
 
     @Get()

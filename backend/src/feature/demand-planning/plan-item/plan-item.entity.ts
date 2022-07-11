@@ -2,7 +2,7 @@ import { Entity, Property, ManyToOne, Cascade } from '@mikro-orm/core';
 
 import { Record } from '../../common/entity';
 
-import { Item } from '../item/item.entity';
+import { Item } from '../../netsuite/item/item.entity';
 import { Plan } from '../plan/plan.entity';
 
 @Entity()

@@ -4,10 +4,15 @@ import { RouterModule } from '@nestjs/core';
 
 import { DatabaseModule } from './provider/database/database.module';
 
+import { NetSuiteModule } from './feature/netsuite/netsuite.module';
 import { DemandPlanningModule } from './feature/demand-planning/demand-planning.module';
 import { DataServiceModule } from './feature/data-service/data-service.module';
 
 const routes = [
+    {
+        path: 'netsuite',
+        module: NetSuiteModule,
+    },
     {
         path: 'demand-planning',
         module: DemandPlanningModule,

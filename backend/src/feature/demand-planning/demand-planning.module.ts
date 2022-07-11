@@ -3,17 +3,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { BigQueryProvider } from '../../provider/warehouse/bigquery.service';
 
-import { Class } from './class/class.entity';
-import { ClassService } from './class/class.service';
-import { ClassController } from './class/class.controller';
-
-import { Vendor } from './vendor/vendor.entity';
-import { VendorService } from './vendor/vendor.service';
-import { VendorController } from './vendor/vendor.controller';
-
-import { Item } from './item/item.entity';
-import { ItemService } from './item/item.service';
-import { ItemController } from './item/item.controller';
+import { NetSuiteModule } from '../netsuite/netsuite.module';
 
 import { Plan } from './plan/plan.entity';
 import { PlanService } from './plan/plan.service';
@@ -24,21 +14,8 @@ import { PlanItemService } from './plan-item/plan-item.service';
 import { PlanItemController } from './plan-item/plan-item.controller';
 
 @Module({
-    imports: [MikroOrmModule.forFeature([Class, Vendor, Item, Plan, PlanItem])],
-    providers: [
-        BigQueryProvider,
-        ClassService,
-        VendorService,
-        ItemService,
-        PlanService,
-        PlanItemService,
-    ],
-    controllers: [
-        ClassController,
-        VendorController,
-        ItemController,
-        PlanController,
-        PlanItemController,
-    ],
+    imports: [MikroOrmModule.forFeature([Plan, PlanItem]), NetSuiteModule],
+    providers: [BigQueryProvider, PlanService, PlanItemService],
+    controllers: [PlanController, PlanItemController],
 })
 export class DemandPlanningModule {}

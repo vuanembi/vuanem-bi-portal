@@ -1,6 +1,6 @@
 import { Property, PrimaryKey } from '@mikro-orm/core';
 
-export class Record {
+export abstract class Record {
     @PrimaryKey()
     id!: number;
 
@@ -14,7 +14,7 @@ export class Record {
     updatedAt: Date = new Date();
 }
 
-export class Dimension {
+export abstract class Dimension {
     @PrimaryKey()
     id: number;
 }

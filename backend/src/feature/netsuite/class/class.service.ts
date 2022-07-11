@@ -31,19 +31,23 @@ export class ClassService {
         const upsert = (classData: Class) =>
             this.classRepository
                 .findOneOrFail({ id: classData.id })
+                .catch(() => {
+                    const class_ = this.classRepository.create(classData);
+                    this.classRepository.persist(class_);
+                    return class_;
+                })
                 .then((class_) => {
                     this.classRepository.assign(class_, class_);
                     return class_;
-                })
-                .catch(() => this.classRepository.create(classData));
+                });
 
         return this.bigqueryProvider
             .query<Class>(sql.toQuery())
-            .then((classesData) =>
-                Promise.all(classesData.map(upsert)).then((classes) =>
-                    this.classRepository.flush().then(() => classes),
-                ),
-            );
+            .then(async (classesData) => {
+                await Promise.all(classesData.map(upsert));
+                await this.classRepository.flush();
+                return this.classRepository.count();
+            });
     }
 
     findAll() {

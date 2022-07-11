@@ -27,19 +27,23 @@ export class VendorService {
         const upsert = (vendorData: Vendor) =>
             this.vendorRepository
                 .findOneOrFail({ id: vendorData.id })
+                .catch(() => {
+                    const vendor = this.vendorRepository.create(vendorData);
+                    this.vendorRepository.persist(vendor);
+                    return vendor;
+                })
                 .then((vendor) => {
                     this.vendorRepository.assign(vendor, vendor);
                     return vendor;
-                })
-                .catch(() => this.vendorRepository.create(vendorData));
+                });
 
         return this.bigqueryProvider
             .query<Vendor>(sql.toQuery())
-            .then((vendorsData) =>
-                Promise.all(vendorsData.map(upsert)).then((vendors) =>
-                    this.vendorRepository.flush().then(() => vendors),
-                ),
-            );
+            .then(async (vendorsData) => {
+                await Promise.all(vendorsData.map(upsert));
+                await this.vendorRepository.flush();
+                return this.vendorRepository.count();
+            });
     }
 
     findAll() {

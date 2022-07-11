@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Param } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { ItemService } from './item.service';
 
-@ApiTags('Demand Planning / Item')
+@ApiTags('NetSuite / Item')
 @Controller('item')
 export class ItemController {
     constructor(private readonly itemService: ItemService) {}

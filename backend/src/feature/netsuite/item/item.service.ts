@@ -70,44 +70,30 @@ export class ItemService {
                 'ITEMS.CLASS_ID',
             ]);
 
-        const findClassVendor = (itemData: ItemData) =>
-            Promise.all([
-                this.classRepository.findOne({
-                    id: itemData.classId,
-                }),
-                this.vendorRepository.find({ id: { $in: itemData.vendorIds } }),
-            ]);
-
-        const upsert = async (itemData: ItemData) => {
-            const [class_, vendors] = await findClassVendor(itemData);
-
-            return this.itemRepository
+        const upsert = (itemData: ItemData) =>
+            this.itemRepository
                 .findOneOrFail({ id: itemData.id })
+                .catch(() => {
+                    const item = this.itemRepository.create(itemData);
+                    this.itemRepository.persist(item);
+                    return item;
+                })
                 .then((item) => {
                     this.itemRepository.assign(item, {
                         ...itemData,
-                        class: class_,
-                        vendor: vendors,
+                        class: itemData.classId,
+                        vendor: itemData.vendorIds,
                     });
                     return item;
-                })
-                .catch(() =>
-                    this.itemRepository.create({
-                        ...itemData,
-                        class: class_,
-                        vendor: vendors,
-                    }),
-                );
-        };
+                });
 
         return this.bigqueryProvider
             .query<ItemData>(sql.toQuery())
-            .then((itemsData) =>
-                Promise.all(itemsData.map(upsert)).then((items) =>
-                    this.itemRepository.persistAndFlush(items),
-                ),
-            )
-            .finally(() => this.itemRepository.count());
+            .then(async (itemsData) => {
+                await Promise.all(itemsData.map(upsert));
+                await this.itemRepository.flush();
+                return this.itemRepository.count();
+            });
     }
 
     findAll() {

@@ -3,14 +3,14 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { VendorService } from './vendor.service';
 
-@ApiTags('Demand Planning / Vendor')
+@ApiTags('NetSuite / Vendor')
 @Controller('vendor')
 export class VendorController {
     constructor(private readonly vendorService: VendorService) {}
 
     @Post()
     async sync() {
-        return this.vendorService.sync().then(() => this.findAll());
+        return this.vendorService.sync();
     }
 
     @Get()
