@@ -19,5 +19,6 @@ import { ItemController } from '../netsuite/item/item.controller';
     imports: [MikroOrmModule.forFeature([Class, Vendor, Item])],
     providers: [BigQueryProvider, ClassService, VendorService, ItemService],
     controllers: [ClassController, VendorController, ItemController],
+    exports: [ItemService],
 })
 export class NetSuiteModule {}

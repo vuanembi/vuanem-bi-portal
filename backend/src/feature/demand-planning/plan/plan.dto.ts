@@ -8,5 +8,5 @@ export class CreatePlanDto {
     startOfForecastWeek: Date;
 
     @ApiProperty()
-    sku: [string];
+    sku: string[];
 }

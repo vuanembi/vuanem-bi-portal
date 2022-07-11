@@ -21,14 +21,8 @@ export class ItemService {
     constructor(
         private readonly bigqueryProvider: BigQueryProvider,
 
-        @InjectRepository(Class)
-        private readonly classRepository: EntityRepository<Class>,
-
         @InjectRepository(Item)
-        private readonly itemRepository: EntityRepository<Item>,
-
-        @InjectRepository(Vendor)
-        private readonly vendorRepository: EntityRepository<Vendor>,
+        private readonly itemRepository: EntityRepository<Item>
     ) {}
 
     async sync() {
@@ -96,7 +90,7 @@ export class ItemService {
             });
     }
 
-    findAll() {
-        return this.itemRepository.findAll({ populate: ['vendor'] });
+    findAll(limit?: number) {
+        return this.itemRepository.findAll({ populate: ['vendor'], limit });
     }
 }
