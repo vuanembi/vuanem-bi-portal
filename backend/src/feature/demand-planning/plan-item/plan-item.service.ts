@@ -99,7 +99,7 @@ export class PlanItemService {
         return planItems;
     }
 
-    async forecast(planItems: any[]) {
+    async forecast(planItems: PlanItem[]) {
         const forecastedPlanItems = await Promise.all(
             planItems.map((planItem) => this.forecastOne(planItem)),
         );
@@ -109,14 +109,12 @@ export class PlanItemService {
         return forecastedPlanItems;
     }
 
-    async forecastOne(planItem: Loaded<PlanItem, 'item' | 'item.sku'>) {
-        const item = planItem.item.;
-        // await planItem.item.load()
+    async forecastOne(planItem: PlanItem) {
         const qtyDemandML = await this.autoMLProvider.forecastPlanItems([
             planItem.weekNo,
             planItem.year,
             dayjs(planItem.startOfWeek).format('YYYY-MM-DDTHH:mm:ss'),
-            // planItem.item.sku,
+            planItem.item.getProperty('sku'),
             planItem.region,
             planItem.avgItemDiscount,
             planItem.avgOrderDiscount,
