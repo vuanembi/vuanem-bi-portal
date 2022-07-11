@@ -8,7 +8,6 @@ import { faker } from '@faker-js/faker';
 @Injectable()
 export class AutoMLProvider {
     public client: v1beta1.PredictionServiceClient;
-    public projectId: string;
 
     constructor() {
         this.client = new v1beta1.PredictionServiceClient();

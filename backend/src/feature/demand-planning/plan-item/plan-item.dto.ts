@@ -20,15 +20,7 @@ export class CreatePlanItemDto {
     workingDays: number;
 }
 
-export class GetPlanItemsDto {
-    @ApiProperty()
-    planId: number;
-}
-
 export class UpdatePlanItemDto {
-    @ApiPropertyOptional()
-    sku?: string;
-
     @ApiPropertyOptional()
     startOfWeek?: Date;
 
@@ -42,19 +34,10 @@ export class UpdatePlanItemDto {
     avgOrderDiscount?: number;
 
     @ApiPropertyOptional()
-    discount?: number;
+    basePrice?: number;
 
     @ApiPropertyOptional()
     workingDays?: number;
-
-    @ApiPropertyOptional()
-    inventory?: number;
-
-    @ApiPropertyOptional()
-    moq?: number;
-
-    @ApiPropertyOptional()
-    leadTime?: number;
 
     @ApiPropertyOptional()
     qtyDemandML?: number | null;
@@ -64,7 +47,4 @@ export class UpdatePlanItemDto {
 
     @ApiPropertyOptional()
     qtyDemand?: number | null;
-
-    @ApiPropertyOptional()
-    qtySupply?: number | null;
 }
