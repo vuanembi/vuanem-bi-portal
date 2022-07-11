@@ -58,6 +58,7 @@ export class PlanItem extends Record {
     @ManyToOne({
         entity: () => Plan,
         nullable: false,
+        wrappedReference: true,
         cascade: [Cascade.PERSIST, Cascade.REMOVE],
     })
     plan: IdentifiedReference<Plan>;

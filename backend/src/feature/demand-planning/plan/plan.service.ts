@@ -53,10 +53,6 @@ export class PlanService {
             { populate: ['items', 'items.item.sku'] },
         );
 
-        const planItems = plan.items.getItems();
-
-        planItems
-
         await this.planItemService.forecast(plan.items.getItems());
 
         this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
