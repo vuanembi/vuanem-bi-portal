@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, Loaded, LoadedCollection, WrappedEntity } from '@mikro-orm/core';
 
 import * as dayjs from 'dayjs';
 
 import { ItemService } from '../../netsuite/item/item.service';
+
+import { AutoMLProvider } from '../../../provider/automl/automl.service';
 
 import { PlanItem } from './plan-item.entity';
 import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
@@ -14,6 +16,7 @@ import { PlanItemVendor } from './plan-item-vendor.entity';
 
 import { faker } from '@faker-js/faker';
 import { Plan } from '../plan/plan.entity';
+import { Item } from 'src/feature/netsuite/item/item.entity';
 
 const mockFloat = () =>
     faker.datatype.number({
@@ -44,6 +47,8 @@ const mockPlanItems = (date: Date): CreatePlanItemDto[] => {
 export class PlanItemService {
     constructor(
         private readonly itemService: ItemService,
+
+        private readonly autoMLProvider: AutoMLProvider,
 
         @InjectRepository(PlanItem)
         private readonly planItemRepository: EntityRepository<PlanItem>,
@@ -92,6 +97,39 @@ export class PlanItemService {
         this.planItemRepository.persist(planItems.flat());
 
         return planItems;
+    }
+
+    async forecast(planItems: any[]) {
+        const forecastedPlanItems = await Promise.all(
+            planItems.map((planItem) => this.forecastOne(planItem)),
+        );
+
+        this.planItemRepository.persist(forecastedPlanItems);
+
+        return forecastedPlanItems;
+    }
+
+    async forecastOne(planItem: Loaded<PlanItem, 'item' | 'item.sku'>) {
+        const item = planItem.item.;
+        // await planItem.item.load()
+        const qtyDemandML = await this.autoMLProvider.forecastPlanItems([
+            planItem.weekNo,
+            planItem.year,
+            dayjs(planItem.startOfWeek).format('YYYY-MM-DDTHH:mm:ss'),
+            // planItem.item.sku,
+            planItem.region,
+            planItem.avgItemDiscount,
+            planItem.avgOrderDiscount,
+            planItem.basePrice,
+            planItem.workingDays,
+        ]);
+
+        this.planItemRepository.assign(planItem, {
+            qtyDemandML,
+            qtyDemandPurchasing: qtyDemandML,
+        });
+
+        return planItem;
     }
 
     async update(id: number, updatePlanItemDto: UpdatePlanItemDto) {

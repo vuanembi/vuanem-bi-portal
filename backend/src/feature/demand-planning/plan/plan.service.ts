@@ -43,19 +43,27 @@ export class PlanService {
     async findOneItems(id: number) {
         return this.planRepository
             .findOneOrFail({ id }, { populate: ['items'] })
-            .then(async (plan) => {
-                console.log(plan.items.getItems());
-                return plan.items.getItems();
-            });
+            .then((plan) => plan.items.getItems());
         ``;
     }
 
     async forecast(id: number) {
-        ``;
-        return this.findOne(id).then(async (plan) => {
-            this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
-            await this.planRepository.persistAndFlush(plan);
-        });
+        const plan = await this.planRepository.findOneOrFail(
+            { id },
+            { populate: ['items', 'items.item.sku'] },
+        );
+
+        const planItems = plan.items.getItems();
+
+        planItems
+
+        await this.planItemService.forecast(plan.items.getItems());
+
+        this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
+
+        this.planRepository.persist(plan);
+
+        return this.planRepository.flush().then(() => plan);
     }
 
     async review(id: number) {
