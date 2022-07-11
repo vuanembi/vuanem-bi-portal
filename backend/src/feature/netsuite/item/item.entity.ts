@@ -4,6 +4,7 @@ import {
     ManyToOne,
     ManyToMany,
     Collection,
+    IdentifiedReference,
 } from '@mikro-orm/core';
 
 import { Dimension } from '../../common/entity';
@@ -28,7 +29,7 @@ export class Item extends Dimension {
     thickness: number;
 
     @ManyToOne({ entity: () => Class, eager: true })
-    class: Class;
+    class: IdentifiedReference<Class>;
 
     @ManyToMany(() => Vendor)
     vendor = new Collection<Vendor>(this);

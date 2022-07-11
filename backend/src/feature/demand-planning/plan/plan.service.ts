@@ -4,11 +4,16 @@ import { EntityRepository, QueryOrder } from '@mikro-orm/core';
 
 import * as dayjs from 'dayjs';
 
+import { Vendor } from '../../netsuite/vendor/vendor.entity';
+import { Item } from '../../netsuite/item/item.entity';
+
 import { Plan, PlanStatus } from './plan.entity';
 import { CreatePlanDto } from './plan.dto';
 
 import { PlanItem } from '../plan-item/plan-item.entity';
 import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
+
+import { PlanItemVendor } from '../plan-item/plan-item-vendor.entity';
 
 import { faker } from '@faker-js/faker';
 
@@ -19,25 +24,20 @@ const mockFloat = () =>
         precision: 0.01,
     });
 
-const createMockPlanItems = (date: Date): CreatePlanItemDto[] => {
-    const sku = faker.random.numeric(13);
-    const startOfWeeks = Array(8)
+const mockPlanItems = (date: Date): CreatePlanItemDto[] => {
+    const startOfWeeks = Array(4)
         .fill(undefined)
         .map((_, i) => dayjs(date).add(i, 'week').toDate());
     const regions = ['north', 'south'];
 
     return regions.flatMap((region) =>
         startOfWeeks.map((startOfWeek) => ({
-            sku,
             startOfWeek,
             region,
             avgItemDiscount: mockFloat(),
             avgOrderDiscount: mockFloat(),
-            discount: mockFloat(),
+            basePrice: faker.datatype.number(),
             workingDays: faker.datatype.number(),
-            inventory: faker.datatype.number(),
-            moq: faker.datatype.number(),
-            leadTime: faker.datatype.number(),
         })),
     );
 };
@@ -45,33 +45,63 @@ const createMockPlanItems = (date: Date): CreatePlanItemDto[] => {
 @Injectable()
 export class PlanService {
     constructor(
+        @InjectRepository(Item)
+        private readonly itemRepository: EntityRepository<Item>,
+
         @InjectRepository(Plan)
-        private planRepository: EntityRepository<Plan>,
+        private readonly planRepository: EntityRepository<Plan>,
 
         @InjectRepository(PlanItem)
-        private planItemRepository: EntityRepository<PlanItem>,
+        private readonly planItemRepository: EntityRepository<PlanItem>,
+
+        @InjectRepository(PlanItemVendor)
+        private readonly planItemVendorRepository: EntityRepository<PlanItemVendor>,
     ) {}
 
     async create(createPlanDto: CreatePlanDto) {
-        const itemsData = await Promise.all([
-            Promise.resolve(
-                Array(4)
-                    .fill(null)
-                    .map(() =>
-                        createMockPlanItems(createPlanDto.startOfForecastWeek),
-                    )
-                    .flat(),
-            ),
-        ]);
-
         const plan = this.planRepository.create({
             ...createPlanDto,
             status: PlanStatus.DRAFT,
         });
 
-        itemsData.forEach((itemData) =>
-            this.planItemRepository.create({ ...itemData, plan }),
+        const items = await this.itemRepository.findAll({
+            populate: ['vendor'],
+            limit: 2,
+        });
+
+        items
+
+        const planItems = items.map((item) =>
+            mockPlanItems(createPlanDto.startOfForecastWeek).map((mock) => {
+                const planItem = this.planItemRepository.create({
+                    plan,
+                    ...mock,
+                });
+
+                this.planItemRepository.assign(planItem, {
+                    item: item.id,
+                });
+
+                const planItemVendors = item.vendor.getItems().map((vendor) => {
+                    const planItemVendor = this.planItemVendorRepository.create(
+                        {},
+                    );
+                    this.planItemVendorRepository.assign(planItemVendor, {
+                        planItem,
+                        vendor: vendor.id,
+                        allocation: 1 / item.vendor.length,
+                    });
+                    return planItemVendor;
+                });
+
+                this.planItemVendorRepository.persist(planItemVendors);
+                return planItem;
+            }),
         );
+        
+        planItems
+        this.planItemRepository.persist(planItems.flat());
+
 
         return this.planItemRepository.flush().then(() => plan);
     }
@@ -94,10 +124,12 @@ export class PlanService {
             .then(async (plan) => {
                 console.log(plan.items.getItems());
                 return plan.items.getItems();
-            });``
+            });
+        ``;
     }
 
-    async forecast(id: number) {``
+    async forecast(id: number) {
+        ``;
         return this.findOne(id).then(async (plan) => {
             this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
             await this.planRepository.persistAndFlush(plan);

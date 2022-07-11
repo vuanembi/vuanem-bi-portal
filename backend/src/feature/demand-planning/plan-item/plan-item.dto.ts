@@ -2,9 +2,6 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePlanItemDto {
     @ApiProperty()
-    sku: string;
-
-    @ApiProperty()
     startOfWeek: Date;
 
     @ApiProperty()
@@ -17,19 +14,10 @@ export class CreatePlanItemDto {
     avgOrderDiscount: number;
 
     @ApiProperty()
-    discount: number;
+    basePrice: number;
 
     @ApiProperty()
     workingDays: number;
-
-    @ApiProperty()
-    inventory: number;
-
-    @ApiProperty()
-    moq: number;
-
-    @ApiProperty()
-    leadTime: number;
 }
 
 export class GetPlanItemsDto {
