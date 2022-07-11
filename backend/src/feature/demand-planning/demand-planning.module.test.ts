@@ -33,7 +33,7 @@ describe('Demand Planning', () => {
     describe('Plan Service', () => {
         it('Create', async () => {
             const options = {
-                name: 'Adf',
+                name: 'Aruuuu',
                 sku: ['123'],
                 startOfForecastWeek: new Date('2022-01-01'),
             };

@@ -5,8 +5,6 @@ import { BigQueryProvider } from '../../provider/warehouse/bigquery.service';
 
 import { NetSuiteModule } from '../netsuite/netsuite.module';
 
-import { Item } from '../netsuite/item/item.entity';
-
 import { Plan } from './plan/plan.entity';
 import { PlanService } from './plan/plan.service';
 import { PlanController } from './plan/plan.controller';
@@ -19,7 +17,7 @@ import { PlanItemVendor } from './plan-item/plan-item-vendor.entity';
 
 @Module({
     imports: [
-        MikroOrmModule.forFeature([Item, Plan, PlanItem, PlanItemVendor ]),
+        MikroOrmModule.forFeature([Plan, PlanItem, PlanItemVendor]),
         NetSuiteModule,
     ],
     providers: [BigQueryProvider, PlanService, PlanItemService],
