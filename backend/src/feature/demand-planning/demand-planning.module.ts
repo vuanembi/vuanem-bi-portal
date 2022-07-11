@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { BigQueryProvider } from '../../provider/warehouse/bigquery.service';
+import { AutoMLProvider } from '../../provider/automl/automl.service';
 
 import { NetSuiteModule } from '../netsuite/netsuite.module';
 
@@ -20,7 +21,7 @@ import { PlanItemVendor } from './plan-item/plan-item-vendor.entity';
         MikroOrmModule.forFeature([Plan, PlanItem, PlanItemVendor]),
         NetSuiteModule,
     ],
-    providers: [BigQueryProvider, PlanService, PlanItemService],
+    providers: [BigQueryProvider, AutoMLProvider, PlanService, PlanItemService],
     controllers: [PlanController, PlanItemController],
 })
 export class DemandPlanningModule {}

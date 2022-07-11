@@ -1,6 +1,7 @@
 import {
     Entity,
     Property,
+    Formula,
     ManyToOne,
     OneToMany,
     Collection,
@@ -18,6 +19,12 @@ import { PlanItemVendor } from './plan-item-vendor.entity';
 export class PlanItem extends Record {
     @Property()
     startOfWeek: Date;
+
+    @Formula(`date_part('week', start_of_week)`)
+    weekNo: number;
+
+    @Formula(`date_part('year', start_of_week)`)
+    year: number;
 
     @Property()
     region: string;
@@ -40,15 +47,10 @@ export class PlanItem extends Record {
     @Property({ nullable: true })
     qtyDemandPurchasing: number | null;
 
-    @Property({ nullable: true })
-    qtyDemand: number | null;
-
-    @Property({ nullable: true })
-    qtySupply: number | null;
-
     @ManyToOne({
         entity: () => Item,
         nullable: false,
+        wrappedReference: true,
         cascade: [Cascade.PERSIST, Cascade.REMOVE],
     })
     item: IdentifiedReference<Item>;

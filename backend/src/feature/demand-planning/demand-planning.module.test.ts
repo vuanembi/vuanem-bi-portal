@@ -37,8 +37,14 @@ describe('Demand Planning', () => {
                 sku: ['123'],
                 startOfForecastWeek: new Date('2022-01-01'),
             };
-            return planService.create(options).then((planItems) => {
-                expect(planItems).toBeTruthy();
+            return planService.create(options).then((plan) => {
+                expect(plan).toBeTruthy();
+            });
+        });
+
+        it('Forecast', async () => {
+            return planService.forecast(6).then((plan) => {
+                expect(plan).toBeTruthy();
             });
         });
     });
