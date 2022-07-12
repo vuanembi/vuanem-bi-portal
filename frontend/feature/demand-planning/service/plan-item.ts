@@ -1,14 +1,16 @@
+import { request } from './api';
+
 export type Item = {
     sku: string;
     name: string;
-}
+};
 
 export type PlanItemVendor = {
     vendor: {
         name: string;
-    }
-    allocation: number
-}
+    };
+    allocation: number;
+};
 
 export type PlanItem = {
     id: number;
@@ -25,5 +27,8 @@ export type PlanItem = {
     qtyDemandPurchasing: number | null;
 
     item: Item;
-    vendors: PlanItemVendor[]
+    vendors: PlanItemVendor[];
 };
+
+export const updateOne = (data: PlanItem) =>
+    request<any>({ url: `/plan/${data.id}`, data });

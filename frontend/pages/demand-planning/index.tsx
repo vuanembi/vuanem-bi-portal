@@ -10,8 +10,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 
-import type { Plan } from '../../feature/demand-planning/service/plan/plan.type';
-import { get } from '../../feature/demand-planning/service/plan/plan.api';
+import { Plan, get } from '../../feature/demand-planning/service/plan';
 
 import { planStatuses } from '../../feature/demand-planning/hook/planStatus';
 

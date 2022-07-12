@@ -1,6 +1,23 @@
-import { request } from '../api';
+import { request } from './api';
 
-import { Plan, CreatePlanDto } from './plan.type';
+export type Plan = {
+    id: number;
+    name: string;
+    startOfForecastWeek: string;
+    status: string;
+    vendor: {
+        name: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type CreatePlanDto = {
+    name: string
+    startOfForecastWeek: string;
+    classes: number[]
+}
+
 
 export const create = (data: CreatePlanDto) =>
     request({ url: '/plan', method: 'POST', data });
