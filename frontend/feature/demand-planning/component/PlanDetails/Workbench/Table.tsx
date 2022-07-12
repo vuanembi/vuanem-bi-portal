@@ -22,9 +22,9 @@ type Cell = {
 
 const Table = ({ columns, data }: TableProps) => {
     const onCellEdited = (cell: any) => {
-        const {
-            _cell: { column, row, oldValue, value },
-        }: { _cell: Cell } = Object.assign({}, cell);
+        const { _cell }: { _cell: Cell } = Object.assign({}, cell);
+        const { column, row, oldValue, value } = _cell;
+
         console.log({ column, row, oldValue, value });
     };
 
