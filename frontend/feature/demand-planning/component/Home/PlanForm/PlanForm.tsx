@@ -1,5 +1,5 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-
+import { FormEventHandler, useState } from 'react';
+import dayjs from 'dayjs';
 import {
     VStack,
     Button,
@@ -14,63 +14,58 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Select,
+    useToast,
 } from '@chakra-ui/react';
+import { Select } from 'chakra-react-select';
+import { useQuery, useMutation } from 'react-query';
 
-import dayjs from 'dayjs';
+import type { Class } from '../../../../netsuite/class/class.type';
+import { get } from '../../../../netsuite/class/class.api';
+import type { CreatePlanDto } from '../../../service/plan/plan.type';
+import { create } from '../../../service/plan/plan.api';
 
 import PopoverDatePicker from './DatePicker';
-
-import { apiClient } from '../../../lib';
-
-type Vendor = {
-    id: string;
-    name: string;
-};
 
 type PlanFormProps = ModalProps & {
     callback: () => void;
 };
 
 const PlanForm = ({ isOpen, onClose, callback }: PlanFormProps) => {
-    const [vendors, setVendors] = useState<Vendor[]>([]);
-
-    const getVendors = () =>
-        apiClient.get<Vendor[]>('/vendor').then(({ data }) => setVendors(data));
-
-    useEffect(() => {
-        getVendors();
-    }, []);
-
-    const [name, setName] = useState<string | undefined>(undefined);
-    const [vendorId, setVendor] = useState<number | undefined>(undefined);
-    const [startOfForecastWeek, setStartOfForecastWeek] = useState<
-        string | undefined
-    >(dayjs().format('YYYY-MM-DD'));
-
-    const handleChange =
-        (
-            setter: Dispatch<SetStateAction<any>>,
-            parser: (value: any) => any = (v) => v,
-        ) =>
-        (e: any) =>
-            setter(parser(e.currentTarget.value));
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        apiClient
-            .post('/plan', { name, vendorId, startOfForecastWeek })
-            .then(() => {
-                callback();
-                onClose();
+    const toast = useToast();
+    const { data: classes = [] } = useQuery<Class[]>('classes', get);
+    const { isLoading, mutate } = useMutation(create, {
+        onSuccess: () => {
+            onClose();
+            toast({
+                title: 'Plan Created',
+                status: 'success',
             });
-    };
+            callback();
+        },
+        onError: (err) => {
+            console.log(err);
+            toast({
+                title: 'Error',
+                status: 'error',
+            });
+        },
+    });
 
-    const vendorOptions = vendors.map((vendor) => (
-        <option key={vendor.id} value={vendor.id}>
-            {vendor.name}
-        </option>
-    ));
+    const [formState, setFormState] = useState<CreatePlanDto>({
+        name: '',
+        startOfForecastWeek: dayjs().format('YYYY-MM-DD'),
+        classes: [],
+    });
+
+    const classOptions = classes.map((class_) => ({
+        label: class_.name,
+        value: class_.id,
+    }));
+
+    const handleSubmit: FormEventHandler = (e) => {
+        e.preventDefault();
+        mutate(formState);
+    };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -85,34 +80,54 @@ const PlanForm = ({ isOpen, onClose, callback }: PlanFormProps) => {
                                 <FormLabel htmlFor="name">Name</FormLabel>
                                 <Input
                                     id="name"
-                                    value={name}
-                                    onChange={handleChange(setName)}
+                                    value={formState.name}
+                                    onChange={(e) =>
+                                        setFormState({
+                                            ...formState,
+                                            name: e.target.value,
+                                        })
+                                    }
                                 />
-                            </FormControl>
-                            <FormControl isRequired>
-                                <FormLabel htmlFor="vendor">Vendor</FormLabel>
-                                <Select
-                                    id="vendor"
-                                    placeholder="Select Vendor"
-                                    value={vendorId}
-                                    onChange={handleChange(setVendor, parseInt)}
-                                >
-                                    {vendorOptions}
-                                </Select>
                             </FormControl>
                             <FormControl isRequired>
                                 <FormLabel htmlFor="vendor">
                                     Start of Forecast Week
                                 </FormLabel>
                                 <PopoverDatePicker
-                                    date={startOfForecastWeek}
-                                    setDate={setStartOfForecastWeek}
+                                    date={formState.startOfForecastWeek}
+                                    setDate={(value) =>
+                                        value &&
+                                        setFormState({
+                                            ...formState,
+                                            startOfForecastWeek: value,
+                                        })
+                                    }
+                                />
+                            </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel htmlFor="classes">Classes</FormLabel>
+                                <Select
+                                    isMulti
+                                    id="classes"
+                                    options={classOptions}
+                                    onChange={(values) =>
+                                        setFormState({
+                                            ...formState,
+                                            classes: values.map(
+                                                ({ value }) => value,
+                                            ),
+                                        })
+                                    }
                                 />
                             </FormControl>
                         </VStack>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" type="submit">
+                        <Button
+                            colorScheme="blue"
+                            type="submit"
+                            isLoading={isLoading}
+                        >
                             Create
                         </Button>
                     </ModalFooter>
