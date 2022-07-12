@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository, Loaded, LoadedCollection, WrappedEntity } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/core';
 
 import * as dayjs from 'dayjs';
 
@@ -16,7 +16,6 @@ import { PlanItemVendor } from './plan-item-vendor.entity';
 
 import { faker } from '@faker-js/faker';
 import { Plan } from '../plan/plan.entity';
-import { Item } from 'src/feature/netsuite/item/item.entity';
 
 const mockFloat = () =>
     faker.datatype.number({
@@ -46,9 +45,9 @@ const mockPlanItems = (date: Date): CreatePlanItemDto[] => {
 @Injectable()
 export class PlanItemService {
     constructor(
-        private readonly itemService: ItemService,
-
         private readonly autoMLProvider: AutoMLProvider,
+        
+        private readonly itemService: ItemService,
 
         @InjectRepository(PlanItem)
         private readonly planItemRepository: EntityRepository<PlanItem>,
@@ -59,17 +58,13 @@ export class PlanItemService {
 
     async create(plan: Plan, startOfForecastWeek: Date) {
         const items = await this.itemService.findAll(2);
-
         const planItems: PlanItem[] = items
             .map((item) =>
                 mockPlanItems(startOfForecastWeek).map((mock) => {
                     const planItem = this.planItemRepository.create({
                         plan,
+                        item,
                         ...mock,
-                    });
-
-                    this.planItemRepository.assign(planItem, {
-                        item: item.id,
                     });
 
                     const planItemVendors = item.vendor
