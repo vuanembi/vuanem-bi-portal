@@ -49,6 +49,7 @@ export class PlanItem extends Record {
 
     @ManyToOne({
         entity: () => Item,
+        eager: true,
         nullable: false,
         wrappedReference: true,
         cascade: [Cascade.PERSIST, Cascade.REMOVE],
@@ -65,7 +66,8 @@ export class PlanItem extends Record {
 
     @OneToMany({
         entity: () => PlanItemVendor,
+        eager: true,
         mappedBy: (itemVendor) => itemVendor.planItem,
     })
-    vendor = new Collection<PlanItemVendor>(this);
+    vendors = new Collection<PlanItemVendor>(this);
 }

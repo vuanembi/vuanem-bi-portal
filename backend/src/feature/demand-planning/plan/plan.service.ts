@@ -44,7 +44,6 @@ export class PlanService {
         return this.planRepository
             .findOneOrFail({ id }, { populate: ['items'] })
             .then((plan) => plan.items.getItems());
-        ``;
     }
 
     async forecast(id: number) {
