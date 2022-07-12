@@ -24,9 +24,9 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         columns: [
             columns.sku,
             columns.startOfWeek,
+            columns.region,
             columns.weekNo,
             columns.year,
-            columns.region,
             columns.avgItemDiscount,
             columns.avgOrderDiscount,
             columns.basePrice,
@@ -45,9 +45,9 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         columns: [
             columns.sku,
             columns.startOfWeek,
+            columns.region,
             columns.weekNo,
             columns.year,
-            columns.region,
             columns.avgItemDiscount,
             columns.avgOrderDiscount,
             columns.basePrice,
@@ -66,9 +66,9 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         columns: [
             columns.sku,
             columns.startOfWeek,
+            columns.region,
             columns.weekNo,
             columns.year,
-            columns.region,
             columns.avgItemDiscount,
             columns.avgOrderDiscount,
             columns.basePrice,

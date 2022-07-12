@@ -1,35 +1,60 @@
 import { ColumnDefinition } from 'react-tabulator';
 
-const startOfWeek = { title: 'Start of Week', field: 'startOfWeek', frozen:true };
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
-const weekNo = { title: 'Week', field: 'weekNo' };
+dayjs.extend(utc);
 
-const year = { title: 'Year', field: 'year' };
+const startOfWeek: ColumnDefinition = {
+    title: 'Start of Week',
+    field: 'startOfWeek',
+    formatter: (cell) => dayjs.utc(cell.getValue()).format('YYYY-MM-DD'),
+    frozen: true,
+};
 
-const region = { title: 'Region', field: 'region' };
+const weekNo = { title: 'Week', field: 'weekNo', hozAlign: 'right' };
+
+const year = { title: 'Year', field: 'year', hozAlign: 'right' };
+
+const region = { title: 'Region', field: 'region', frozen: true };
 
 const avgItemDiscount = {
     title: 'Avg. Item Discount',
     field: 'avgItemDiscount',
+    hozAlign: 'right',
 };
 
 const avgOrderDiscount = {
     title: 'Avg. Order Discount',
     field: 'avgOrderDiscount',
+    hozAlign: 'right',
 };
 
-const basePrice = { title: 'Base Price', field: 'basePrice' };
+const basePrice = {
+    title: 'Base Price',
+    field: 'basePrice',
+    hozAlign: 'right',
+};
 
-const workingDays = { title: 'Working Days', field: 'workingDays' };
+const workingDays = {
+    title: 'Working Days',
+    field: 'workingDays',
+    hozAlign: 'right',
+};
 
-const qtyDemandML = { title: 'Qty. Demand ML', field: 'qtyDemandML' };
+const qtyDemandML = {
+    title: 'Qty. Demand ML',
+    field: 'qtyDemandML',
+    hozAlign: 'right',
+};
 
 const qtyDemandPurchasing = {
     title: 'Qty. Demand Pur',
     field: 'qtyDemandPurchasing',
+    hozAlign: 'right',
 };
 
-const sku = { title: 'SKU', field: 'item.sku', frozen:true };
+const sku = { title: 'SKU', field: 'item.sku', frozen: true };
 
 export default {
     startOfWeek,
