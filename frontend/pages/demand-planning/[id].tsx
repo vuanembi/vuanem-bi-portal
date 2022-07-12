@@ -1,3 +1,4 @@
+import 'react-tabulator/lib/styles.css'; // default theme
 import type { NextPage, GetServerSideProps } from 'next';
 
 import { useState } from 'react';
@@ -7,11 +8,10 @@ import { VStack } from '@chakra-ui/react';
 import { apiClient } from '../../feature/demand-planning/lib';
 
 import { PlanContext } from '../../feature/demand-planning/context';
+import { Plan as PlanPageProps } from '../../feature/demand-planning/service/plan';
 
 import Header from '../../feature/demand-planning/component/PlanDetails/Header/Header';
 import Workbench from '../../feature/demand-planning/component/PlanDetails/Workbench/Workbench';
-
-import { Plan as PlanPageProps } from '../../feature/demand-planning/types';
 
 const Plan: NextPage<{ plan: PlanPageProps }> = ({ plan }) => {
     const [updates, setUpdates] = useState<number>(0);

@@ -22,8 +22,7 @@ dayjs.extend(utc);
 const Info = () => {
     const { plan, updates } = useContext(PlanContext);
 
-    const { name, startOfForecastWeek, status, vendor, createdAt, updatedAt } =
-        plan;
+    const { name, startOfForecastWeek, status, createdAt, updatedAt } = plan;
     const { color } = usePlanStatus(status);
 
     const tooltipProps = {
@@ -48,6 +47,7 @@ const Info = () => {
         <HStack
             flexBasis="80%"
             justifyContent="space-between"
+            alignItems="stretch"
             borderWidth="1px"
             borderColor={color}
             p={2}
@@ -55,13 +55,6 @@ const Info = () => {
             <VStack alignItems="flex-start" flexBasis="70%" spacing={0}>
                 <Tooltip label="Plan" placement="left-start" {...tooltipProps}>
                     <Text fontWeight="bold">{name}</Text>
-                </Tooltip>
-                <Tooltip
-                    label="Vendor"
-                    placement="left-start"
-                    {...tooltipProps}
-                >
-                    <Text>{vendor.name}</Text>
                 </Tooltip>
                 <Tooltip
                     label="Start of Forecast Week"

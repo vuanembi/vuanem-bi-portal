@@ -1,6 +1,6 @@
 import { ColumnDefinition } from 'react-tabulator';
 
-const startOfWeek = { title: 'Start of Week', field: 'startOfWeek' };
+const startOfWeek = { title: 'Start of Week', field: 'startOfWeek', frozen:true };
 
 const weekNo = { title: 'Week', field: 'weekNo' };
 
@@ -29,7 +29,7 @@ const qtyDemandPurchasing = {
     field: 'qtyDemandPurchasing',
 };
 
-const sku = { title: 'SKU', field: 'item.sku' };
+const sku = { title: 'SKU', field: 'item.sku', frozen:true };
 
 export default {
     startOfWeek,

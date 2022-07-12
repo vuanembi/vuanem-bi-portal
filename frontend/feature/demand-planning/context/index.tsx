@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { Plan } from '../types';
+import { Plan } from '../service/plan';
 
 export type PlanContextProps = {
     plan: Plan;
