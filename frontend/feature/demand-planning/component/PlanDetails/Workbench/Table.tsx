@@ -1,12 +1,32 @@
 import 'react-tabulator/css/tabulator_bootstrap3.min.css';
 
-import { ReactTabulator } from 'react-tabulator';
+import { ReactTabulator, ColumnDefinition } from 'react-tabulator';
 
-import usePlanStatus from '../../../hook/planStatus';
+import { PlanItem } from '../../../service/plan-item';
 
-const Table = ({ plan, columns, data }) => {
-    console.log(data);
-    const { color } = usePlanStatus(plan.status);
+type TableProps = {
+    columns: ColumnDefinition[];
+    data: PlanItem[];
+};
+
+type Cell = {
+    column: {
+        field: keyof PlanItem;
+    };
+    row: {
+        data: PlanItem;
+    };
+    oldValue: string | number;
+    value: string | number;
+};
+
+const Table = ({ columns, data }: TableProps) => {
+    const onCellEdited = (cell: any) => {
+        const {
+            _cell: { column, row, oldValue, value },
+        }: { _cell: Cell } = Object.assign({}, cell);
+        console.log({ column, row, oldValue, value });
+    };
 
     return (
         <ReactTabulator
@@ -14,6 +34,9 @@ const Table = ({ plan, columns, data }) => {
             columns={columns}
             data={data}
             layout="fitData"
+            events={{
+                cellEdited: onCellEdited,
+            }}
             options={{ height: '80%' }}
         />
     );

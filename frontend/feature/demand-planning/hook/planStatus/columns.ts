@@ -12,49 +12,65 @@ const startOfWeek: ColumnDefinition = {
     frozen: true,
 };
 
-const weekNo = { title: 'Week', field: 'weekNo', hozAlign: 'right' };
+const weekNo: ColumnDefinition = {
+    title: 'Week',
+    field: 'weekNo',
+    hozAlign: 'right',
+};
 
-const year = { title: 'Year', field: 'year', hozAlign: 'right' };
+const year: ColumnDefinition = {
+    title: 'Year',
+    field: 'year',
+    hozAlign: 'right',
+};
 
-const region = { title: 'Region', field: 'region', frozen: true };
+const region: ColumnDefinition = {
+    title: 'Region',
+    field: 'region',
+    frozen: true,
+};
 
 const avgItemDiscount = {
     title: 'Avg. Item Discount',
     field: 'avgItemDiscount',
     hozAlign: 'right',
+    editor: 'number',
 };
 
-const avgOrderDiscount = {
+const avgOrderDiscount: ColumnDefinition = {
     title: 'Avg. Order Discount',
     field: 'avgOrderDiscount',
     hozAlign: 'right',
+    editor: 'number',
 };
 
-const basePrice = {
+const basePrice: ColumnDefinition = {
     title: 'Base Price',
     field: 'basePrice',
     hozAlign: 'right',
+    editor: 'number',
 };
 
-const workingDays = {
+const workingDays: ColumnDefinition = {
     title: 'Working Days',
     field: 'workingDays',
     hozAlign: 'right',
+    editor: 'number',
 };
 
-const qtyDemandML = {
+const qtyDemandML: ColumnDefinition = {
     title: 'Qty. Demand ML',
     field: 'qtyDemandML',
     hozAlign: 'right',
 };
 
-const qtyDemandPurchasing = {
+const qtyDemandPurchasing: ColumnDefinition = {
     title: 'Qty. Demand Pur',
     field: 'qtyDemandPurchasing',
     hozAlign: 'right',
 };
 
-const sku = { title: 'SKU', field: 'item.sku', frozen: true };
+const sku: ColumnDefinition = { title: 'SKU', field: 'item.sku', frozen: true };
 
 export default {
     startOfWeek,
