@@ -1,26 +1,17 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDefinition } from 'react-tabulator';
 
-import DisplayCell from '../../component/PlanDetails/Workbench/Cell/DisplayCell';
-import EditableNumberCell from '../../component/PlanDetails/Workbench/Cell/EditableNumberCell';
-
-import { apiClient } from '../../lib';
-
+import { updateStatus } from '../../service/plan';
 import columns from './columns';
-import type { PlanItem, PlanItemGroup } from '../../types';
-import { AxiosResponse } from 'axios';
 
 export type PlanStatusStyle = {
     label: string;
     color: string;
-    action?: {
+    action: {
         label: string;
-        handler: (id: PlanItem['id']) => Promise<AxiosResponse>;
+        handler: (id: number) => Promise<any>;
     };
-    columns: ColumnDef<PlanItemGroup>[];
+    columns: ColumnDefinition[];
 };
-
-const handlePlanStatusUpdate = (endpoint: string) => (id: PlanItem['id']) =>
-    apiClient.put(`/plan/${id}/${endpoint}`);
 
 export const planStatuses: { [status: string]: PlanStatusStyle } = {
     draft: {
@@ -28,20 +19,20 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         color: 'teal.300',
         action: {
             label: 'Forecast',
-            handler: handlePlanStatusUpdate('forecast'),
+            handler: updateStatus('forecast'),
         },
         columns: [
-            columns.expander,
             columns.sku,
-            columns.region,
             columns.startOfWeek,
-            { ...columns.avgItemDiscount, cell: EditableNumberCell },
-            { ...columns.avgOrderDiscount, cell: EditableNumberCell },
-            { ...columns.discount, cell: EditableNumberCell },
-            { ...columns.workingDays, cell: EditableNumberCell },
-            { ...columns.inventory, cell: EditableNumberCell },
-            { ...columns.moq, cell: EditableNumberCell },
-            { ...columns.leadTime, cell: EditableNumberCell },
+            columns.weekNo,
+            columns.year,
+            columns.region,
+            columns.avgItemDiscount,
+            columns.avgOrderDiscount,
+            columns.basePrice,
+            columns.workingDays,
+            columns.qtyDemandML,
+            columns.qtyDemandPurchasing,
         ],
     },
     forecasted: {
@@ -49,45 +40,41 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         color: 'blue.300',
         action: {
             label: 'Review',
-            handler: handlePlanStatusUpdate('review'),
+            handler: updateStatus('review'),
         },
         columns: [
-            columns.expander,
             columns.sku,
-            columns.region,
             columns.startOfWeek,
-            { ...columns.avgItemDiscount, cell: DisplayCell },
-            { ...columns.avgOrderDiscount, cell: DisplayCell },
-            { ...columns.discount, cell: DisplayCell },
-            { ...columns.workingDays, cell: DisplayCell },
-            { ...columns.inventory, cell: DisplayCell },
-            { ...columns.moq, cell: DisplayCell },
-            { ...columns.leadTime, cell: DisplayCell },
+            columns.weekNo,
+            columns.year,
+            columns.region,
+            columns.avgItemDiscount,
+            columns.avgOrderDiscount,
+            columns.basePrice,
+            columns.workingDays,
             columns.qtyDemandML,
-            { ...columns.qtyDemandPurchasing, cell: EditableNumberCell },
-            { ...columns.qtyDemand, cell: EditableNumberCell },
-            { ...columns.qtySupply, cell: EditableNumberCell },
+            columns.qtyDemandPurchasing,
         ],
     },
     reviewed: {
         label: 'Reviewed',
         color: 'purple.300',
+        action: {
+            label: 'Review',
+            handler: updateStatus('review'),
+        },
         columns: [
-            columns.expander,
             columns.sku,
-            columns.region,
             columns.startOfWeek,
-            { ...columns.avgItemDiscount, cell: DisplayCell },
-            { ...columns.avgOrderDiscount, cell: DisplayCell },
-            { ...columns.discount, cell: DisplayCell },
-            { ...columns.workingDays, cell: DisplayCell },
-            { ...columns.inventory, cell: DisplayCell },
-            { ...columns.moq, cell: DisplayCell },
-            { ...columns.leadTime, cell: DisplayCell },
-            { ...columns.qtyDemandML, cell: DisplayCell },
-            { ...columns.qtyDemandPurchasing, cell: DisplayCell },
-            { ...columns.qtyDemand, cell: DisplayCell },
-            { ...columns.qtySupply, cell: DisplayCell },
+            columns.weekNo,
+            columns.year,
+            columns.region,
+            columns.avgItemDiscount,
+            columns.avgOrderDiscount,
+            columns.basePrice,
+            columns.workingDays,
+            columns.qtyDemandML,
+            columns.qtyDemandPurchasing,
         ],
     },
 };
