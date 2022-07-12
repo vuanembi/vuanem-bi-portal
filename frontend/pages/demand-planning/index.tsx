@@ -18,15 +18,18 @@ import PlanList from '../../feature/demand-planning/component/Home/PlanList/Plan
 import PlanForm from '../../feature/demand-planning/component/Home/PlanForm/PlanForm';
 
 const DemandPlanning: NextPage = () => {
-    const { isLoading, data: plans, refetch } = useQuery<Plan[]>('plans', get);
     const toast = useToast();
+    const { isLoading, data: plans } = useQuery<Plan[]>('plans', get, {
+        onError: () => {
+            toast({
+                title: 'Fetch Error',
+                status: 'error',
+            });
+        },
+    });
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     if (!plans) {
-        toast({
-            title: 'Fetch Error',
-            status: 'error',
-        });
         return null;
     }
 
@@ -45,7 +48,6 @@ const DemandPlanning: NextPage = () => {
             />
         ));
 
-
     return (
         <>
             <Flex justifyContent="flex-end" mb="8">
@@ -54,7 +56,7 @@ const DemandPlanning: NextPage = () => {
             <HStack justifyContent="stretch" spacing={8}>
                 {planLists}
             </HStack>
-            <PlanForm isOpen={isOpen} onClose={onClose} callback={refetch}>
+            <PlanForm isOpen={isOpen} onClose={onClose}>
                 {}
             </PlanForm>
         </>

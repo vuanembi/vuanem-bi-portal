@@ -17,19 +17,16 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
-import { useQuery, useMutation } from 'react-query';
+import { useQueryClient, useQuery, useMutation } from 'react-query';
 
 import { Class, get } from '../../../../netsuite/class';
 import { CreatePlanDto, create } from '../../../service/plan';
 
 import PopoverDatePicker from './DatePicker';
 
-type PlanFormProps = ModalProps & {
-    callback: () => void;
-};
-
-const PlanForm = ({ isOpen, onClose, callback }: PlanFormProps) => {
+const PlanForm = ({ isOpen, onClose }: ModalProps) => {
     const toast = useToast();
+    const queryClient = useQueryClient();
     const { data: classes = [] } = useQuery<Class[]>('classes', get);
     const { isLoading, mutate } = useMutation(create, {
         onSuccess: () => {
@@ -38,7 +35,7 @@ const PlanForm = ({ isOpen, onClose, callback }: PlanFormProps) => {
                 title: 'Plan Created',
                 status: 'success',
             });
-            callback();
+            queryClient.invalidateQueries('plans');
         },
         onError: (err) => {
             console.log(err);

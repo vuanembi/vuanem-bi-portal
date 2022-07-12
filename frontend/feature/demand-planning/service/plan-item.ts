@@ -31,4 +31,4 @@ export type PlanItem = {
 };
 
 export const updateOne = (data: PlanItem) =>
-    request({ url: `/plan/${data.id}`, data });
+    request({ url: `/plan-item/${data.id}`, data });
