@@ -23,14 +23,19 @@ type WorkbenchProps = {
 const Workbench = ({ setUpdates }: WorkbenchProps) => {
     const { plan, updates } = useContext(PlanContext);
     const { color, columns } = usePlanStatus(plan.status);
+
     const { data: planItems } = useQuery<PlanItem[]>(
         `plan[${plan.id}].items`,
         getOneItems(plan.id),
     );
 
+    if (!planItems) {
+        return null;
+    }
+
     return (
         <Box bgColor="white" maxW="100%">
-            <Table plan={plan} columns={columns} data={planItems} />;
+            <Table columns={columns} data={planItems} />;
         </Box>
     );
 };
