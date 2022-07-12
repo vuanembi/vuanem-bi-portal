@@ -8,6 +8,8 @@ import {
 import { chain } from 'lodash';
 import { useQuery } from 'react-query';
 
+import { TableContainer } from '@chakra-ui/react';
+
 import Table from './Table';
 
 import { PlanContext } from '../../../context';
@@ -34,9 +36,16 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
     }
 
     return (
-        <Box bgColor="white" maxW="100%">
-            <Table columns={columns} data={planItems} />;
-        </Box>
+        <TableContainer
+            h="80vh"
+            p={0}
+            overflowY="scroll"
+            borderWidth="1px"
+            borderColor={color}
+            fontSize="sm"
+        >
+            <Table columns={columns} data={planItems} />
+        </TableContainer>
     );
 };
 
