@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import usePlanStatus from '../../../hook/planStatus';
-import { Plan as PlanProps } from '../../../types';
+import { Plan as PlanProps } from '../../../service/plan';
 
 dayjs.extend(utc);
 

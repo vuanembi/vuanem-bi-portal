@@ -4,12 +4,13 @@ import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
 import usePlanStatus from '../../../hook/planStatus';
 
-import Plan, { PlanProps } from '../Plan/Plan';
+import { Plan as PlanProps } from '../../../service/plan';
+import Plan from '../Plan/Plan'
 import Search from '../../../../../components/Search';
 
 export type PlanListProps = {
     isLoaded: boolean;
-    status: PlanProps['status']['name'];
+    status: PlanProps['status'];
     plans: PlanProps[];
 };
 
