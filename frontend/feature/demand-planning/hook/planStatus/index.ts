@@ -1,6 +1,11 @@
 import { updateStatus } from '../../service/plan';
 import * as columns from './columns';
 
+import {
+    DisplayCell,
+    EditableCell,
+} from '../../component/PlanDetails/Workbench/Cell';
+
 export type PlanStatusStyle = {
     label: string;
     color: string;
@@ -20,15 +25,16 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             handler: updateStatus('forecast'),
         },
         columns: [
+            columns.expander,
             columns.sku,
-            columns.startOfWeek,
             columns.region,
+            columns.startOfWeek,
             columns.weekNo,
             columns.year,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.basePrice,
-            columns.workingDays,
+            {...columns.avgItemDiscount, Cell: EditableCell},
+            {...columns.avgOrderDiscount, Cell: EditableCell},
+            {...columns.basePrice, Cell: EditableCell},
+            {...columns.workingDays, Cell: EditableCell},
         ],
     },
     forecasted: {
@@ -39,17 +45,18 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             handler: updateStatus('review'),
         },
         columns: [
+            columns.expander,
             columns.sku,
-            columns.startOfWeek,
             columns.region,
+            columns.startOfWeek,
             columns.weekNo,
             columns.year,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.basePrice,
-            columns.workingDays,
-            columns.qtyDemandML,
-            columns.qtyDemandPurchasing,
+            {...columns.avgItemDiscount, Cell: DisplayCell},
+            {...columns.avgOrderDiscount, Cell: DisplayCell},
+            {...columns.basePrice, Cell: DisplayCell},
+            {...columns.workingDays, Cell: DisplayCell},
+            {...columns.qtyDemandML, Cell: DisplayCell},
+            {...columns.qtyDemandPurchasing, Cell: EditableCell},
         ],
     },
     reviewed: {
@@ -60,17 +67,18 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             handler: updateStatus('review'),
         },
         columns: [
+            columns.expander,
             columns.sku,
-            columns.startOfWeek,
             columns.region,
+            columns.startOfWeek,
             columns.weekNo,
             columns.year,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.basePrice,
-            columns.workingDays,
-            columns.qtyDemandML,
-            columns.qtyDemandPurchasing,
+            {...columns.avgItemDiscount, Cell: DisplayCell},
+            {...columns.avgOrderDiscount, Cell: DisplayCell},
+            {...columns.basePrice, Cell: DisplayCell},
+            {...columns.workingDays, Cell: DisplayCell},
+            {...columns.qtyDemandML, Cell: DisplayCell},
+            {...columns.qtyDemandPurchasing, Cell: DisplayCell},
         ],
     },
 };

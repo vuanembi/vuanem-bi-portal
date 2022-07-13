@@ -1,18 +1,18 @@
-import {
-    FocusEventHandler,
-    useState,
-    useRef,
-} from 'react';
+import { FocusEventHandler, useState, useRef } from 'react';
 
 import { Text, NumberInput, NumberInputField } from '@chakra-ui/react';
+import { CellProps } from 'react-table';
 
-import { CellProps } from '../../../service/plan-item';
+import { PlanItem, PlanItemGroup } from '../../../service/plan-item';
+import ExpandableButton from './ExpandableButton';
 
-export const DisplayCell = ({ column, value }: CellProps) => (
+export type Props = CellProps<PlanItemGroup>;
+
+export const DisplayCell = ({ column, value }: Props) => (
     <Text lineHeight={1.5}>{column.formatter(value)}</Text>
 );
 
-export const EditableCell = ({ column, value }: CellProps) => {
+export const EditableCell = ({ column, value }: Props) => {
     const submitValue = useRef(value);
     const [currentValue, setCurrentValue] = useState(value);
 
@@ -22,7 +22,7 @@ export const EditableCell = ({ column, value }: CellProps) => {
 
     const onBlur: FocusEventHandler<HTMLInputElement> = () => {
         if (currentValue !== submitValue.current) {
-            console.log('changed', {currentValue, column});
+            console.log('changed', { currentValue, column });
             return;
         }
 
@@ -30,7 +30,7 @@ export const EditableCell = ({ column, value }: CellProps) => {
         return submitValue.current;
     };
 
-    return (
+    return value ? (
         <NumberInput
             size="xs"
             defaultValue={value}
@@ -39,5 +39,14 @@ export const EditableCell = ({ column, value }: CellProps) => {
         >
             <NumberInputField p={2} textAlign="right" />
         </NumberInput>
-    );
+    ) : null;
 };
+
+export const ExpandableCell = ({ row }: Props) =>
+    row.canExpand ? (
+        <ExpandableButton
+            depth={row.depth}
+            getProps={row.getToggleRowExpandedProps}
+            isExpanded={row.isExpanded}
+        />
+    ) : null;

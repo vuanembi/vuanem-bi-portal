@@ -15,8 +15,7 @@ import Table from './Table';
 import { PlanContext } from '../../../context';
 import usePlanStatus from '../../../hook/planStatus';
 import { getOneItems } from '../../../service/plan';
-import { PlanItem } from '../../../service/plan-item';
-import { Box } from '@chakra-ui/react';
+import { PlanItem, PlanItemGroup } from '../../../service/plan-item';
 
 type WorkbenchProps = {
     setUpdates: Dispatch<SetStateAction<number>>;
@@ -31,6 +30,41 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
         getOneItems(plan.id),
     );
 
+    const [planItemGroups, setPlanItemGroups] = useState<
+        (PlanItemGroup)[]
+    >([]);
+
+    useEffect(() => {
+        const group = chain(planItems)
+            .groupBy(({ item: { sku }, region }) => `${sku}-${region}`)
+            .toPairs()
+            .map(([skuRegion, values]) => {
+                const [sku, region] = skuRegion.split('-');
+                return {
+                    sku,
+                    region,
+                    subRows: values.map((value) => ({
+                        ...value,
+                        sku: undefined,
+                        region: undefined,
+                    })),
+                };
+            })
+            .groupBy(({ sku }) => sku)
+            .toPairs()
+            .map(([sku, values]) => ({
+                sku,
+                subRows: values.map((value) => ({
+                    ...value,
+                    sku: undefined,
+                })),
+            }))
+            .value();
+        
+        // @ts-expect-error
+        setPlanItemGroups(group);
+    }, [planItems]);
+
     if (!planItems) {
         return null;
     }
@@ -44,7 +78,7 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
             borderColor={color}
             fontSize="sm"
         >
-            <Table columns={columns} data={planItems} />
+            <Table columns={columns} data={planItemGroups} />
         </TableContainer>
     );
 };

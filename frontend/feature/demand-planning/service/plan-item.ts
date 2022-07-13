@@ -32,6 +32,14 @@ export type PlanItem = {
     vendors: PlanItemVendor[];
 };
 
+export type PlanItemGroup = PlanItem & {
+    sku: PlanItem['item']['sku'];
+    subRows: {
+        region: PlanItem['region'];
+        subRows: Partial<PlanItem>[];
+    }[];
+};
+
 export type CellProps = Props<PlanItem>;
 
 export const updateOne = (data: PlanItem) =>

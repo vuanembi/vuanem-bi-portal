@@ -11,20 +11,28 @@ import {
     Th,
     Td,
 } from '@chakra-ui/react';
-import { Column, useTable, useBlockLayout } from 'react-table';
+import { Column, useTable, useGroupBy, useExpanded, useBlockLayout } from 'react-table';
 import { useSticky } from 'react-table-sticky';
 
-import { PlanItem } from '../../../service/plan-item';
+import { PlanItem, PlanItemGroup } from '../../../service/plan-item';
 
 type TableProps = {
-    columns: Column<PlanItem>[];
-    data: PlanItem[];
+    columns: Column<PlanItemGroup>[];
+    data: PlanItemGroup[];
 };
 
 const Table = ({ columns, data }: TableProps) => {
-
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({ columns, data }, useBlockLayout, useSticky);
+        useTable(
+            {
+                columns,
+                data,
+            },
+            useGroupBy,
+            useExpanded,
+            useBlockLayout,
+            useSticky,
+        );
 
     return (
         <ChakraTable
@@ -36,10 +44,7 @@ const Table = ({ columns, data }: TableProps) => {
         >
             <Thead position="sticky" top={0} zIndex={10} w="fit-content">
                 {headerGroups.map((headerGroup) => (
-                    <Tr
-                        {...headerGroup.getHeaderGroupProps()}
-                        
-                    >
+                    <Tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => {
                             return (
                                 <Th

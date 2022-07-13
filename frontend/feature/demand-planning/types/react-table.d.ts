@@ -21,6 +21,8 @@ declare module 'react-table' {
         expanded: boolean;
     }
     interface Row {
+        getToggleRowExpandedProps: () => any
+        depth: number;
         canExpand: boolean;
         isExpanded: boolean;
     }
