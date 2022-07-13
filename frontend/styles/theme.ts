@@ -30,15 +30,6 @@ export default extendTheme({
             '.rdp-day_selected > span': {
                 color: 'white',
             },
-            '.tabulator-row.tabulator-row-even': {
-                bgColor: 'white',
-            },
-            '.tabulator-header': {
-                borderRadius: '0px',
-            },
-            '.tabulator-frozen': {
-                borderRadius: '0px',
-            },
         },
     },
     components: {

@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Layout from '../components/Layout';
 import theme from '../styles/theme';
+import '../styles/tabulator.scss';
 
 const App = ({ Component, pageProps }: AppProps) => {
     const queryClient = new QueryClient();

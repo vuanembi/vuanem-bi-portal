@@ -1,0 +1,15 @@
+.tabulator {
+    .tabulator-row.tabulator-row-even {
+        background-color: white;
+    }
+    .tabulator-header {
+        border-radius: 0px;
+    }
+    .tabulator-frozen {
+        border-radius: 0px;
+    }
+
+    .tabulator-cell.tabulator-editable {
+        text-decoration: underline;
+    }
+}
