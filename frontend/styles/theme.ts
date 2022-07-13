@@ -27,9 +27,6 @@ export default extendTheme({
                     color: 'purple.400',
                 },
             },
-            '.rdp-day_selected > span': {
-                color: 'white',
-            },
         },
     },
     components: {
