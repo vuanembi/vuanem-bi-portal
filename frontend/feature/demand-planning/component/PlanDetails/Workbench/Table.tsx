@@ -1,5 +1,3 @@
-import 'react-tabulator/css/tabulator_bootstrap3.min.css';
-
 import { ReactTabulator, ColumnDefinition } from 'react-tabulator';
 
 import { PlanItem } from '../../../service/plan-item';
@@ -30,7 +28,7 @@ const Table = ({ columns, data }: TableProps) => {
 
     return (
         <ReactTabulator
-            id="planItemTable"
+            className={"plan-item-table"}
             columns={columns}
             data={data}
             layout="fitDataFill"

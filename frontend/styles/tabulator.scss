@@ -1,11 +1,12 @@
+@import 'react-tabulator/css/tabulator_bootstrap3.min.css';
+
 .tabulator {
     .tabulator-row.tabulator-row-even {
         background-color: white;
     }
-    .tabulator-header {
-        border-radius: 0px;
-    }
-    .tabulator-frozen {
+    .tabulator-header,
+    .tabulator-frozen,
+    .tabulator-group {
         border-radius: 0px;
     }
 
