@@ -11,70 +11,17 @@ import {
     Th,
     Td,
 } from '@chakra-ui/react';
-import { useTable, useBlockLayout } from 'react-table';
+import { Column, useTable, useBlockLayout } from 'react-table';
 import { useSticky } from 'react-table-sticky';
 
-import { ReactTabulator, ColumnDefinition } from 'react-tabulator';
-
 import { PlanItem } from '../../../service/plan-item';
-import dayjs from 'dayjs';
 
 type TableProps = {
-    columns: ColumnDefinition[];
+    columns: Column<PlanItem>[];
     data: PlanItem[];
 };
 
-const Table = ({ data }: TableProps) => {
-    const columns = useMemo(
-        () => [
-            {
-                Header: 'Start of Week',
-                accessor: 'startOfWeek',
-                width: 150,
-                // minWidth: 100,
-                // maxWidth: 100,
-                sticky: 'left',
-                Cell: ({ value }) => dayjs(value).format('YYYY-MM-DD'),
-            },
-            {
-                Header: 'Region',
-                accessor: 'region',
-                sticky: 'left',
-            },
-            {
-                Header: 'Avg. Item Discount',
-                accessor: 'avgItemDiscount',
-                isNumeric: true,
-            },
-            {
-                Header: 'Avg. Order Discount',
-                accessor: 'avgOrderDiscount',
-                isNumeric: true,
-            },
-            {
-                Header: 'Base Price',
-                accessor: 'basePrice',
-                isNumeric: true,
-            },
-            {
-                Header: 'Working Days',
-                accessor: 'workingDays',
-                isNumeric: true,
-            },
-            {
-                Header: 'Qty. Demand ML',
-                accessor: 'qtyDemandML',
-                isNumeric: true,
-            },
-            {
-                Header: 'Qty. Demand Purchasing',
-                accessor: 'qtyDemandPurchasing',
-                isNumeric: true,
-                width: 200,
-            },
-        ],
-        [],
-    );
+const Table = ({ columns, data }: TableProps) => {
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
         useTable({ columns, data }, useBlockLayout, useSticky);
@@ -94,7 +41,6 @@ const Table = ({ data }: TableProps) => {
                         
                     >
                         {headerGroup.headers.map((column) => {
-                            console.log(column, column.getHeaderProps());
                             return (
                                 <Th
                                     {...column.getHeaderProps()}
@@ -105,7 +51,6 @@ const Table = ({ data }: TableProps) => {
                                     borderBottomWidth="1px"
                                     borderRadius={0}
                                     fontSize="xs"
-                                    minWidth={column.width}
                                     maxWidth={column.width}
                                     borderLeft={0}
                                     borderRight={0}

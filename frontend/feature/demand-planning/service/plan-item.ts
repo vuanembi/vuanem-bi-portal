@@ -1,3 +1,5 @@
+import { CellProps as Props } from 'react-table';
+
 import { request } from './api';
 
 export type Item = {
@@ -29,6 +31,8 @@ export type PlanItem = {
     item: Item;
     vendors: PlanItemVendor[];
 };
+
+export type CellProps = Props<PlanItem>;
 
 export const updateOne = (data: PlanItem) =>
     request({ url: `/plan-item/${data.id}`, data });

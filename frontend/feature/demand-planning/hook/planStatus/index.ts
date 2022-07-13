@@ -1,7 +1,5 @@
-import { ColumnDefinition } from 'react-tabulator';
-
 import { updateStatus } from '../../service/plan';
-import columns from './columns';
+import * as columns from './columns';
 
 export type PlanStatusStyle = {
     label: string;
@@ -10,7 +8,7 @@ export type PlanStatusStyle = {
         label: string;
         handler: (id: number) => Promise<any>;
     };
-    columns: ColumnDefinition[];
+    columns: columns.ColumnDef[];
 };
 
 export const planStatuses: { [status: string]: PlanStatusStyle } = {
@@ -31,8 +29,6 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             columns.avgOrderDiscount,
             columns.basePrice,
             columns.workingDays,
-            columns.qtyDemandML,
-            columns.qtyDemandPurchasing,
         ],
     },
     forecasted: {
