@@ -8,7 +8,7 @@ import {
 import { chain } from 'lodash';
 import { useQuery } from 'react-query';
 
-import { TableContainer } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import Table from './Table';
 
@@ -30,56 +30,21 @@ const Workbench = ({ setUpdates }: WorkbenchProps) => {
         getOneItems(plan.id),
     );
 
-    const [planItemGroups, setPlanItemGroups] = useState<
-        (PlanItemGroup)[]
-    >([]);
-
-    useEffect(() => {
-        const group = chain(planItems)
-            .groupBy(({ item: { sku }, region }) => `${sku}-${region}`)
-            .toPairs()
-            .map(([skuRegion, values]) => {
-                const [sku, region] = skuRegion.split('-');
-                return {
-                    sku,
-                    region,
-                    subRows: values.map((value) => ({
-                        ...value,
-                        sku: undefined,
-                        region: undefined,
-                    })),
-                };
-            })
-            .groupBy(({ sku }) => sku)
-            .toPairs()
-            .map(([sku, values]) => ({
-                sku,
-                subRows: values.map((value) => ({
-                    ...value,
-                    sku: undefined,
-                })),
-            }))
-            .value();
-        
-        // @ts-expect-error
-        setPlanItemGroups(group);
-    }, [planItems]);
-
     if (!planItems) {
         return null;
     }
 
     return (
-        <TableContainer
-            h="80vh"
-            p={0}
-            overflowY="scroll"
-            borderWidth="1px"
-            borderColor={color}
-            fontSize="sm"
-        >
-            <Table columns={columns} data={planItemGroups} />
-        </TableContainer>
+        <Box bgColor="white" maxW="100%">
+            <Table
+                columns={columns}
+                data={planItems.map((planItem) => ({
+                    ...planItem,
+                    sku: planItem.item.sku,
+                }))}
+            />
+            ;
+        </Box>
     );
 };
 
