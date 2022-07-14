@@ -12,9 +12,9 @@ import { PlanItem } from '../plan-item/plan-item.entity';
 
 export enum PlanStatus {
     DRAFT = 'draft',
-    FORECASTING = 'forecasting',
-    FORECASTED = 'forecasted',
-    REVIEWED = 'reviewed',
+    FORECAST = 'forecast',
+    INVENTORY = 'inventory',
+    REVIEW = 'review',
 }
 
 @Entity()

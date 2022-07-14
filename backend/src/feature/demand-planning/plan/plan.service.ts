@@ -54,16 +54,23 @@ export class PlanService {
 
         await this.planItemService.forecast(plan.items.getItems());
 
-        this.planRepository.assign(plan, { status: PlanStatus.FORECASTED });
+        this.planRepository.assign(plan, { status: PlanStatus.FORECAST });
 
         this.planRepository.persist(plan);
 
         return this.planRepository.flush().then(() => plan);
     }
 
+    async checkInventory(id: number) {
+        return this.findOne(id).then(async (plan) => {
+            this.planRepository.assign(plan, { status: PlanStatus.INVENTORY });
+            await this.planRepository.persistAndFlush(plan);
+        });
+    }
+
     async review(id: number) {
         return this.findOne(id).then(async (plan) => {
-            this.planRepository.assign(plan, { status: PlanStatus.REVIEWED });
+            this.planRepository.assign(plan, { status: PlanStatus.REVIEW });
             await this.planRepository.persistAndFlush(plan);
         });
     }
