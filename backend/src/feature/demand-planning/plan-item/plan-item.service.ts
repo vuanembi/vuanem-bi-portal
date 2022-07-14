@@ -102,6 +102,13 @@ export class PlanItemService {
         return planItems;
     }
 
+    async findOne(id: number) {
+        return this.planItemRepository.findOneOrFail(
+            { id },
+            { populate: ['item', 'seed', 'forecast', 'vendors'] },
+        );
+    }
+
     async forecast(planItems: PlanItem[]) {
         const forecastedPlanItems = await Promise.all(
             planItems.map((planItem) => this.forecastOne(planItem)),
