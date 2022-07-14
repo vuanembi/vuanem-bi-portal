@@ -16,7 +16,6 @@ export class PlanItemVendor extends SubRecord {
     allocation: number;
 
     @ManyToOne({
-        primary: true,
         eager: true,
         entity: () => Vendor,
         nullable: false,
@@ -26,7 +25,6 @@ export class PlanItemVendor extends SubRecord {
     vendor: IdentifiedReference<Vendor>;
 
     @ManyToOne({
-        primary: true,
         entity: () => PlanItem,
         nullable: false,
         cascade: [Cascade.PERSIST, Cascade.REMOVE],

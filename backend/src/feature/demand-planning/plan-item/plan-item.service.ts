@@ -83,19 +83,13 @@ export class PlanItemService {
 
                     const planItemVendors = item.vendor
                         .getItems()
-                        .map((vendor) => {
-                            const planItemVendor =
-                                this.planItemVendorRepository.create({});
-                            this.planItemVendorRepository.assign(
-                                planItemVendor,
-                                {
-                                    planItem,
-                                    vendor: vendor.id,
-                                    allocation: 1 / item.vendor.length,
-                                },
-                            );
-                            return planItemVendor;
-                        });
+                        .map((vendor) =>
+                            this.planItemVendorRepository.create({
+                                planItem,
+                                vendor: vendor.id,
+                                allocation: 1 / item.vendor.length,
+                            }),
+                        );
 
                     this.planItemVendorRepository.persist(planItemVendors);
                     return planItem;

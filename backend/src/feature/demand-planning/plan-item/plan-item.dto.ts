@@ -22,13 +22,12 @@ export class CreatePlanItemDto {
 
 export class UpdatePlanItemDto {
     @ApiPropertyOptional()
-    startOfWeek?: Date;
-
-    @ApiPropertyOptional()
-    region?: string;
-
-    @ApiPropertyOptional()
     avgItemDiscount?: number;
+
+    @ApiPropertyOptional()
+    seed: {
+        avgItemDiscount?: number;
+    }
 
     @ApiPropertyOptional()
     avgOrderDiscount?: number;

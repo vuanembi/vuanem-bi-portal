@@ -21,5 +21,5 @@ export abstract class SubRecord {
 
 export abstract class Dimension {
     @PrimaryKey()
-    id: number;
+    id!: number;
 }
