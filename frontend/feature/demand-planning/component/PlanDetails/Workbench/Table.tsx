@@ -1,60 +1,44 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-import { ReactTabulator, ColumnDefinition } from 'react-tabulator';
-import {TabulatorFull as Tabulator} from "tabulator-tables";
-
+import { Box } from '@chakra-ui/react';
+import { TabulatorFull, Tabulator } from 'tabulator-tables';
+import ColumnDefinition = Tabulator.ColumnDefinition;
 
 import { PlanItem } from '../../../service/plan-item.service';
 
 type TableProps = {
     columns: ColumnDefinition[];
-    data: PlanItem[];
-};
-
-type Cell = {
-    column: {
-        field: keyof PlanItem;
-        fieldStructure: (keyof PlanItem)[];
-    };
-    row: {
-        data: PlanItem;
-    };
-    oldValue: string | number;
-    value: string | number;
+    data: (PlanItem & { sku: PlanItem['item']['sku'] })[];
 };
 
 const Table = ({ columns, data }: TableProps) => {
-    const onCellEdited = (cell: any) => {
-        const { _cell }: { _cell: Cell } = { ...cell };
-        const { column, row, value } = _cell;
+    const el = useRef<HTMLDivElement>(null);
+    const table = useRef<Tabulator | null>(null);
+    const [_data, setData] = useState(data);
 
-        console.log({
-            id: row.data.id,
-            ...column.fieldStructure.reduceRight(
-                (acc, cur) => ({
-                    [cur]: acc,
-                }),
-                value as Partial<PlanItem>,
-            ),
+    useEffect(() => {
+        table.current = new TabulatorFull(el.current as HTMLDivElement, {
+            columns,
+            data: _data,
+            height: '80%',
+            layout: 'fitDataFill',
+            dataTree: true,
+            dataTreeChildField: 'vendors',
+            groupBy: ['sku', 'region'],
         });
-    };
+        return table.current.destroy();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        data && data.length > 0 && setData(data);
+    }, [data]);
 
     return (
-        <ReactTabulator
-            className={'plan-item-table'}
-            columns={columns}
-            data={data}
-            layout="fitDataFill"
-            events={{
-                cellEdited: onCellEdited,
-            }}
-            options={{
-                height: '80%',
-                dataTree: true,
-                dataTreeChildField: 'vendors',
-                groupBy: ['sku', 'region'],
-            }}
-        />
+        <Box bgColor="white" maxW="100%">
+            <div ref={el} />
+        </Box>
     );
 };
 
