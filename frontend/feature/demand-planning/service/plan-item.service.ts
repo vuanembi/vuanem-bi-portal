@@ -38,5 +38,8 @@ export type PlanItemGroup = PlanItem & {
     }[];
 };
 
+export const getOne = (id: number) => () =>
+    request({ url: `/plan-item/${id}` });
+
 export const updateOne = (data: PlanItem) =>
-    request({ url: `/plan-item/${data.id}`, data });
+    request({ url: `/plan-item/${data.id}`, data, method: 'PUT' });

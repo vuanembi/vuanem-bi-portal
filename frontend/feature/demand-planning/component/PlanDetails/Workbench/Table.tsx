@@ -6,7 +6,7 @@ import ColumnDefinition = Tabulator.ColumnDefinition;
 
 import { PlanItem } from '../../../service/plan-item.service';
 
-type TableProps = {
+export type TableProps = {
     columns: ColumnDefinition[];
     data: (PlanItem & { sku: PlanItem['item']['sku'] })[];
 };

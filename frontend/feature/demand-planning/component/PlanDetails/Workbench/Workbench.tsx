@@ -1,10 +1,11 @@
 import { useContext } from 'react';
-import { useQueryClient, useQuery } from 'react-query';
+import { useQueryClient, useQuery, useQueries } from 'react-query';
 
 import { Tabulator } from 'tabulator-tables';
 import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
 import Table from './Table';
+import WorkbenchItems from './WorkbenchItems';
 
 import { PlanContext } from '../../../service/plan.context';
 import { getOneItems } from '../../../service/plan.service';
@@ -13,13 +14,14 @@ import { PlanItem } from '../../../service/plan-item.service';
 const Workbench = () => {
     const { plan, config } = useContext(PlanContext);
 
-    const queryId = `plan[${plan.id}].items`;
+    const queryId = ['plan', plan.id, 'items'];
     const queryClient = useQueryClient();
     const { data: planItems } = useQuery<PlanItem[]>(
         queryId,
         getOneItems(plan.id),
         { staleTime: Infinity, cacheTime: Infinity },
     );
+
     const data = planItems?.map((planItem) => ({
         ...planItem,
         sku: planItem.item.sku,
@@ -41,8 +43,7 @@ const Workbench = () => {
             cell.getRow(),
             cell.getValue(),
         ];
-        queryClient.invalidateQueries(queryId);
-        console.log({ id: 'vendors', column, row, value });
+        console.log({ id: 'vendors', column, row, value, parent: row.getTreeParent() });
     };
 
     const columns = [
@@ -54,7 +55,7 @@ const Workbench = () => {
         return null;
     }
 
-    return <Table columns={columns} data={data} />;
+    return <WorkbenchItems columns={columns} data={data} />;
 };
 
 export default Workbench;
