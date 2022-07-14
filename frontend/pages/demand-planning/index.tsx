@@ -10,9 +10,9 @@ import {
     useToast,
 } from '@chakra-ui/react';
 
-import { Plan, get } from '../../feature/demand-planning/service/plan';
+import { Plan, get } from '../../feature/demand-planning/service/plan.service';
 
-import { planStatuses } from '../../feature/demand-planning/hook/planStatus';
+import { planConfigs } from '../../feature/demand-planning/service/plan.config';
 
 import PlanList from '../../feature/demand-planning/component/Home/PlanList/PlanList';
 import PlanForm from '../../feature/demand-planning/component/Home/PlanForm/PlanForm';
@@ -33,7 +33,7 @@ const DemandPlanning: NextPage = () => {
         return null;
     }
 
-    const planLists = Object.entries(planStatuses)
+    const planLists = Object.entries(planConfigs)
         .map(([status, style]) => ({ status, ...style }))
         .map((planList) => ({
             ...planList,

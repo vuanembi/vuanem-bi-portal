@@ -5,17 +5,14 @@ import { useMutation } from 'react-query';
 
 import ConfirmModal from './ConfirmModal';
 
-import usePlanStatus from '../../../hook/planStatus';
-import { PlanContext } from '../../../context';
+import { PlanContext } from '../../../service/plan.context';
 
 const Action = () => {
-    const { plan } = useContext(PlanContext);
-    const { id, status } = plan;
-    const { color, action } = usePlanStatus(status);
+    const { plan, config } = useContext(PlanContext);
     const { isOpen, onClose, onToggle } = useDisclosure();
     const router = useRouter();
 
-    const { isLoading, mutate } = useMutation(action.handler, {
+    const { isLoading, mutate } = useMutation(config.action.handler, {
         onSuccess: () => {
             onClose();
             router.reload();
@@ -27,17 +24,17 @@ const Action = () => {
 
     return (
         <VStack flex="1" alignItems="stretch">
-            {action.label ? (
+            {config.action.label ? (
                 <Button
                     color="white"
-                    bgColor={color}
+                    bgColor={config.color}
                     onClick={() => onToggle()}
                     isLoading={isLoading}
                 >
-                    {action.label}
+                    {config.action.label}
                 </Button>
             ) : (
-                <Button isDisabled bgColor={color} />
+                <Button isDisabled bgColor={config.color} />
             )}
             <Button color="white" bgColor="red.400">
                 Delete
@@ -45,8 +42,8 @@ const Action = () => {
             <ConfirmModal
                 isOpen={isOpen}
                 onClose={onClose}
-                title={action.label || 'Confirm'}
-                onSubmit={() => mutate(id)}
+                title={config.action.label || 'Confirm'}
+                onSubmit={() => mutate(plan.id)}
             >
                 {}
             </ConfirmModal>

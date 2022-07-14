@@ -6,8 +6,8 @@ import { VStack, HStack, LinkBox, LinkOverlay, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import usePlanStatus from '../../../hook/planStatus';
-import { Plan as PlanProps } from '../../../service/plan';
+import { PlanStatus, planConfigs } from '../../../service/plan.config';
+import { Plan as PlanProps } from '../../../service/plan.service';
 
 dayjs.extend(utc);
 
@@ -18,7 +18,7 @@ const Plan = ({
     updatedAt,
     status,
 }: PlanProps) => {
-    const { color } = usePlanStatus(status);
+    const { color } = planConfigs[status as PlanStatus];
 
     const { pathname } = useRouter();
 

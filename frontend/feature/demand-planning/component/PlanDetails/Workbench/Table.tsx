@@ -1,6 +1,6 @@
 import { ReactTabulator, ColumnDefinition } from 'react-tabulator';
 
-import { PlanItem } from '../../../service/plan-item';
+import { PlanItem } from '../../../service/plan-item.service';
 
 type TableProps = {
     columns: ColumnDefinition[];

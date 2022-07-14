@@ -7,21 +7,19 @@ import { Center, HStack, Icon, LinkBox, LinkOverlay } from '@chakra-ui/react';
 
 import { FaHome } from 'react-icons/fa';
 
-import usePlanStatus from '../../../hook/planStatus';
-import { PlanContext } from '../../../context';
+import { PlanContext } from '../../../service/plan.context';
 
 import Info from './Info';
 import Action from './Action';
 
 const Header = () => {
-    const { plan } = useContext(PlanContext);
-    const { color } = usePlanStatus(plan.status);
+    const { plan, config } = useContext(PlanContext);
 
     const home = useRouter().pathname.split('/')[1];
 
     return (
         <HStack flex="1" justifyContent="space-between">
-            <Center as={LinkBox} p={5} bgColor={color}>
+            <Center as={LinkBox} p={5} bgColor={config.color}>
                 <Icon
                     as={FaHome}
                     fontSize="xxx-large"

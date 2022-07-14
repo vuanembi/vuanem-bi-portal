@@ -14,32 +14,30 @@ import { IoMdCloudDone } from 'react-icons/io';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import usePlanStatus from '../../../hook/planStatus';
-import { PlanContext } from '../../../context';
+import { PlanContext } from '../../../service/plan.context';
 
 dayjs.extend(utc);
 
 const Info = () => {
-    const { plan, updates } = useContext(PlanContext);
+    const { plan, config } = useContext(PlanContext);
 
     const { name, startOfForecastWeek, status, createdAt, updatedAt } = plan;
-    const { color } = usePlanStatus(status);
 
     const tooltipProps = {
-        bgColor: color,
+        bgColor: config.color,
         fontWeight: 'bold',
     };
 
     const Loading = () => (
         <Tooltip label="Loading" {...tooltipProps}>
-            <Spinner color={color} />
+            <Spinner color={config.color} />
         </Tooltip>
     );
 
     const Done = () => (
         <Tooltip label="Synced" {...tooltipProps}>
             <chakra.span lineHeight={0}>
-                <Icon as={IoMdCloudDone} color={color} fontSize="2xl" />
+                <Icon as={IoMdCloudDone} color={config.color} fontSize="2xl" />
             </chakra.span>
         </Tooltip>
     );
@@ -49,7 +47,7 @@ const Info = () => {
             justifyContent="space-between"
             alignItems="stretch"
             borderWidth="1px"
-            borderColor={color}
+            borderColor={config.color}
             p={2}
         >
             <VStack alignItems="flex-start" flexBasis="70%" spacing={0}>
@@ -94,7 +92,7 @@ const Info = () => {
                                 .format('YYYY-MM-DD HH:mm')}
                         </Text>
                     </Tooltip>
-                    {updates > 0 ? <Loading /> : <Done />}
+                    {/* {updates > 0 ? <Loading /> : <Done />} */}
                 </HStack>
             </VStack>
         </HStack>

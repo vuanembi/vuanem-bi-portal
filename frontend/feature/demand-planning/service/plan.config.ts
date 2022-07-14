@@ -1,9 +1,16 @@
 import { ColumnDefinition } from 'react-tabulator';
 
-import { updateStatus } from '../../service/plan';
-import * as columns from './columns';
+import { updateStatus } from './plan.service';
+import * as columns from './plan-item.columns';
 
-export type PlanStatusStyle = {
+export enum PlanStatus {
+    DRAFT = 'draft',
+    FORECAST = 'forecast',
+    INVENTORY = 'inventory',
+    REVIEW = 'review',
+}
+
+export type PlanConfig = {
     label: string;
     color: string;
     action: {
@@ -13,7 +20,7 @@ export type PlanStatusStyle = {
     columns: ColumnDefinition[];
 };
 
-export const planStatuses: { [status: string]: PlanStatusStyle } = {
+export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
     draft: {
         label: 'Draft',
         color: 'teal.300',
@@ -99,7 +106,3 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
         ],
     },
 };
-
-const usePlanStatus = (status: string): PlanStatusStyle => planStatuses[status];
-
-export default usePlanStatus;
