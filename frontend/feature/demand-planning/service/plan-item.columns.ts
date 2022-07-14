@@ -16,7 +16,6 @@ export const withEditor =
     (cellEdited?) => ({
         ...columnFactory(cellEdited),
         editor: 'number',
-        cssClass: 'tabulator-editable',
     });
 
 export const sku: ColumnFactory = () => ({

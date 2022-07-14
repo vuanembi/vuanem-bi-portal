@@ -12,5 +12,10 @@
 
     .tabulator-cell.tabulator-editable {
         text-decoration: underline;
+        text-decoration-style: dotted;
+
+        input[type="number"] {
+            text-align: right;
+        }
     }
 }
