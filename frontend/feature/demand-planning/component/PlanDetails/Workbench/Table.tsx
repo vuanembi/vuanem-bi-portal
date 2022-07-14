@@ -10,6 +10,7 @@ type TableProps = {
 type Cell = {
     column: {
         field: keyof PlanItem;
+        fieldStructure: (keyof PlanItem)[];
     };
     row: {
         data: PlanItem;
@@ -20,21 +21,29 @@ type Cell = {
 
 const Table = ({ columns, data }: TableProps) => {
     const onCellEdited = (cell: any) => {
-        const { _cell }: { _cell: Cell } = Object.assign({}, cell);
-        const { column, row, oldValue, value } = _cell;
+        const { _cell }: { _cell: Cell } = { ...cell };
+        const { column, row, value } = _cell;
 
-        console.log({ column, row, oldValue, value });
+        console.log({
+            id: row.data.id,
+            ...column.fieldStructure.reduceRight(
+                (acc, cur) => ({
+                    [cur]: acc,
+                }),
+                value as Partial<PlanItem>,
+            ),
+        });
     };
 
     return (
         <ReactTabulator
-            className={"plan-item-table"}
+            className={'plan-item-table'}
             columns={columns}
             data={data}
             layout="fitDataFill"
-            events={{
-                cellEdited: onCellEdited,
-            }}
+            // events={{
+            //     cellEdited: onCellEdited,
+            // }}
             options={{
                 height: '80%',
                 dataTree: true,

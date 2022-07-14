@@ -20,30 +20,29 @@ export class CreatePlanItemDto {
     workingDays: number;
 }
 
+class UpdatePlanItemSeedDto {
+    @ApiPropertyOptional()
+    avgItemDiscount: number;
+
+    @ApiPropertyOptional()
+    avgOrderDiscount: number;
+
+    @ApiPropertyOptional()
+    basePrice: number;
+
+    @ApiPropertyOptional()
+    workingDays: number;
+}
+
+class UpdatePlanItemForecastDto {
+    @ApiPropertyOptional()
+    qtyDemandPurchasing?: number;
+}
+
 export class UpdatePlanItemDto {
     @ApiPropertyOptional()
-    avgItemDiscount?: number;
+    seed: UpdatePlanItemSeedDto
 
     @ApiPropertyOptional()
-    seed: {
-        avgItemDiscount?: number;
-    }
-
-    @ApiPropertyOptional()
-    avgOrderDiscount?: number;
-
-    @ApiPropertyOptional()
-    basePrice?: number;
-
-    @ApiPropertyOptional()
-    workingDays?: number;
-
-    @ApiPropertyOptional()
-    qtyDemandML?: number | null;
-
-    @ApiPropertyOptional()
-    qtyDemandPurchasing?: number | null;
-
-    @ApiPropertyOptional()
-    qtyDemand?: number | null;
+    forecast: UpdatePlanItemForecastDto
 }

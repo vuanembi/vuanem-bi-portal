@@ -15,6 +15,7 @@ const Workbench = () => {
     const { data: planItems } = useQuery<PlanItem[]>(
         `plan[${plan.id}].items`,
         getOneItems(plan.id),
+        { staleTime: Infinity, cacheTime: Infinity },
     );
 
     if (!planItems) {

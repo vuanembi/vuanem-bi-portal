@@ -38,6 +38,8 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
             columns.withEditor(columns.avgOrderDiscount),
             columns.withEditor(columns.basePrice),
             columns.withEditor(columns.workingDays),
+            columns.withEditor(columns.vendorName),
+            columns.withEditor(columns.vendorAllocation),
         ],
     },
     forecast: {
@@ -59,6 +61,8 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
             columns.workingDays,
             columns.qtyDemandML,
             columns.withEditor(columns.qtyDemandPurchasing),
+            columns.withEditor(columns.vendorName),
+            columns.withEditor(columns.vendorAllocation),
         ],
     },
     inventory: {

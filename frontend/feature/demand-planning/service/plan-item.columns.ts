@@ -47,37 +47,41 @@ export const region: ColumnDefinition = {
 
 export const avgItemDiscount: ColumnDefinition = {
     title: 'Avg. Item Discount',
-    field: 'avgItemDiscount',
+    field: 'seed.avgItemDiscount',
     hozAlign: 'right',
+    cellEdited: (cell) => {
+        console.log(123);
+        console.log({cell});
+    }
 };
 
 export const avgOrderDiscount: ColumnDefinition = {
     title: 'Avg. Order Discount',
-    field: 'avgOrderDiscount',
+    field: 'seed.avgOrderDiscount',
     hozAlign: 'right',
 };
 
 export const basePrice: ColumnDefinition = {
     title: 'Base Price',
-    field: 'basePrice',
+    field: 'seed.basePrice',
     hozAlign: 'right',
 };
 
 export const workingDays: ColumnDefinition = {
     title: 'Working Days',
-    field: 'workingDays',
+    field: 'seed.workingDays',
     hozAlign: 'right',
 };
 
 export const qtyDemandML: ColumnDefinition = {
     title: 'Qty. Demand ML',
-    field: 'qtyDemandML',
+    field: 'seed.qtyDemandML',
     hozAlign: 'right',
 };
 
 export const qtyDemandPurchasing: ColumnDefinition = {
     title: 'Qty. Demand Pur',
-    field: 'qtyDemandPurchasing',
+    field: 'seed.qtyDemandPurchasing',
     hozAlign: 'right',
 };
 
@@ -85,10 +89,18 @@ export const vendorName: ColumnDefinition = {
     title: 'Vendor Name',
     field: 'vendor.name',
     hozAlign: 'left',
+    cellEdited: (zx) => {
+        console.log(123);
+        console.log(zx);
+    }
 };
 
 export const vendorAllocation: ColumnDefinition = {
     title: 'Vendor Allocation',
     field: 'allocation',
     hozAlign: 'right',
+    cellEdited: (cell) => {
+        console.log(123);
+        console.log({cell});
+    }
 };

@@ -27,4 +27,4 @@ export const getOneItems = (id: number) => () =>
     request<PlanItem[]>({ url: `/plan/${id}/plan-item` });
 
 export const updateStatus = (endpoint: string) => (id: number) =>
-    request({ url: `/plan/${id}/${endpoint}` });
+    request({ url: `/plan/${id}/${endpoint}`, method: 'PUT' });
