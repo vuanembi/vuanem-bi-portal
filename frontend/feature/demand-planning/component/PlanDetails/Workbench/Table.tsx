@@ -1,4 +1,8 @@
+import { useEffect, useRef } from 'react';
+
 import { ReactTabulator, ColumnDefinition } from 'react-tabulator';
+import {TabulatorFull as Tabulator} from "tabulator-tables";
+
 
 import { PlanItem } from '../../../service/plan-item.service';
 
@@ -41,9 +45,9 @@ const Table = ({ columns, data }: TableProps) => {
             columns={columns}
             data={data}
             layout="fitDataFill"
-            // events={{
-            //     cellEdited: onCellEdited,
-            // }}
+            events={{
+                cellEdited: onCellEdited,
+            }}
             options={{
                 height: '80%',
                 dataTree: true,

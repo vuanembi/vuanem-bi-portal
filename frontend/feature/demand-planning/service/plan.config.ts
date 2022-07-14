@@ -1,5 +1,3 @@
-import { ColumnDefinition } from 'react-tabulator';
-
 import { updateStatus } from './plan.service';
 import * as columns from './plan-item.columns';
 
@@ -17,7 +15,10 @@ export type PlanConfig = {
         label: string;
         handler: (id: number) => Promise<any>;
     };
-    columns: ColumnDefinition[];
+    columns: {
+        root: columns.ColumnFactory[];
+        vendors: columns.ColumnFactory[];
+    };
 };
 
 export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
@@ -28,19 +29,23 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
             label: 'Forecast',
             handler: updateStatus('forecast'),
         },
-        columns: [
-            columns.sku,
-            columns.startOfWeek,
-            columns.region,
-            columns.weekNo,
-            columns.year,
-            columns.withEditor(columns.avgItemDiscount),
-            columns.withEditor(columns.avgOrderDiscount),
-            columns.withEditor(columns.basePrice),
-            columns.withEditor(columns.workingDays),
-            columns.withEditor(columns.vendorName),
-            columns.withEditor(columns.vendorAllocation),
-        ],
+        columns: {
+            root: [
+                columns.sku,
+                columns.startOfWeek,
+                columns.region,
+                columns.weekNo,
+                columns.year,
+                columns.withEditor(columns.avgItemDiscount),
+                columns.withEditor(columns.avgOrderDiscount),
+                columns.withEditor(columns.basePrice),
+                columns.withEditor(columns.workingDays),
+            ],
+            vendors: [
+                columns.vendorName,
+                columns.withEditor(columns.vendorAllocation),
+            ],
+        },
     },
     forecast: {
         label: 'Forecast',
@@ -49,21 +54,22 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
             label: 'Inventory',
             handler: updateStatus('inventory'),
         },
-        columns: [
-            columns.sku,
-            columns.startOfWeek,
-            columns.region,
-            columns.weekNo,
-            columns.year,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.basePrice,
-            columns.workingDays,
-            columns.qtyDemandML,
-            columns.withEditor(columns.qtyDemandPurchasing),
-            columns.withEditor(columns.vendorName),
-            columns.withEditor(columns.vendorAllocation),
-        ],
+        columns: {
+            root: [
+                columns.sku,
+                columns.startOfWeek,
+                columns.region,
+                columns.weekNo,
+                columns.year,
+                columns.avgItemDiscount,
+                columns.avgOrderDiscount,
+                columns.basePrice,
+                columns.workingDays,
+                columns.qtyDemandML,
+                columns.withEditor(columns.qtyDemandPurchasing),
+            ],
+            vendors: [],
+        },
     },
     inventory: {
         label: 'Review',
@@ -72,21 +78,19 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
             label: 'Review',
             handler: updateStatus('review'),
         },
-        columns: [
-            columns.sku,
-            columns.startOfWeek,
-            columns.region,
-            columns.weekNo,
-            columns.year,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.basePrice,
-            columns.workingDays,
-            columns.qtyDemandML,
-            columns.qtyDemandPurchasing,
-            columns.vendorName,
-            columns.vendorAllocation,
-        ],
+        columns: {
+            root: [
+                columns.sku,
+                columns.startOfWeek,
+                columns.region,
+                columns.weekNo,
+                columns.year,
+            ],
+            vendors: [
+                columns.vendorName,
+                columns.withEditor(columns.vendorAllocation),
+            ],
+        },
     },
     review: {
         label: 'Reviewed',
@@ -95,18 +99,21 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
             label: 'Review',
             handler: updateStatus('review'),
         },
-        columns: [
-            columns.sku,
-            columns.startOfWeek,
-            columns.region,
-            columns.weekNo,
-            columns.year,
-            columns.avgItemDiscount,
-            columns.avgOrderDiscount,
-            columns.basePrice,
-            columns.workingDays,
-            columns.qtyDemandML,
-            columns.qtyDemandPurchasing,
-        ],
+        columns: {
+            root: [
+                columns.sku,
+                columns.startOfWeek,
+                columns.region,
+                columns.weekNo,
+                columns.year,
+                columns.avgItemDiscount,
+                columns.avgOrderDiscount,
+                columns.basePrice,
+                columns.workingDays,
+                columns.qtyDemandML,
+                columns.qtyDemandPurchasing,
+            ],
+            vendors: [],
+        },
     },
 };

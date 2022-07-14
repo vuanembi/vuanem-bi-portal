@@ -1,23 +1,31 @@
-import { ColumnDefinition } from 'react-tabulator';
+import { Tabulator } from 'tabulator-tables';
+import ColumnDefinition = Tabulator.ColumnDefinition;
+import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-export const withEditor = (column: ColumnDefinition): ColumnDefinition => ({
-    ...column,
-    editor: 'number',
-    cssClass: 'tabulator-editable',
-});
+export type ColumnFactory = (
+    cellEdited?: CellEditEventCallback,
+) => ColumnDefinition;
 
-export const sku: ColumnDefinition = {
+export const withEditor =
+    (columnFactory: ColumnFactory): ColumnFactory =>
+    (cellEdited?) => ({
+        ...columnFactory(cellEdited),
+        editor: 'number',
+        cssClass: 'tabulator-editable',
+    });
+
+export const sku: ColumnFactory = () => ({
     title: 'SKU',
     field: 'item.sku',
     frozen: true,
-};
+});
 
-export const startOfWeek: ColumnDefinition = {
+export const startOfWeek: ColumnFactory = () => ({
     title: 'Start of Week',
     field: 'startOfWeek',
     formatter: (cell) => {
@@ -25,82 +33,76 @@ export const startOfWeek: ColumnDefinition = {
         return date ? dayjs.utc(date).format('YYYY-MM-DD') : '';
     },
     frozen: true,
-};
+});
 
-export const weekNo: ColumnDefinition = {
+export const weekNo: ColumnFactory = () => ({
     title: 'Week',
     field: 'weekNo',
     hozAlign: 'right',
-};
+});
 
-export const year: ColumnDefinition = {
+export const year: ColumnFactory = () => ({
     title: 'Year',
     field: 'year',
     hozAlign: 'right',
-};
+});
 
-export const region: ColumnDefinition = {
+export const region: ColumnFactory = () => ({
     title: 'Region',
     field: 'region',
     frozen: true,
-};
+});
 
-export const avgItemDiscount: ColumnDefinition = {
+export const avgItemDiscount: ColumnFactory = (cellEdited) => ({
     title: 'Avg. Item Discount',
     field: 'seed.avgItemDiscount',
     hozAlign: 'right',
-    cellEdited: (cell) => {
-        console.log(123);
-        console.log({cell});
-    }
-};
+    cellEdited,
+});
 
-export const avgOrderDiscount: ColumnDefinition = {
+export const avgOrderDiscount: ColumnFactory = (cellEdited) => ({
     title: 'Avg. Order Discount',
     field: 'seed.avgOrderDiscount',
     hozAlign: 'right',
-};
+    cellEdited,
+});
 
-export const basePrice: ColumnDefinition = {
+export const basePrice: ColumnFactory = (cellEdited) => ({
     title: 'Base Price',
     field: 'seed.basePrice',
     hozAlign: 'right',
-};
+    cellEdited,
+});
 
-export const workingDays: ColumnDefinition = {
+export const workingDays: ColumnFactory = (cellEdited) => ({
     title: 'Working Days',
     field: 'seed.workingDays',
     hozAlign: 'right',
-};
+    cellEdited,
+});
 
-export const qtyDemandML: ColumnDefinition = {
+export const qtyDemandML: ColumnFactory = () => ({
     title: 'Qty. Demand ML',
     field: 'seed.qtyDemandML',
     hozAlign: 'right',
-};
+});
 
-export const qtyDemandPurchasing: ColumnDefinition = {
+export const qtyDemandPurchasing: ColumnFactory = (cellEdited) => ({
     title: 'Qty. Demand Pur',
     field: 'seed.qtyDemandPurchasing',
     hozAlign: 'right',
-};
+    cellEdited,
+});
 
-export const vendorName: ColumnDefinition = {
+export const vendorName: ColumnFactory = () => ({
     title: 'Vendor Name',
     field: 'vendor.name',
     hozAlign: 'left',
-    cellEdited: (zx) => {
-        console.log(123);
-        console.log(zx);
-    }
-};
+});
 
-export const vendorAllocation: ColumnDefinition = {
+export const vendorAllocation: ColumnFactory = (cellEdited) => ({
     title: 'Vendor Allocation',
     field: 'allocation',
     hozAlign: 'right',
-    cellEdited: (cell) => {
-        console.log(123);
-        console.log({cell});
-    }
-};
+    cellEdited,
+});
