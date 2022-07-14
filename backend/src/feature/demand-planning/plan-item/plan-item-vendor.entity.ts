@@ -6,11 +6,12 @@ import {
     Cascade,
 } from '@mikro-orm/core';
 
+import { SubRecord } from '../../../feature/common/entity';
 import { Vendor } from '../../netsuite/vendor/vendor.entity';
 import { PlanItem } from './plan-item.entity';
 
 @Entity()
-export class PlanItemVendor {
+export class PlanItemVendor extends SubRecord {
     @Property()
     allocation: number;
 
@@ -28,8 +29,7 @@ export class PlanItemVendor {
         primary: true,
         entity: () => PlanItem,
         nullable: false,
-        wrappedReference: true,
         cascade: [Cascade.PERSIST, Cascade.REMOVE],
     })
-    planItem: IdentifiedReference<PlanItem>;
+    planItem: PlanItem;
 }

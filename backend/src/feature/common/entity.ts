@@ -14,6 +14,11 @@ export abstract class Record {
     updatedAt: Date = new Date();
 }
 
+export abstract class SubRecord {
+    @PrimaryKey()
+    id!: number;
+}
+
 export abstract class Dimension {
     @PrimaryKey()
     id: number;

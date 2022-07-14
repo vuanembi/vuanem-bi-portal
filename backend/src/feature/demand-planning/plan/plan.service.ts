@@ -49,7 +49,14 @@ export class PlanService {
     async forecast(id: number) {
         const plan = await this.planRepository.findOneOrFail(
             { id },
-            { populate: ['items', 'items.item.sku'] },
+            {
+                populate: [
+                    'items',
+                    'items.item.sku',
+                    'items.seed',
+                    'items.forecast',
+                ],
+            },
         );
 
         await this.planItemService.forecast(plan.items.getItems());

@@ -12,6 +12,8 @@ import { PlanItem } from './plan-item.entity';
 import { CreatePlanItemDto } from '../plan-item/plan-item.dto';
 import { UpdatePlanItemDto } from './plan-item.dto';
 
+import { PlanItemSeed } from './plan-item-seed.entity';
+import { PlanItemForecast } from './plan-item-forecast.entity';
 import { PlanItemVendor } from './plan-item-vendor.entity';
 
 import { faker } from '@faker-js/faker';
@@ -46,11 +48,17 @@ const mockPlanItems = (date: Date): CreatePlanItemDto[] => {
 export class PlanItemService {
     constructor(
         private readonly autoMLProvider: AutoMLProvider,
-        
+
         private readonly itemService: ItemService,
 
         @InjectRepository(PlanItem)
         private readonly planItemRepository: EntityRepository<PlanItem>,
+
+        @InjectRepository(PlanItemSeed)
+        private readonly planItemSeedRepository: EntityRepository<PlanItemSeed>,
+
+        @InjectRepository(PlanItemForecast)
+        private readonly planItemForecastRepository: EntityRepository<PlanItemForecast>,
 
         @InjectRepository(PlanItemVendor)
         private readonly planItemVendorRepository: EntityRepository<PlanItemVendor>,
@@ -61,10 +69,16 @@ export class PlanItemService {
         const planItems: PlanItem[] = items
             .map((item) =>
                 mockPlanItems(startOfForecastWeek).map((mock) => {
+                    const planItemSeed =
+                        this.planItemSeedRepository.create(mock);
+
+                    this.planItemSeedRepository.persist(planItemSeed);
+
                     const planItem = this.planItemRepository.create({
                         plan,
                         item,
                         ...mock,
+                        seed: planItemSeed,
                     });
 
                     const planItemVendors = item.vendor
@@ -111,15 +125,28 @@ export class PlanItemService {
             dayjs(planItem.startOfWeek).format('YYYY-MM-DDTHH:mm:ss'),
             planItem.item.getProperty('sku'),
             planItem.region,
-            planItem.avgItemDiscount,
-            planItem.avgOrderDiscount,
-            planItem.basePrice,
-            planItem.workingDays,
+            planItem.seed.getProperty('avgItemDiscount'),
+            planItem.seed.getProperty('avgOrderDiscount'),
+            planItem.seed.getProperty('basePrice'),
+            planItem.seed.getProperty('workingDays'),
         ]);
 
-        this.planItemRepository.assign(planItem, {
-            qtyDemandML,
+        const planItemForecast = planItem.forecast
+            ? planItem.forecast.getEntity()
+            : this.planItemForecastRepository.create({});
+
+        this.planItemForecastRepository.assign(planItemForecast, {
+            percentageChange1w: mockFloat(),
+            percentageChange1m: mockFloat(),
+            percentageChange3m: mockFloat(),
             qtyDemandPurchasing: qtyDemandML,
+            qtyDemandML,
+        });
+
+        this.planItemForecastRepository.persist(planItemForecast);
+
+        this.planItemRepository.assign(planItem, {
+            forecast: planItemForecast,
         });
 
         return planItem;
