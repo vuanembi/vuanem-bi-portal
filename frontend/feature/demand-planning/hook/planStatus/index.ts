@@ -1,7 +1,7 @@
 import { ColumnDefinition } from 'react-tabulator';
 
 import { updateStatus } from '../../service/plan';
-import columns from './columns';
+import * as columns from './columns';
 
 export type PlanStatusStyle = {
     label: string;
@@ -27,16 +27,35 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             columns.region,
             columns.weekNo,
             columns.year,
+            columns.withEditor(columns.avgItemDiscount),
+            columns.withEditor(columns.avgOrderDiscount),
+            columns.withEditor(columns.basePrice),
+            columns.withEditor(columns.workingDays),
+        ],
+    },
+    forecast: {
+        label: 'Forecast',
+        color: 'blue.300',
+        action: {
+            label: 'Inventory',
+            handler: updateStatus('inventory'),
+        },
+        columns: [
+            columns.sku,
+            columns.startOfWeek,
+            columns.region,
+            columns.weekNo,
+            columns.year,
             columns.avgItemDiscount,
             columns.avgOrderDiscount,
             columns.basePrice,
             columns.workingDays,
             columns.qtyDemandML,
-            columns.qtyDemandPurchasing,
+            columns.withEditor(columns.qtyDemandPurchasing),
         ],
     },
-    forecasted: {
-        label: 'Forecasted',
+    inventory: {
+        label: 'Review',
         color: 'blue.300',
         action: {
             label: 'Review',
@@ -54,9 +73,11 @@ export const planStatuses: { [status: string]: PlanStatusStyle } = {
             columns.workingDays,
             columns.qtyDemandML,
             columns.qtyDemandPurchasing,
+            columns.vendorName,
+            columns.vendorAllocation,
         ],
     },
-    reviewed: {
+    review: {
         label: 'Reviewed',
         color: 'purple.300',
         action: {

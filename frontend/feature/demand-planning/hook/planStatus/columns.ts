@@ -5,7 +5,19 @@ import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-const startOfWeek: ColumnDefinition = {
+export const withEditor = (column: ColumnDefinition): ColumnDefinition => ({
+    ...column,
+    editor: 'number',
+    cssClass: 'tabulator-editable',
+});
+
+export const sku: ColumnDefinition = {
+    title: 'SKU',
+    field: 'item.sku',
+    frozen: true,
+};
+
+export const startOfWeek: ColumnDefinition = {
     title: 'Start of Week',
     field: 'startOfWeek',
     formatter: (cell) => {
@@ -15,82 +27,68 @@ const startOfWeek: ColumnDefinition = {
     frozen: true,
 };
 
-const weekNo: ColumnDefinition = {
+export const weekNo: ColumnDefinition = {
     title: 'Week',
     field: 'weekNo',
     hozAlign: 'right',
 };
 
-const year: ColumnDefinition = {
+export const year: ColumnDefinition = {
     title: 'Year',
     field: 'year',
     hozAlign: 'right',
 };
 
-const region: ColumnDefinition = {
+export const region: ColumnDefinition = {
     title: 'Region',
     field: 'region',
     frozen: true,
 };
 
-const avgItemDiscount = {
+export const avgItemDiscount: ColumnDefinition = {
     title: 'Avg. Item Discount',
     field: 'avgItemDiscount',
-    cssClass: 'tabulator-editable',
     hozAlign: 'right',
-    editor: 'number',
 };
 
-const avgOrderDiscount: ColumnDefinition = {
+export const avgOrderDiscount: ColumnDefinition = {
     title: 'Avg. Order Discount',
     field: 'avgOrderDiscount',
-    cssClass: 'tabulator-editable',
     hozAlign: 'right',
-    editor: 'number',
 };
 
-const basePrice: ColumnDefinition = {
+export const basePrice: ColumnDefinition = {
     title: 'Base Price',
     field: 'basePrice',
-    cssClass: 'tabulator-editable',
     hozAlign: 'right',
-    editor: 'number',
 };
 
-const workingDays: ColumnDefinition = {
+export const workingDays: ColumnDefinition = {
     title: 'Working Days',
     field: 'workingDays',
-    cssClass: 'tabulator-editable',
     hozAlign: 'right',
-    editor: 'number',
 };
 
-const qtyDemandML: ColumnDefinition = {
+export const qtyDemandML: ColumnDefinition = {
     title: 'Qty. Demand ML',
     field: 'qtyDemandML',
-    cssClass: 'tabulator-editable',
     hozAlign: 'right',
 };
 
-const qtyDemandPurchasing: ColumnDefinition = {
+export const qtyDemandPurchasing: ColumnDefinition = {
     title: 'Qty. Demand Pur',
     field: 'qtyDemandPurchasing',
-    cssClass: 'tabulator-editable',
     hozAlign: 'right',
 };
 
-const sku: ColumnDefinition = { title: 'SKU', field: 'item.sku', frozen: true };
+export const vendorName: ColumnDefinition = {
+    title: 'Vendor Name',
+    field: 'vendor.name',
+    hozAlign: 'left',
+};
 
-export default {
-    startOfWeek,
-    weekNo,
-    year,
-    region,
-    avgItemDiscount,
-    avgOrderDiscount,
-    basePrice,
-    workingDays,
-    qtyDemandML,
-    qtyDemandPurchasing,
-    sku,
-} as { [key: string]: ColumnDefinition };
+export const vendorAllocation: ColumnDefinition = {
+    title: 'Vendor Allocation',
+    field: 'allocation',
+    hozAlign: 'right',
+};
