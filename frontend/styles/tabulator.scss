@@ -1,8 +1,12 @@
 @import 'react-tabulator/css/tabulator_bootstrap3.min.css';
 
 .tabulator {
-    .tabulator-row.tabulator-row-even {
-        background-color: white;
+    border-collapse: collapse;
+
+    .tabulator-row {
+        &.tabulator-row-even {
+            background-color: white;
+        }
     }
     .tabulator-header,
     .tabulator-frozen,
@@ -14,7 +18,7 @@
         text-decoration: underline;
         text-decoration-style: dotted;
 
-        input[type="number"] {
+        input[type='number'] {
             text-align: right;
         }
     }

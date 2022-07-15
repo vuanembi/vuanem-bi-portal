@@ -10,7 +10,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 
-import { Plan, get } from '../../feature/demand-planning/service/plan.service';
+import { Plan, get } from '../../feature/demand-planning/service/plan.api';
 
 import { planConfigs } from '../../feature/demand-planning/service/plan.config';
 

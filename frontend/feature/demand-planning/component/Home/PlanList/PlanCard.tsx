@@ -7,17 +7,17 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import { PlanStatus, planConfigs } from '../../../service/plan.config';
-import { Plan as PlanProps } from '../../../service/plan.service';
+import { Plan } from '../../../service/plan.api';
 
 dayjs.extend(utc);
 
-const Plan = ({
+const PlanCard = ({
     id,
     name,
     startOfForecastWeek,
     updatedAt,
     status,
-}: PlanProps) => {
+}: Plan) => {
     const { color } = planConfigs[status as PlanStatus];
 
     const { pathname } = useRouter();
@@ -54,4 +54,4 @@ const Plan = ({
     );
 };
 
-export default Plan;
+export default PlanCard;

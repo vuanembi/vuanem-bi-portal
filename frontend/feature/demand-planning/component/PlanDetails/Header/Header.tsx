@@ -13,12 +13,12 @@ import Info from './Info';
 import Action from './Action';
 
 const Header = () => {
-    const { plan, config } = useContext(PlanContext);
+    const { config } = useContext(PlanContext);
 
     const home = useRouter().pathname.split('/')[1];
 
     return (
-        <HStack flex="1" justifyContent="space-between">
+        <HStack justifyContent="space-between">
             <Center as={LinkBox} p={5} bgColor={config.color}>
                 <Icon
                     as={FaHome}

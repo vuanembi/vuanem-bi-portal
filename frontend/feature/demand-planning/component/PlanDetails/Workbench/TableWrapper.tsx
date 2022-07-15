@@ -16,14 +16,18 @@ import {
     PlanItem,
     getOne,
     updateOne,
-} from '../../../service/plan-item.service';
+} from '../../../service/plan-item.api';
 
-import Table, { TableProps } from './Table';
+import Table from './Table';
+
+type TableWrapperProps = {
+    data: PlanItem[];
+}
 
 type DataFn = (cell: CellComponent) => PlanItem;
 type ItemMutate = (dataFn: DataFn) => CellEditEventCallback;
 
-const WorkbenchItems = ({ data }: TableProps) => {
+const TableWrapper = ({ data }: TableWrapperProps) => {
     const { config } = useContext(PlanContext);
 
     const queryClient = useQueryClient();
@@ -74,4 +78,4 @@ const WorkbenchItems = ({ data }: TableProps) => {
     return <Table columns={columns} data={_data} />;
 };
 
-export default WorkbenchItems;
+export default TableWrapper;

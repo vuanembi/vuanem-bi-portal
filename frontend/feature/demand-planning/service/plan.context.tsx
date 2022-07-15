@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren } from 'react';
 
-import { Plan } from './plan.service';
+import { Plan } from './plan.api';
 import { PlanStatus, PlanConfig, planConfigs } from './plan.config';
 
 export type PlanContextProps = {

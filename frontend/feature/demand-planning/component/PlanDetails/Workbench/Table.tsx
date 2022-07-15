@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { Box } from '@chakra-ui/react';
 import { TabulatorFull, Tabulator } from 'tabulator-tables';
 import ColumnDefinition = Tabulator.ColumnDefinition;
 
-import { PlanItem } from '../../../service/plan-item.service';
+import { PlanItem } from '../../../service/plan-item.api';
 
 export type TableProps = {
     columns: ColumnDefinition[];
@@ -20,7 +19,7 @@ const Table = ({ columns, data }: TableProps) => {
         table.current = new TabulatorFull(el.current as HTMLDivElement, {
             columns,
             data: _data,
-            height: '80%',
+            height: '100%',
             layout: 'fitDataFill',
             dataTree: true,
             dataTreeChildField: 'vendors',
@@ -35,11 +34,7 @@ const Table = ({ columns, data }: TableProps) => {
         data && data.length > 0 && setData(data);
     }, [data]);
 
-    return (
-        <Box bgColor="white" maxW="100%">
-            <div ref={el} />
-        </Box>
-    );
+    return <div ref={el} />;
 };
 
 export default Table;

@@ -4,8 +4,8 @@ import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
 import { PlanStatus, planConfigs } from '../../../service/plan.config';
 
-import { Plan as PlanProps } from '../../../service/plan.service';
-import Plan from '../Plan/Plan'
+import { Plan as PlanProps } from '../../../service/plan.api';
+import PlanCard from './PlanCard';
 import Search from '../../../../../components/Search';
 
 export type PlanListProps = {
@@ -49,7 +49,7 @@ export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
                 <Skeleton w="full" isLoaded={isLoaded} height="800px">
                     <VStack overflowY="auto" alignItems="stretch">
                         {_plans.map((plan) => (
-                            <Plan key={plan.id} {...plan} />
+                            <PlanCard key={plan.id} {...plan} />
                         ))}
                     </VStack>
                 </Skeleton>

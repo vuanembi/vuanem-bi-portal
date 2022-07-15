@@ -2,10 +2,10 @@ import type { NextPage, GetServerSideProps } from 'next';
 
 import { VStack } from '@chakra-ui/react';
 
-import { getOne } from '../../feature/demand-planning/service/plan.service';
+import { getOne } from '../../feature/demand-planning/service/plan.api';
 
 import { PlanProvider } from '../../feature/demand-planning/service/plan.context';
-import { Plan as PlanPageProps } from '../../feature/demand-planning/service/plan.service';
+import { Plan as PlanPageProps } from '../../feature/demand-planning/service/plan.api';
 
 import Header from '../../feature/demand-planning/component/PlanDetails/Header/Header';
 import Workbench from '../../feature/demand-planning/component/PlanDetails/Workbench/Workbench';
@@ -13,7 +13,7 @@ import Workbench from '../../feature/demand-planning/component/PlanDetails/Workb
 const Plan: NextPage<{ plan: PlanPageProps }> = ({ plan }) => {
     return (
         <PlanProvider plan={plan}>
-            <VStack alignItems="stretch">
+            <VStack alignItems="stretch" maxH="80%">
                 <Header />
                 <Workbench />
             </VStack>

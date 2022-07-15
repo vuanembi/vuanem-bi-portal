@@ -1,5 +1,5 @@
 import { request } from './api';
-import { PlanItem } from './plan-item.service';
+import { PlanItem } from './plan-item.api';
 
 export type Plan = {
     id: number;

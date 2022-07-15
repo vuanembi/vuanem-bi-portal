@@ -1,4 +1,4 @@
-import { updateStatus } from './plan.service';
+import { updateStatus } from './plan.api';
 import * as columns from './plan-item.columns';
 
 export enum PlanStatus {
