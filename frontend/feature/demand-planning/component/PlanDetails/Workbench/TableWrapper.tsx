@@ -7,7 +7,6 @@ import {
 } from 'react-query';
 
 import { Tabulator } from 'tabulator-tables';
-import RowComponent = Tabulator.RowComponent;
 import CellComponent = Tabulator.CellComponent;
 import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
@@ -72,7 +71,13 @@ const TableWrapper = ({ data }: TableWrapperProps) => {
         .map(({ data }) => data as PlanItem)
         .map((d) => ({ ...d, sku: d.item.sku }));
 
-    return <Table columns={columns} data={_data} />;
+    return (
+        <Table
+            columns={columns}
+            data={_data}
+            dataTree={config.columns.vendors.length > 0}
+        />
+    );
 };
 
 export default TableWrapper;
