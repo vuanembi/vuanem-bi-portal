@@ -43,7 +43,7 @@ describe('Demand Planning', () => {
         });
 
         it('Find One Item', async () => {
-            const id = 7;
+            const id = 4;
             return planService.findOneItems(id).then((planItems) => {
                 console.log(planItems);
                 expect(planItems.length).toBeGreaterThan(0);
@@ -51,7 +51,7 @@ describe('Demand Planning', () => {
         });
 
         it('Forecast', async () => {
-            return planService.forecast(6).then((plan) => {
+            return planService.forecast(5).then((plan) => {
                 expect(plan).toBeTruthy();
             });
         });

@@ -1,48 +1,40 @@
 import { useRouter } from 'next/router';
-
-import { useState, useContext } from 'react';
-
+import { useContext } from 'react';
 import { VStack, Button, useDisclosure } from '@chakra-ui/react';
+import { useMutation } from 'react-query';
 
 import ConfirmModal from './ConfirmModal';
 
-import usePlanStatus from '../../../hook/planStatus';
-import { PlanContext } from '../../../context';
+import { PlanContext } from '../../../service/plan.context';
 
 const Action = () => {
-    const { plan } = useContext(PlanContext);
-
-    const { id, status } = plan;
-    const { color, action } = usePlanStatus(status);
-
+    const { plan, config } = useContext(PlanContext);
     const { isOpen, onClose, onToggle } = useDisclosure();
-
-    const [loading, setLoading] = useState(false);
-
     const router = useRouter();
 
-    const onAction = () => {
-        onClose();
-        setLoading(true);
-        action?.handler(id).then(() => {
-            setLoading(false);
+    const { isLoading, mutate } = useMutation(config.action.handler, {
+        onSuccess: () => {
+            onClose();
             router.reload();
-        });
-    };
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+    });
 
     return (
         <VStack flex="1" alignItems="stretch">
-            {action ? (
+            {config.action.label ? (
                 <Button
                     color="white"
-                    bgColor={color}
+                    bgColor={config.color}
                     onClick={() => onToggle()}
-                    isLoading={loading}
+                    isLoading={isLoading}
                 >
-                    {action.label}
+                    {config.action.label}
                 </Button>
             ) : (
-                <Button isDisabled bgColor={color} />
+                <Button isDisabled bgColor={config.color} />
             )}
             <Button color="white" bgColor="red.400">
                 Delete
@@ -50,8 +42,9 @@ const Action = () => {
             <ConfirmModal
                 isOpen={isOpen}
                 onClose={onClose}
-                title={action?.label || 'Confirm'}
-                onSubmit={onAction}
+                color={config.color}
+                title={config.action.label || 'Confirm'}
+                onSubmit={() => mutate(plan.id)}
             >
                 {}
             </ConfirmModal>

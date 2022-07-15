@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 
 import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
-import usePlanStatus from '../../../hook/planStatus';
+import { PlanStatus, planConfigs } from '../../../service/plan.config';
 
-import Plan, { PlanProps } from '../Plan/Plan';
+import { Plan as PlanProps } from '../../../service/plan.api';
+import PlanCard from './PlanCard';
 import Search from '../../../../../components/Search';
 
 export type PlanListProps = {
     isLoaded: boolean;
-    status: PlanProps['status']['name'];
+    status: PlanProps['status'];
     plans: PlanProps[];
 };
 
@@ -17,7 +18,7 @@ export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
     const [_plans, setPlans] = useState(plans);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const { label, color } = usePlanStatus(status);
+    const { label, color } = planConfigs[status as PlanStatus];
 
     useEffect(() => {
         setPlans(
@@ -34,6 +35,7 @@ export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
             <Flex
                 p={4}
                 borderWidth="1px"
+                textColor="white"
                 bgColor={color}
                 justifyContent="center"
             >
@@ -48,7 +50,7 @@ export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
                 <Skeleton w="full" isLoaded={isLoaded} height="800px">
                     <VStack overflowY="auto" alignItems="stretch">
                         {_plans.map((plan) => (
-                            <Plan key={plan.id} {...plan} />
+                            <PlanCard key={plan.id} {...plan} />
                         ))}
                     </VStack>
                 </Skeleton>

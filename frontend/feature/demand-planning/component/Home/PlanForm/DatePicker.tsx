@@ -11,7 +11,6 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css';
 
 import dayjs from 'dayjs';
 

@@ -1,7 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-
 import {
-    VStack,
     Button,
     Modal,
     ModalOverlay,
@@ -15,12 +12,14 @@ import {
 
 type ConfirmModalProps = ModalProps & {
     title: string;
+    color: string;
     onSubmit: () => void;
 };
 
 const ConfirmModal = ({
     isOpen,
     onClose,
+    color,
     title,
     onSubmit,
 }: ConfirmModalProps) => {
@@ -32,7 +31,7 @@ const ConfirmModal = ({
                 <ModalCloseButton />
                 <ModalBody>Bạn chắc chưa?</ModalBody>
                 <ModalFooter>
-                    <Button colorScheme="blue" onClick={onSubmit}>
+                    <Button bgColor={color} textColor="white" onClick={onSubmit}>
                         Yes
                     </Button>
                 </ModalFooter>

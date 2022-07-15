@@ -2,6 +2,7 @@ import {
     Entity,
     Property,
     Formula,
+    OneToOne,
     ManyToOne,
     OneToMany,
     Collection,
@@ -13,6 +14,8 @@ import { Record } from '../../common/entity';
 
 import { Item } from '../../netsuite/item/item.entity';
 import { Plan } from '../plan/plan.entity';
+import { PlanItemSeed } from './plan-item-seed.entity';
+import { PlanItemForecast } from './plan-item-forecast.entity';
 import { PlanItemVendor } from './plan-item-vendor.entity';
 
 @Entity()
@@ -29,23 +32,24 @@ export class PlanItem extends Record {
     @Property()
     region: string;
 
-    @Property({ columnType: 'float' })
-    avgItemDiscount: number;
+    @OneToOne({
+        entity: () => PlanItemSeed,
+        mappedBy: ({planItem}) => planItem,
+        eager: true,
+        owner: true,
+        wrappedReference: true,
+    })
+    seed: IdentifiedReference<PlanItemSeed>
 
-    @Property({ columnType: 'float' })
-    avgOrderDiscount: number;
-
-    @Property()
-    basePrice: number;
-
-    @Property()
-    workingDays: number;
-
-    @Property({ nullable: true })
-    qtyDemandML: number | null;
-
-    @Property({ nullable: true })
-    qtyDemandPurchasing: number | null;
+    @OneToOne({
+        entity: () => PlanItemForecast,
+        mappedBy: ({planItem}) => planItem,
+        eager: true,
+        owner: true,
+        wrappedReference: true,
+        nullable: true,
+    })
+    forecast: IdentifiedReference<PlanItemForecast>
 
     @ManyToOne({
         entity: () => Item,
@@ -68,6 +72,7 @@ export class PlanItem extends Record {
         entity: () => PlanItemVendor,
         eager: true,
         mappedBy: (itemVendor) => itemVendor.planItem,
+        cascade: [Cascade.PERSIST, Cascade.REMOVE],
     })
     vendors = new Collection<PlanItemVendor>(this);
 }

@@ -6,19 +6,19 @@ import { VStack, HStack, LinkBox, LinkOverlay, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import usePlanStatus from '../../../hook/planStatus';
-import { Plan as PlanProps } from '../../../types';
+import { PlanStatus, planConfigs } from '../../../service/plan.config';
+import { Plan } from '../../../service/plan.api';
 
 dayjs.extend(utc);
 
-const Plan = ({
+const PlanCard = ({
     id,
     name,
     startOfForecastWeek,
     updatedAt,
     status,
-}: PlanProps) => {
-    const { color } = usePlanStatus(status);
+}: Plan) => {
+    const { color } = planConfigs[status as PlanStatus];
 
     const { pathname } = useRouter();
 
@@ -31,6 +31,7 @@ const Plan = ({
             alignItems="stretch"
             borderColor={color}
             _hover={{
+                textColor: "white",
                 bgColor: color,
             }}
         >
@@ -54,4 +55,4 @@ const Plan = ({
     );
 };
 
-export default Plan;
+export default PlanCard;

@@ -1,99 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-import {
-    Table as ChakraTable,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-} from '@chakra-ui/react';
+import { TabulatorFull, Tabulator } from 'tabulator-tables';
+import ColumnDefinition = Tabulator.ColumnDefinition;
 
-import {
-    ExpandedState,
-    useReactTable,
-    getCoreRowModel,
-    getExpandedRowModel,
-    flexRender,
-} from '@tanstack/react-table';
+import { PlanItem } from '../../../service/plan-item.api';
 
-import { TableMeta, TableProps, ColumnMeta } from './Table.type';
-import usePlanStatus from '../../../hook/planStatus';
+export type TableProps = {
+    columns: ColumnDefinition[];
+    data: (PlanItem & { sku: PlanItem['item']['sku'] })[];
+};
 
-const Table = ({ plan, columns, data, handleUpdate }: TableProps) => {
-    const { color } = usePlanStatus(plan.status);
+const Table = ({ columns, data }: TableProps) => {
+    const el = useRef<HTMLDivElement>(null);
+    const table = useRef<Tabulator | null>(null);
+    const [_data, setData] = useState(data);
 
-    const [expanded, setExpanded] = useState<ExpandedState>({});
+    useEffect(() => {
+        table.current = new TabulatorFull(el.current as HTMLDivElement, {
+            columns,
+            data: _data,
+            height: '100%',
+            layout: 'fitDataFill',
+            dataTree: true,
+            dataTreeChildField: 'vendors',
+            groupBy: ['sku', 'region'],
+        });
+        return table.current.destroy();
 
-    const table = useReactTable({
-        columns,
-        data,
-        state: {
-            expanded,
-        },
-        onExpandedChange: setExpanded,
-        getRowId: (row: any) => row.id,
-        getSubRows: (row: any) => row.subRows,
-        getCoreRowModel: getCoreRowModel(),
-        getExpandedRowModel: getExpandedRowModel(),
-        meta: {
-            handleUpdate,
-        } as TableMeta,
-        debugTable: true,
-    });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    return (
-        <ChakraTable style={{ borderCollapse: 'separate' }}>
-            <Thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <Tr key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                            <Th
-                                key={header.id}
-                                colSpan={header.colSpan}
-                                position="sticky"
-                                isNumeric={
-                                    (header.column.columnDef.meta as ColumnMeta)
-                                        ?.isNumeric
-                                }
-                                top={0}
-                                bgColor="white"
-                                borderColor={color}
-                                borderBottomWidth="1px"
-                                borderRadius={0}
-                                zIndex={2}
-                            >
-                                {flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext(),
-                                )}
-                            </Th>
-                        ))}
-                    </Tr>
-                ))}
-            </Thead>
-            <Tbody>
-                {table.getRowModel().rows.map((row) => (
-                    <Tr key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                            <Td
-                                key={cell.id}
-                                isNumeric={
-                                    (cell.column.columnDef.meta as ColumnMeta)
-                                        ?.isNumeric
-                                }
-                            >
-                                {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
-                                )}
-                            </Td>
-                        ))}
-                    </Tr>
-                ))}
-            </Tbody>
-        </ChakraTable>
-    );
+    useEffect(() => {
+        data && data.length > 0 && setData(data);
+    }, [data]);
+
+    return <div ref={el} />;
 };
 
 export default Table;

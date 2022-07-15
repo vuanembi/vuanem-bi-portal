@@ -1,0 +1,24 @@
+@import 'tabulator-tables/dist/css/tabulator_bootstrap3.min.css';
+
+.tabulator {
+    border-collapse: collapse;
+
+    .tabulator-row.tabulator-row-even {
+        background-color: white;
+    }
+    
+    .tabulator-header,
+    .tabulator-frozen,
+    .tabulator-group {
+        border-radius: 0px;
+    }
+
+    .tabulator-cell.tabulator-editable {
+        text-decoration: underline;
+        text-decoration-style: dotted;
+
+        input[type='number'] {
+            text-align: right;
+        }
+    }
+}
