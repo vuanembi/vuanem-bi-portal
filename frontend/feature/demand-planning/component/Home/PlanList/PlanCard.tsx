@@ -31,6 +31,7 @@ const PlanCard = ({
             alignItems="stretch"
             borderColor={color}
             _hover={{
+                textColor: "white",
                 bgColor: color,
             }}
         >

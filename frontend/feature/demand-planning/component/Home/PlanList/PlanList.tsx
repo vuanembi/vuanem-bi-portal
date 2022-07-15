@@ -35,6 +35,7 @@ export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
             <Flex
                 p={4}
                 borderWidth="1px"
+                textColor="white"
                 bgColor={color}
                 justifyContent="center"
             >

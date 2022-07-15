@@ -42,6 +42,7 @@ const Action = () => {
             <ConfirmModal
                 isOpen={isOpen}
                 onClose={onClose}
+                color={config.color}
                 title={config.action.label || 'Confirm'}
                 onSubmit={() => mutate(plan.id)}
             >

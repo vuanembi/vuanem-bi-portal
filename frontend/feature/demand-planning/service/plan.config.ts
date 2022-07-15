@@ -24,7 +24,7 @@ export type PlanConfig = {
 export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
     draft: {
         label: 'Draft',
-        color: 'cyan.300',
+        color: 'teal.400',
         action: {
             label: 'Forecast',
             handler: updateStatus('forecast'),
@@ -49,7 +49,7 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
     },
     forecast: {
         label: 'Forecast',
-        color: 'teal.300',
+        color: 'cyan.500',
         action: {
             label: 'Inventory',
             handler: updateStatus('inventory'),
@@ -73,7 +73,7 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
     },
     inventory: {
         label: 'Review',
-        color: 'blue.300',
+        color: 'blue.500',
         action: {
             label: 'Review',
             handler: updateStatus('review'),
@@ -94,7 +94,7 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
     },
     review: {
         label: 'Reviewed',
-        color: 'purple.300',
+        color: 'purple.500',
         action: {
             label: 'Review',
             handler: updateStatus('review'),
