@@ -12,17 +12,13 @@ import CellComponent = Tabulator.CellComponent;
 import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
 import { PlanContext } from '../../../service/plan.context';
-import {
-    PlanItem,
-    getOne,
-    updateOne,
-} from '../../../service/plan-item.api';
+import { PlanItem, getOne, updateOne } from '../../../service/plan-item.api';
 
 import Table from './Table';
 
 type TableWrapperProps = {
     data: PlanItem[];
-}
+};
 
 type DataFn = (cell: CellComponent) => PlanItem;
 type ItemMutate = (dataFn: DataFn) => CellEditEventCallback;
@@ -53,14 +49,15 @@ const TableWrapper = ({ data }: TableWrapperProps) => {
 
     const mutateItem: ItemMutate = (dataFn) => (cell) => {
         const data = dataFn(cell);
-        mutate(data);
+        data && mutate(data);
     };
 
     const mutateRoot = mutateItem((cell) => cell.getRow().getData());
 
-    const mutateVendors = mutateItem((cell) =>
-        (cell.getRow().getTreeParent() as RowComponent).getData(),
-    );
+    const mutateVendors = mutateItem((cell) => {
+        const row = cell.getRow().getTreeParent();
+        return row ? row.getData() : false;
+    });
 
     const columns = useMemo(
         () => [
