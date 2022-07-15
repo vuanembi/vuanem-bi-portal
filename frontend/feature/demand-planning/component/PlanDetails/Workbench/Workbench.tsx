@@ -4,7 +4,6 @@ import { useQueryClient, useQuery, useQueries } from 'react-query';
 import { Tabulator } from 'tabulator-tables';
 import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
-import Table from './Table';
 import WorkbenchItems from './WorkbenchItems';
 
 import { PlanContext } from '../../../service/plan.context';
@@ -28,13 +27,14 @@ const Workbench = () => {
     }));
 
     const mutateRoot: CellEditEventCallback = (cell) => {
+        const data: PlanItem = cell.getRow().getData();
         const [column, row, value] = [
             cell.getColumn(),
             cell.getRow(),
             cell.getValue(),
         ];
         queryClient.invalidateQueries(queryId);
-        console.log({ id: 'root', column, row, value });
+        console.log({ id: 'root', column, row, data });
     };
 
     const mutateVendors: CellEditEventCallback = (cell) => {
