@@ -2,12 +2,14 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "8000:80"
+      - 80:80
     depends_on:
       - backend
       - frontend
     volumes:
       - ./nginx/log:/var/log/nginx/
+    networks:
+      - vuanem-bi-portal
 
   backend:
     container_name: backend
@@ -18,15 +20,16 @@ services:
       - ./backend/service-account.json:/tmp/service-account.json
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
-    ports:
-      - 5000:5000
+    networks:
+    - vuanem-bi-portal
 
   frontend:
     container_name: frontend
     build: ./frontend
-    env_file:
-      - ./frontend/.env
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost/api
-    ports:
-      - "3000:3000"
+    volumes:
+      - ./frontend/.env.production:/app/.env.production
+    networks:
+    - vuanem-bi-portal
+
+networks:
+  vuanem-bi-portal:
