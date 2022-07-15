@@ -1,13 +1,12 @@
-@import 'react-tabulator/css/tabulator_bootstrap3.min.css';
+@import 'tabulator-tables/dist/css/tabulator_bootstrap3.min.css';
 
 .tabulator {
     border-collapse: collapse;
 
-    .tabulator-row {
-        &.tabulator-row-even {
-            background-color: white;
-        }
+    .tabulator-row.tabulator-row-even {
+        background-color: white;
     }
+    
     .tabulator-header,
     .tabulator-frozen,
     .tabulator-group {
