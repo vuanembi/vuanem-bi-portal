@@ -12,7 +12,7 @@ export type PlanConfig = {
     label: string;
     color: string;
     action: {
-        label: string;
+        label?: string;
         handler: (id: number) => Promise<any>;
     };
     columns: {
@@ -61,10 +61,9 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
                 columns.region,
                 columns.weekNo,
                 columns.year,
-                columns.avgItemDiscount,
-                columns.avgOrderDiscount,
-                columns.basePrice,
-                columns.workingDays,
+                columns.percentageChange1w,
+                columns.percentageChange1m,
+                columns.percentageChange3m,
                 columns.qtyDemandML,
                 columns.withEditor(columns.qtyDemandPurchasing),
             ],
@@ -72,7 +71,7 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
         },
     },
     inventory: {
-        label: 'Review',
+        label: 'Inventory',
         color: 'blue.500',
         action: {
             label: 'Review',
@@ -93,10 +92,9 @@ export const planConfigs: { [status in PlanStatus]: PlanConfig } = {
         },
     },
     review: {
-        label: 'Reviewed',
+        label: 'Review',
         color: 'purple.500',
         action: {
-            label: 'Review',
             handler: updateStatus('review'),
         },
         columns: {

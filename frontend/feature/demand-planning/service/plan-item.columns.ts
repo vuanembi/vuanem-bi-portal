@@ -80,15 +80,34 @@ export const workingDays: ColumnFactory = (cellEdited) => ({
     cellEdited,
 });
 
+export const percentageChange1w: ColumnFactory = (cellEdited) => ({
+    title: '% Change 1w',
+    field: 'forecast.percentageChange1w',
+    hozAlign: 'right',
+    cellEdited,
+});
+
+export const percentageChange1m: ColumnFactory = () => ({
+    title: '% Change 1m',
+    field: 'forecast.percentageChange1m',
+    hozAlign: 'right',
+});
+
+export const percentageChange3m: ColumnFactory = () => ({
+    title: '% Change 3m',
+    field: 'forecast.percentageChange3m',
+    hozAlign: 'right',
+});
+
 export const qtyDemandML: ColumnFactory = () => ({
     title: 'Qty. Demand ML',
-    field: 'seed.qtyDemandML',
+    field: 'forecast.qtyDemandML',
     hozAlign: 'right',
 });
 
 export const qtyDemandPurchasing: ColumnFactory = (cellEdited) => ({
     title: 'Qty. Demand Pur',
-    field: 'seed.qtyDemandPurchasing',
+    field: 'forecast.qtyDemandPurchasing',
     hozAlign: 'right',
     cellEdited,
 });
