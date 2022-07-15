@@ -11,6 +11,8 @@ import {
 } from '@chakra-ui/react';
 import { IoMdCloudDone } from 'react-icons/io';
 
+import { useIsFetching } from 'react-query'
+
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
@@ -19,6 +21,7 @@ import { PlanContext } from '../../../service/plan.context';
 dayjs.extend(utc);
 
 const Info = () => {
+    const isFetching = useIsFetching()
     const { plan, config } = useContext(PlanContext);
 
     const { name, startOfForecastWeek, status, createdAt, updatedAt } = plan;
@@ -92,7 +95,7 @@ const Info = () => {
                                 .format('YYYY-MM-DD HH:mm')}
                         </Text>
                     </Tooltip>
-                    {/* {updates > 0 ? <Loading /> : <Done />} */}
+                    {isFetching ? <Loading /> : <Done />}
                 </HStack>
             </VStack>
         </HStack>
