@@ -28,6 +28,11 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
         allOrNothing: true,
         emit: 'ts',
     },
+    seeder: {
+        path: 'src/feature/**/',
+        pathTs: 'src/feature/**/',
+        glob: '*.seeder.{js,ts}',
+    },
     schemaGenerator: {
         disableForeignKeys: false,
     },
