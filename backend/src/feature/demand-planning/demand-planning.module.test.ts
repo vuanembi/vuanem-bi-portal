@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigModule } from '@nestjs/config';
 
 import { DatabaseModule } from '../../provider/database/database.module';
 import { NetSuiteModule } from '../netsuite/netsuite.module';
@@ -16,7 +15,6 @@ describe('Demand Planning', () => {
     beforeAll(async () => {
         moduleRef = await Test.createTestingModule({
             imports: [
-                ConfigModule.forRoot(),
                 DatabaseModule,
                 NetSuiteModule,
                 DemandPlanningModule,
@@ -42,8 +40,15 @@ describe('Demand Planning', () => {
             });
         });
 
+        it('Find All', async () => {
+            return planService.findAll().then((plans) => {
+                console.log(plans);
+                expect(plans.length).toBeGreaterThan(0)
+            })
+        })
+
         it('Find One Item', async () => {
-            const id = 4;
+            const id = 8;
             return planService.findOneItems(id).then((planItems) => {
                 console.log(planItems);
                 expect(planItems.length).toBeGreaterThan(0);
