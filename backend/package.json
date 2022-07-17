@@ -36,6 +36,7 @@
     "devDependencies": {
         "@mikro-orm/cli": "^5.2.2",
         "@mikro-orm/migrations": "^5.2.2",
+        "@mikro-orm/seeder": "^5.2.3",
         "@nestjs/cli": "^8.0.0",
         "@nestjs/schematics": "^8.0.0",
         "@nestjs/testing": "^8.0.0",
