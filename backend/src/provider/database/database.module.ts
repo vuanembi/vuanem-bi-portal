@@ -14,8 +14,7 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
     port: 5432,
     entities: [__dirname + '/../../**/*.entity.js'],
     entitiesTs: [__dirname + '/../../**/*.entity.ts'],
-    allowGlobalContext:
-        configService.get('NODE_ENV') === 'production' ? false : true,
+    allowGlobalContext: configService.get('NODE_ENV') !== 'production',
     findOneOrFailHandler: (id: string) => {
         return new NotFoundException();
     },
@@ -36,13 +35,17 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
     schemaGenerator: {
         disableForeignKeys: false,
     },
-    debug: true,
+    debug: configService.get('NODE_ENV') !== 'production',
 });
 
 @Module({
     imports: [
         MikroOrmModule.forRootAsync({
-            imports: [ConfigModule],
+            imports: [
+                ConfigModule.forRoot({
+                    envFilePath: ['.env', '.env.production'],
+                }),
+            ],
             inject: [ConfigService],
             useFactory: MikroOrmConfig,
         }),
