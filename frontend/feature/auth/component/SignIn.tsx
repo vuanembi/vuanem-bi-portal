@@ -23,6 +23,7 @@ const SignIn = () => {
 
     return (
         <Button
+            colorScheme="purple"
             leftIcon={<Icon as={FaGoogle} fontSize="0.9rem" />}
             onClick={signIn}
         >
