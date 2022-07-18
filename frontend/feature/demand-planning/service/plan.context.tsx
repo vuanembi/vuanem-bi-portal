@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren } from 'react';
+import { useContext, createContext, PropsWithChildren } from 'react';
 
 import { Plan } from './plan.api';
 import { PlanStatus, PlanConfig, planConfigs } from './plan.config';
@@ -26,3 +26,5 @@ export const PlanProvider = ({ plan, children }: PlanProviderProps) => {
         <PlanContext.Provider value={value}>{children}</PlanContext.Provider>
     );
 };
+
+export const usePlan = () => useContext(PlanContext);

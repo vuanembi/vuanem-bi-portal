@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
 import { VStack, Button, useDisclosure } from '@chakra-ui/react';
 import { useMutation } from 'react-query';
 
 import ConfirmModal from './ConfirmModal';
 
-import { PlanContext } from '../../../service/plan.context';
+import { usePlan } from '../../../service/plan.context';
 
 const Action = () => {
-    const { plan, config } = useContext(PlanContext);
+    const { plan, config } = usePlan();
     const { isOpen, onClose, onToggle } = useDisclosure();
     const router = useRouter();
 
