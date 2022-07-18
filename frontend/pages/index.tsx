@@ -1,153 +1,28 @@
 import type { NextPage, GetStaticProps } from 'next';
+import { VStack, Heading, chakra } from '@chakra-ui/react';
+import Lottie from 'react-lottie';
 
-import { VStack, Text } from '@chakra-ui/react';
+import analyticsLottie from '../public/lottie/20578-isometric-website-marketing-design.json';
 
 const Home: NextPage = () => {
+    const lottieOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: analyticsLottie,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice',
+        },
+    };
+
     return (
-        <VStack>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/dyRsYk0LyA8"
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            />
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
-            <Text>
-                BI&Growth kiến tạo đổi mới và khai phá cơ hội tăng trưởng bằng
-                sức mạnh của dữ liệu và công nghệ
-            </Text>
+        <VStack mt="10vh">
+            <Heading px="15rem" textAlign="center">
+                <chakra.span color="purple.400">BI&Growth</chakra.span> kiến tạo
+                đổi mới và khai phá cơ hội tăng trưởng bằng sức mạnh của{' '}
+                <chakra.span color="purple.400">dữ liệu</chakra.span> và{' '}
+                <chakra.span color="purple.400">công nghệ</chakra.span>
+            </Heading>
+            <Lottie options={lottieOptions} height={400} width={400} />
         </VStack>
     );
 };
