@@ -38,7 +38,7 @@ const PlanCard = ({
             <HStack justifyContent="space-between">
                 <NextLink href={`${pathname}/${id}`} passHref>
                     <LinkOverlay fontWeight="bold" userSelect="none">
-                        {name.slice(0, 25)}
+                        {name.slice(0, 20)}
                     </LinkOverlay>
                 </NextLink>
                 <Text userSelect="none">
