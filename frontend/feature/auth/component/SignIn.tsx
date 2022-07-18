@@ -23,7 +23,10 @@ const SignIn = () => {
 
     return (
         <Button
-            colorScheme="purple"
+            variant="ghost"
+            bgColor="purple.400"
+            color="white"
+            _hover={{}}
             leftIcon={<Icon as={FaGoogle} fontSize="0.9rem" />}
             onClick={signIn}
         >
