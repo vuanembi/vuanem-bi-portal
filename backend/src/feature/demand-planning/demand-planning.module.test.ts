@@ -50,6 +50,7 @@ describe('Demand Planning', () => {
         it('Find One Item', async () => {
             const id = 8;
             return planService.findOneItems(id).then((planItems) => {
+                
                 console.log(planItems);
                 expect(planItems.length).toBeGreaterThan(0);
             });
