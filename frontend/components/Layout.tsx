@@ -1,10 +1,11 @@
-import { FC, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { Container, Flex } from '@chakra-ui/react';
 
 import Header from './Header';
+import PageTransition from './PageTransition';
 
-const Layout: FC<PropsWithChildren> = ({ children }) => (
+const Layout = ({ route, children }: PropsWithChildren<{ route: string }>) => (
     <>
         <Header />
         <Container
@@ -15,7 +16,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => (
             alignItems="stretch"
             flexDirection="column"
         >
-            {children}
+            <PageTransition route={route}>{children}</PageTransition>
         </Container>
     </>
 );

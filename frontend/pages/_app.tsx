@@ -9,7 +9,7 @@ import Layout from '../components/Layout';
 import theme from '../styles/theme';
 import '../styles/tabulator.scss';
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps, router }: AppProps) => {
     const queryClient = new QueryClient();
 
     return (
@@ -26,7 +26,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             />
             <QueryClientProvider client={queryClient}>
                 <ChakraProvider theme={theme}>
-                    <Layout>
+                    <Layout route={router.route}>
                         <Component {...pageProps} />
                     </Layout>
                 </ChakraProvider>
