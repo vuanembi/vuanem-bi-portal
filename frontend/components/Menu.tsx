@@ -7,13 +7,16 @@ import {
     LinkBox,
     Icon,
     Text,
+    UseDisclosureProps,
 } from '@chakra-ui/react';
 import { FaDatabase, FaFileInvoiceDollar } from 'react-icons/fa';
 
-const Menu = () => {
-    const router = useRouter();
+type MenuProps = {
+    onClose: UseDisclosureProps['onClose'];
+};
 
-    console.log(router);
+const Menu = ({ onClose }: MenuProps) => {
+    const { pathname } = useRouter();
 
     const links = [
         {
@@ -28,6 +31,8 @@ const Menu = () => {
         },
     ];
 
+    const isCurrentRoute = (link: string) => pathname.includes(link);
+
     return (
         <VStack spacing={4} alignItems="stretch">
             {links.map((link) => (
@@ -36,14 +41,21 @@ const Menu = () => {
                     key={link.link}
                     borderWidth="1px"
                     p={2}
+                    bgColor={isCurrentRoute(link.link) ? 'purple.300' : 'white'}
+                    color={isCurrentRoute(link.link) ? 'white' : 'black'}
+                    borderColor="purple.300"
                     _hover={{
                         bgColor: 'purple.300',
-                        color: 'white'
+                        color: 'white',
                     }}
                 >
                     <Icon as={link.icon} fontSize="0.9rem" />
                     <NextLink href={link.link} passHref>
-                        <LinkOverlay fontWeight="bold" userSelect="none">
+                        <LinkOverlay
+                            fontWeight="bold"
+                            userSelect="none"
+                            onClick={onClose}
+                        >
                             <Text>{link.label}</Text>
                         </LinkOverlay>
                     </NextLink>

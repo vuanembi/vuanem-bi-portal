@@ -19,7 +19,7 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => (
             <DrawerCloseButton />
             <DrawerHeader>Modules</DrawerHeader>
             <DrawerBody>
-                <Menu />
+                <Menu onClose={onClose}/>
             </DrawerBody>
         </DrawerContent>
     </Drawer>
