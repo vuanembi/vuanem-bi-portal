@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
     UseQueryResult,
     useQueryClient,
@@ -10,7 +10,7 @@ import { Tabulator } from 'tabulator-tables';
 import CellComponent = Tabulator.CellComponent;
 import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
-import { PlanContext } from '../../../service/plan.context';
+import { usePlan } from '../../../service/plan.context';
 import { PlanItem, getOne, updateOne } from '../../../service/plan-item.api';
 
 import Table from './Table';
@@ -23,7 +23,7 @@ type DataFn = (cell: CellComponent) => PlanItem;
 type ItemMutate = (dataFn: DataFn) => CellEditEventCallback;
 
 const TableWrapper = ({ data }: TableWrapperProps) => {
-    const { config } = useContext(PlanContext);
+    const { config } = usePlan();
 
     const queryClient = useQueryClient();
 

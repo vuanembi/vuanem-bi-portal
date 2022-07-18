@@ -1,16 +1,15 @@
-import { useContext } from 'react';
 import { useQuery } from 'react-query';
 
 import { Box } from '@chakra-ui/react';
 
 import TableWrapper from './TableWrapper';
 
-import { PlanContext } from '../../../service/plan.context';
+import { usePlan } from '../../../service/plan.context';
 import { getOneItems } from '../../../service/plan.api';
 import { PlanItem } from '../../../service/plan-item.api';
 
 const Workbench = () => {
-    const { plan, config } = useContext(PlanContext);
+    const { plan, config } = usePlan();
 
     const { data: planItems } = useQuery<PlanItem[]>(
         ['plan', plan.id, 'items'],

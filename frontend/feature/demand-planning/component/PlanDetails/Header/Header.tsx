@@ -1,19 +1,17 @@
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
-import { useContext } from 'react';
-
 import { Center, HStack, Icon, LinkBox, LinkOverlay } from '@chakra-ui/react';
 
 import { FaHome } from 'react-icons/fa';
 
-import { PlanContext } from '../../../service/plan.context';
+import { usePlan } from '../../../service/plan.context';
 
 import Info from './Info';
 import Action from './Action';
 
 const Header = () => {
-    const { config } = useContext(PlanContext);
+    const { config } = usePlan();
 
     const home = useRouter().pathname.split('/')[1];
 

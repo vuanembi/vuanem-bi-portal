@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-
 import {
     HStack,
     VStack,
@@ -16,13 +14,14 @@ import { useIsFetching } from 'react-query';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { PlanContext } from '../../../service/plan.context';
+import { usePlan } from '../../../service/plan.context';
 
 dayjs.extend(utc);
 
 const Info = () => {
     const isFetching = useIsFetching();
-    const { plan, config } = useContext(PlanContext);
+
+    const { plan, config } = usePlan();
 
     const { name, startOfForecastWeek, status, createdAt, updatedAt } = plan;
 
