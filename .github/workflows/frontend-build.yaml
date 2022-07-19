@@ -1,0 +1,18 @@
+name: Frontend Build
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  workflow_dispatch:
+
+concurrency: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+      base_name: vuanem-bi-portal-frontend
+      base_dir: ./frontend
+    secrets: inherit
