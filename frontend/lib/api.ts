@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 const getApiClient = (module: string) => {
     const baseURL = [
@@ -7,5 +7,10 @@ const getApiClient = (module: string) => {
     ].join('/');
     return axios.create({ baseURL });
 };
+
+export const apiRequest =
+    (apiClient: AxiosInstance) =>
+    <T>(config: AxiosRequestConfig) =>
+        apiClient.request<T>(config).then(({ data }) => data);
 
 export default getApiClient;

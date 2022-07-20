@@ -1,5 +1,5 @@
 import getApiClient, { apiRequest } from '../../../lib/api';
 
-const client = getApiClient('demand-planning')
+const client = getApiClient('netsuite');
 
 export const request = apiRequest(client);
