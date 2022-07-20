@@ -4,28 +4,40 @@ import { DatabaseModule } from '../../provider/database/database.module';
 import { AuthModule } from './auth.module';
 import { UserModule } from '../user/user.module';
 
+import { AuthService } from './auth.service';
 import { GoogleAuthService } from './google-auth/google-auth.service';
 
 jest.setTimeout(60_000);
 
 describe('Auth', () => {
     let moduleRef: TestingModule;
+    let authService: AuthService;
     let googleAuthService: GoogleAuthService;
 
     beforeAll(async () => {
         moduleRef = await Test.createTestingModule({
-            imports: [
-                DatabaseModule,
-                UserModule,
-                AuthModule
-            ],
+            imports: [DatabaseModule, UserModule, AuthModule],
         }).compile();
 
+        authService = moduleRef.get(AuthService);
         googleAuthService = moduleRef.get(GoogleAuthService);
     });
 
     afterAll(async () => {
         await moduleRef.close();
+    });
+
+    describe('Auth', () => {
+        it('Sign', async () => {
+            const userId = 1;
+            const jwt = authService.getJwt(userId);
+            console.log(jwt);
+            return authService
+                .getUserFromAuthenticationToken(jwt)
+                .then((user) => {
+                    expect(user.id).toBe(1);
+                });
+        });
     });
 
     describe('Google Auth', () => {
@@ -38,4 +50,3 @@ describe('Auth', () => {
         });
     });
 });
-
