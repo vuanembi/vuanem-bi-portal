@@ -17,16 +17,16 @@ export class UserService {
     }
 
     async findOrCreateUser(email: string) {
-        return this.getOneByEmail(email)
+        return this.findOneByEmail(email)
             .catch(() => this.create(email))
             .then((user) => user);
     }
 
-    getOne(id: number) {
+    findOne(id: number) {
         return this.userRepository.findOneOrFail({ id });
     }
 
-    getOneByEmail(email: string) {
+    findOneByEmail(email: string) {
         return this.userRepository.findOneOrFail({ email });
     }
 }
