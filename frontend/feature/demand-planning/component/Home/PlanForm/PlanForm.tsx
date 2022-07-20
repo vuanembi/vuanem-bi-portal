@@ -19,7 +19,7 @@ import {
 import { Select } from 'chakra-react-select';
 import { useQueryClient, useQuery, useMutation } from 'react-query';
 
-import { Class, get } from '../../../../netsuite/class';
+import { Class, get } from '../../../../netsuite/service/class';
 import { CreatePlanDto, create } from '../../../service/plan.api';
 
 import PopoverDatePicker from './DatePicker';

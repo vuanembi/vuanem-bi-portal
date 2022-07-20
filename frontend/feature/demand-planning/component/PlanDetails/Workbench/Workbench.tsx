@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 
 import TableWrapper from './TableWrapper';
 
-import { usePlan } from '../../../service/plan.context';
+import { usePlan } from '../../../provider/plan.context';
 import { getOneItems } from '../../../service/plan.api';
 import { PlanItem } from '../../../service/plan-item.api';
 

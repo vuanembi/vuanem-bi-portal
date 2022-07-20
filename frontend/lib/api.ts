@@ -5,7 +5,17 @@ const getApiClient = (module: string) => {
         process.env.API_URL || process.env.NEXT_PUBLIC_API_URL,
         module,
     ].join('/');
-    return axios.create({ baseURL });
+
+    const client = axios.create({ baseURL });
+
+    client.interceptors.request.use((config) => {
+        const token = localStorage.getItem('token');
+        return {
+            ...config,
+            headers: { ...config.headers, token },
+        };
+    });
+    return client;
 };
 
 export const apiRequest =

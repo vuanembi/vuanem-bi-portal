@@ -2,9 +2,11 @@ import type { NextPage, GetStaticProps } from 'next';
 import { VStack, Heading, chakra } from '@chakra-ui/react';
 import Lottie from 'react-lottie';
 
+import { useAuth } from '../feature/auth/provider/auth.context';
 import analyticsLottie from '../public/lottie/20578-isometric-website-marketing-design.json';
 
 const Home: NextPage = () => {
+    const { user } = useAuth();
     const lottieOptions = {
         loop: true,
         autoplay: true,
@@ -16,6 +18,7 @@ const Home: NextPage = () => {
 
     return (
         <VStack mt="10vh">
+            <Heading>{JSON.stringify(user)}</Heading>
             <Heading px="15rem" textAlign="center">
                 <chakra.span color="purple.400">BI&Growth</chakra.span> kiến tạo
                 đổi mới và khai phá cơ hội tăng trưởng bằng sức mạnh của{' '}

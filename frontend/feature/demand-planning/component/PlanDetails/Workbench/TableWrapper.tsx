@@ -10,7 +10,7 @@ import { Tabulator } from 'tabulator-tables';
 import CellComponent = Tabulator.CellComponent;
 import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
-import { usePlan } from '../../../service/plan.context';
+import { usePlan } from '../../../provider/plan.context';
 import { PlanItem, getOne, updateOne } from '../../../service/plan-item.api';
 
 import Table from './Table';

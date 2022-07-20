@@ -4,7 +4,7 @@ import { useMutation } from 'react-query';
 
 import ConfirmModal from './ConfirmModal';
 
-import { usePlan } from '../../../service/plan.context';
+import { usePlan } from '../../../provider/plan.context';
 
 const Action = () => {
     const { plan, config } = usePlan();

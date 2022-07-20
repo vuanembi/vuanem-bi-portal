@@ -4,7 +4,7 @@ import { VStack } from '@chakra-ui/react';
 
 import { getOne } from '../../feature/demand-planning/service/plan.api';
 
-import { PlanProvider } from '../../feature/demand-planning/service/plan.context';
+import { PlanProvider } from '../../feature/demand-planning/provider/plan.context';
 import { Plan as PlanPageProps } from '../../feature/demand-planning/service/plan.api';
 
 import Header from '../../feature/demand-planning/component/PlanDetails/Header/Header';
