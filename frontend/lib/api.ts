@@ -6,7 +6,7 @@ const getApiClient = (module: string) => {
         module,
     ].join('/');
 
-    const client = axios.create({ baseURL });
+    const client = axios.create({ baseURL, withCredentials: true });
 
     client.interceptors.request.use((config) => {
         const token = localStorage.getItem('token');

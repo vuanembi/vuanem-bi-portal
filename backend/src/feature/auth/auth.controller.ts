@@ -23,6 +23,11 @@ export class AuthController {
             .authenticate(tokenData.token)
             .then((user) => {
                 const token = this.authService.getJwt(user.id);
+                res.cookie('token', token, {
+                    maxAge: 3600000,
+                    httpOnly: true,
+                    sameSite: 'lax',
+                });
                 return { user, token };
             });
     }
