@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Layout from '../components/Layout';
 import { AuthProvider } from '../feature/auth/provider/auth.context';
+import { ReactQueryDevtools } from 'react-query/devtools'
 import theme from '../styles/theme';
 import '../styles/tabulator.scss';
 
@@ -31,6 +32,7 @@ const App = ({ Component, pageProps, router }: AppProps) => {
                         </Layout>
                     </ChakraProvider>
                 </AuthProvider>
+                <ReactQueryDevtools/>
             </QueryClientProvider>
         </>
     );

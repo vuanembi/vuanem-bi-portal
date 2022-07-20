@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, { cors: true });
 
     app.setGlobalPrefix('api');
-    
+
     const config = new DocumentBuilder()
         .setTitle('Vuanem BI Portal')
         .setVersion('1.0')

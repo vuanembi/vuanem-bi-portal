@@ -1,5 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { GoogleAuthService } from './google-auth/google-auth.service';
@@ -14,12 +15,15 @@ export class AuthController {
     ) {}
 
     @Post('google')
-    async authenticate(@Body() tokenData: TokenDto) {
+    async authenticate(
+        @Body() tokenData: TokenDto,
+        @Res({ passthrough: true }) res: Response,
+    ) {
         return this.googleAuthService
             .authenticate(tokenData.token)
-            .then((user) => ({
-                user,
-                token: this.authService.getJwt(user.id),
-            }));
+            .then((user) => {
+                const token = this.authService.getJwt(user.id);
+                return { user, token };
+            });
     }
 }

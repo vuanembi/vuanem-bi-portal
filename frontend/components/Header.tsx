@@ -11,10 +11,13 @@ import {
 } from '@chakra-ui/react';
 import { MdMenu, MdHomeFilled } from 'react-icons/md';
 
+import { useAuth } from '../feature/auth/provider/auth.context';
 import SideBar from './SideBar';
 import SignIn from '../feature/auth/component/SignIn';
+import User from './User';
 
 const Header = () => {
+    const { user } = useAuth();
     const { isOpen, onClose, onToggle } = useDisclosure();
 
     return (
@@ -63,7 +66,7 @@ const Header = () => {
                     </LinkBox>
                 </Flex>
                 <Flex flex="1" justifyContent="flex-end">
-                    <SignIn />
+                    {user ? <User user={user} /> : <SignIn />}
                 </Flex>
             </HStack>
             <SideBar isOpen={isOpen} onClose={onClose} />
