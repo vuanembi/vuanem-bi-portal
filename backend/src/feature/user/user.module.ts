@@ -9,5 +9,6 @@ import { Feature } from '../user/feature.entity';
 @Module({
     imports: [MikroOrmModule.forFeature([User, Feature])],
     providers: [UserService],
+    exports: [UserService],
 })
 export class UserModule {}

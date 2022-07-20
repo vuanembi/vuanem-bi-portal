@@ -11,9 +11,15 @@ export class UserService {
         private userRepository: EntityRepository<User>,
     ) {}
 
-    async createWithGoogle(email: string) {
+    async create(email: string) {
         const user = this.userRepository.create({ email });
         return this.userRepository.persistAndFlush(user).then(() => user);
+    }
+
+    async findOrCreateUser(email: string) {
+        return this.getOneByEmail(email)
+            .catch(() => this.create(email))
+            .then((user) => user);
     }
 
     getOne(id: number) {

@@ -19,11 +19,8 @@ export class GoogleAuthService {
     }
 
     async authenticate(token: string) {
-        const { email } = await this.oauthClient.getTokenInfo(token);
-
-        return this.userService
-            .getOneByEmail(email)
-            .catch(() => this.userService.createWithGoogle(email))
-            .then((user) => user);
+        return this.oauthClient
+            .getTokenInfo(token)
+            .then(({ email }) => this.userService.findOrCreateUser(email));
     }
 }

@@ -1,8 +1,8 @@
 import {
     Entity,
     Property,
-    IdentifiedReference,
-    ManyToOne,
+    Collection,
+    ManyToMany,
     Cascade,
 } from '@mikro-orm/core';
 
@@ -14,12 +14,11 @@ export class User extends Record {
     @Property()
     email: string;
 
-    @ManyToOne({
+    @ManyToMany({
         entity: () => Feature,
         eager: true,
-        nullable: false,
-        wrappedReference: true,
+        nullable: true,
         cascade: [Cascade.PERSIST, Cascade.REMOVE],
     })
-    module: IdentifiedReference<Feature>;
+    feature = new Collection<Feature>(this);
 }
