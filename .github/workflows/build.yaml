@@ -11,6 +11,7 @@ on:
         type: string
 
 env:
+  NAME: vuanem-bi-portal
   PROJECT_ID: voltaic-country-280607
 
 jobs:
@@ -21,7 +22,7 @@ jobs:
     steps:
       - id: set-outputs
         run: |
-          echo "::set-output name=image::us-docker.pkg.dev/${{ env.PROJECT_ID }}/gcr.io/${{ inputs.base_name }}:${{ github.ref_name }}"
+          echo "::set-output name=image::us-docker.pkg.dev/${{ env.PROJECT_ID }}/gcr.io/${{ env.NAME}}/${{ inputs.base_name }}:${{ github.ref_name }}"
 
   build:
     runs-on: ubuntu-latest

@@ -12,6 +12,6 @@ jobs:
   build:
     uses: ./.github/workflows/build.yaml
     with:
-      base_name: vuanem-bi-portal-frontend
+      base_name: frontend
       base_dir: ./frontend
     secrets: inherit
