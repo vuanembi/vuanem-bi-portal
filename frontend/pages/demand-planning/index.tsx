@@ -8,6 +8,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 
+import ProtectedRoute from '../../components/ProtectedRoute';
 import PlanList from '../../feature/demand-planning/component/Home/PlanList/PlanList';
 import PlanForm from '../../feature/demand-planning/component/Home/PlanForm/PlanForm';
 import * as PlanService from '../../feature/demand-planning/service/plan.api';
@@ -49,7 +50,7 @@ const DemandPlanning: NextPage = () => {
         ));
 
     return (
-        <>
+        <ProtectedRoute>
             <Flex justifyContent="flex-end" mb="8">
                 <Button onClick={onOpen}>Tạo Plan</Button>
             </Flex>
@@ -59,7 +60,7 @@ const DemandPlanning: NextPage = () => {
             <PlanForm isOpen={isOpen} onClose={onClose}>
                 {}
             </PlanForm>
-        </>
+        </ProtectedRoute>
     );
 };
 
