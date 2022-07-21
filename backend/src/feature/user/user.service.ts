@@ -4,6 +4,8 @@ import { EntityRepository } from '@mikro-orm/core';
 
 import { User } from './user.entity';
 
+import { Feature } from './feature.entity';
+
 @Injectable()
 export class UserService {
     constructor(
@@ -28,5 +30,41 @@ export class UserService {
 
     findOneByEmail(email: string) {
         return this.userRepository.findOneOrFail({ email });
+    }
+
+    async upsert(id: number, email: string, features: Feature[]) {
+        return this.userRepository
+            .findOneOrFail({ id })
+            .catch(() => {
+                const user = this.userRepository.create({
+                    id,
+                    email,
+                });
+                this.userRepository.persist(user);
+                return user;
+            })
+            .then((user) => {
+                this.userRepository.assign(user, {
+                    feature: features,
+                });
+                return user;
+            });
+    }
+
+    async seed(features: Feature[]) {
+        const userDtos = [
+            {
+                id: 1,
+                email: 'bi@vuanem.com',
+                feature: features,
+            },
+        ];
+        const users = await Promise.all(
+            userDtos.map((userDto) =>
+                this.upsert(userDto.id, userDto.email, features),
+            ),
+        );
+        await this.userRepository.persistAndFlush(users);
+        return users;
     }
 }
