@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState, useContext, createContext, PropsWithChildren } from 'react';
+import { useContext, createContext, PropsWithChildren } from 'react';
 import {
     useQueryClient,
     useQuery,
@@ -10,7 +10,7 @@ import { useLocalStorage } from 'react-use';
 import jwt from 'jwt-decode';
 
 import { AuthResponse, authenticate } from '../service/auth.api';
-import { User, getOne } from '../../user/service/user.api';
+import * as UserService from '../../user/service/user.api';
 
 type AuthContextProps = Partial<AuthResponse> & {
     signIn: UseMutateFunction<AuthResponse, unknown, string, unknown>;
@@ -25,33 +25,33 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const router = useRouter();
     const queryClient = useQueryClient();
 
-    const [user, setUser] = useState<User | undefined>(undefined);
-
     const [token, setToken, removeToken] = useLocalStorage<string | undefined>(
         'token',
     );
 
-    useQuery(
+    const { data: user } = useQuery(
         'user',
         () => {
-            const decodedToken = jwt<User>(token as string);
-            return getOne(decodedToken.id);
+            const decodedToken = jwt<UserService.User>(token as string);
+            return UserService.getOne(decodedToken.id);
         },
-        { onSuccess: (user) => setUser(user), enabled: !!token },
+        {
+            enabled: !!token,
+        },
     );
 
     const { mutate: signIn } = useMutation(authenticate, {
         onSuccess: async (res) => {
-            const { token, user } = res;
-            setToken(token);
-            setUser(user);
+            setToken(res.token);
+            queryClient.setQueryData('user', res.user);
         },
     });
 
     const signOut = () => {
         removeToken();
-        setUser(undefined);
+        queryClient.setQueryData('user', undefined);
         router.push('/');
+        router.reload();
     };
 
     return (
