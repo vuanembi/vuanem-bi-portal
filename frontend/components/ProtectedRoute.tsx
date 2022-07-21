@@ -9,15 +9,15 @@ const ProtectedRoute = ({ children }: PropsWithChildren) => {
     const { pathname } = useRouter();
     const { user } = useAuth();
 
-    const featurePath = pathname.split('/')[1];
+    const featurePath = '/' + pathname.split('/')[1];
 
-    if (user && user.feature.includes(featurePath)) {
+    if (user && user.feature.map(({ name }) => name).includes(featurePath)) {
         return children as JSX.Element;
     }
 
     return (
         <Center mt="15vh">
-            <Icon as={MdOutlineLock} boxSize="md" color="purple.400"/>
+            <Icon as={MdOutlineLock} boxSize="md" color="purple.400" />
         </Center>
     );
 };

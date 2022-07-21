@@ -4,10 +4,15 @@ const client = getApiClient('user');
 
 export const request = apiRequest(client);
 
+export type Feature = {
+    id: number;
+    name: string;
+}
+
 export type User = {
     id: number;
     email: string;
-    feature: string[];
+    feature: Feature[];
 };
 
 export const getOne = (id: number) =>
