@@ -1,0 +1,17 @@
+name: Backend Build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+      base_name: backend
+      base_dir: ./backend
+    secrets: inherit

@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 
@@ -13,7 +12,6 @@ import { VendorService } from './vendor/vendor.service';
 import { Item } from './item/item.entity';
 import { ItemService } from './item/item.service';
 
-@Injectable()
 export class NetSuiteSeeder extends Seeder {
     async run(em: EntityManager) {
         const bigQueryProvider = new BigQueryProvider();

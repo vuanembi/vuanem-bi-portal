@@ -2,23 +2,22 @@ import { useState, useEffect } from 'react';
 
 import { Flex, VStack, Skeleton, Text } from '@chakra-ui/react';
 
-import { PlanStatus, planConfigs } from '../../../service/plan.config';
-
-import { Plan as PlanProps } from '../../../service/plan.api';
+import * as PlanService  from '../../../service/plan.api';
+import * as PlanConfig  from '../../../service/plan.config';
 import PlanCard from './PlanCard';
 import Search from '../../../../../components/Search';
 
 export type PlanListProps = {
     isLoaded: boolean;
-    status: PlanProps['status'];
-    plans: PlanProps[];
+    status: PlanService.Plan['status'];
+    plans: PlanService.Plan[];
 };
 
 export const PlanList = ({ isLoaded, status, plans }: PlanListProps) => {
     const [_plans, setPlans] = useState(plans);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const { label, color } = planConfigs[status as PlanStatus];
+    const { label, color } = PlanConfig.planConfigs[status as PlanConfig.PlanStatus];
 
     useEffect(() => {
         setPlans(

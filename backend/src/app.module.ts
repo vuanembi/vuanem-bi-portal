@@ -4,11 +4,21 @@ import { RouterModule } from '@nestjs/core';
 
 import { DatabaseModule } from './provider/database/database.module';
 
+import { AuthModule } from './feature/auth/auth.module';
+import { UserModule } from './feature/user/user.module';
 import { NetSuiteModule } from './feature/netsuite/netsuite.module';
 import { DemandPlanningModule } from './feature/demand-planning/demand-planning.module';
 import { DataServiceModule } from './feature/data-service/data-service.module';
 
 const routes = [
+    {
+        path: 'auth',
+        module: AuthModule,
+    },
+    {
+        path: 'user',
+        module: UserModule,
+    },
     {
         path: 'netsuite',
         module: NetSuiteModule,

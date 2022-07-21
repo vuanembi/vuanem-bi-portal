@@ -15,6 +15,7 @@ services:
   backend:
     container_name: backend
     image: us-docker.pkg.dev/${PROJECT_ID}/gcr.io/vuanem-bi-portal/backend:master
+    build: ./backend
     env_file:
       - ./backend/.env
     volumes:
@@ -27,6 +28,7 @@ services:
   frontend:
     container_name: frontend
     image: us-docker.pkg.dev/${PROJECT_ID}/gcr.io/vuanem-bi-portal/frontend:master
+    build: ./frontend
     networks:
     - vuanem-bi-portal
 

@@ -1,0 +1,17 @@
+name: Frontend Build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency: ${{ github.ref }}-${{ github.workflow }}
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+      base_name: frontend
+      base_dir: ./frontend
+    secrets: inherit

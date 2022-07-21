@@ -6,8 +6,8 @@ import { VStack, HStack, LinkBox, LinkOverlay, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { PlanStatus, planConfigs } from '../../../service/plan.config';
-import { Plan } from '../../../service/plan.api';
+import * as PlanService from '../../../service/plan.api';
+import * as PlanConfig from '../../../service/plan.config';
 
 dayjs.extend(utc);
 
@@ -17,8 +17,8 @@ const PlanCard = ({
     startOfForecastWeek,
     updatedAt,
     status,
-}: Plan) => {
-    const { color } = planConfigs[status as PlanStatus];
+}: PlanService.Plan) => {
+    const { color } = PlanConfig.planConfigs[status as PlanConfig.PlanStatus];
 
     const { pathname } = useRouter();
 

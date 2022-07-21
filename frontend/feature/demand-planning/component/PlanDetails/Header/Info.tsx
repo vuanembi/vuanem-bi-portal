@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import {
     HStack,
     VStack,
@@ -8,13 +10,9 @@ import {
     chakra,
 } from '@chakra-ui/react';
 import { IoMdCloudDone } from 'react-icons/io';
-
 import { useIsFetching } from 'react-query';
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
-import { usePlan } from '../../../service/plan.context';
+import { usePlan } from '../../../provider/plan.context';
 
 dayjs.extend(utc);
 

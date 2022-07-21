@@ -19,16 +19,19 @@ import {
 import { Select } from 'chakra-react-select';
 import { useQueryClient, useQuery, useMutation } from 'react-query';
 
-import { Class, get } from '../../../../netsuite/class';
-import { CreatePlanDto, create } from '../../../service/plan.api';
+import * as ClassService from '../../../../netsuite/service/class';
+import * as PlanService from '../../../service/plan.api';
 
 import PopoverDatePicker from './DatePicker';
 
 const PlanForm = ({ isOpen, onClose }: ModalProps) => {
     const toast = useToast();
     const queryClient = useQueryClient();
-    const { data: classes = [] } = useQuery<Class[]>('classes', get);
-    const { isLoading, mutate } = useMutation(create, {
+    const { data: classes = [] } = useQuery<ClassService.Class[]>(
+        'classes',
+        ClassService.get,
+    );
+    const { isLoading, mutate } = useMutation(PlanService.create, {
         onSuccess: () => {
             onClose();
             toast({
@@ -46,7 +49,7 @@ const PlanForm = ({ isOpen, onClose }: ModalProps) => {
         },
     });
 
-    const [formState, setFormState] = useState<CreatePlanDto>({
+    const [formState, setFormState] = useState<PlanService.CreatePlanDto>({
         name: '',
         startOfForecastWeek: dayjs().format('YYYY-MM-DD'),
         classes: [],
