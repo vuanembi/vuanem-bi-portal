@@ -2,9 +2,8 @@ import { useRouter } from 'next/router';
 import { VStack, Button, useDisclosure } from '@chakra-ui/react';
 import { useMutation } from 'react-query';
 
-import ConfirmModal from './ConfirmModal';
-
 import { usePlan } from '../../../provider/plan.context';
+import ConfirmModal from './ConfirmModal';
 
 const Action = () => {
     const { plan, config } = usePlan();

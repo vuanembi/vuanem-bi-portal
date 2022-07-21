@@ -9,11 +9,16 @@ import {
 import { useLocalStorage } from 'react-use';
 import jwt from 'jwt-decode';
 
-import { AuthResponse, authenticate } from '../service/auth.api';
+import * as AuthService from '../service/auth.api';
 import * as UserService from '../../user/service/user.api';
 
-type AuthContextProps = Partial<AuthResponse> & {
-    signIn: UseMutateFunction<AuthResponse, unknown, string, unknown>;
+type AuthContextProps = Partial<AuthService.AuthResponse> & {
+    signIn: UseMutateFunction<
+        AuthService.AuthResponse,
+        unknown,
+        string,
+        unknown
+    >;
     signOut: () => void;
 };
 
@@ -40,7 +45,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         },
     );
 
-    const { mutate: signIn } = useMutation(authenticate, {
+    const { mutate: signIn } = useMutation(AuthService.authenticate, {
         onSuccess: async (res) => {
             setToken(res.token);
             queryClient.setQueryData('user', res.user);

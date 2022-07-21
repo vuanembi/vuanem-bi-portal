@@ -1,15 +1,15 @@
 import { useContext, createContext, PropsWithChildren } from 'react';
 
-import { Plan } from '../service/plan.api';
-import { PlanStatus, PlanConfig, planConfigs } from '../service/plan.config';
+import * as PlanService from '../service/plan.api';
+import * as PlanConfig from '../service/plan.config';
 
 export type PlanContextProps = {
-    plan: Plan;
-    config: PlanConfig;
+    plan: PlanService.Plan;
+    config: PlanConfig.PlanConfig;
 };
 
 export type PlanProviderProps = PropsWithChildren & {
-    plan: Plan;
+    plan: PlanService.Plan;
 };
 
 export const PlanContext = createContext<PlanContextProps>(
@@ -19,7 +19,7 @@ export const PlanContext = createContext<PlanContextProps>(
 export const PlanProvider = ({ plan, children }: PlanProviderProps) => {
     const value = {
         plan,
-        config: planConfigs[plan.status as PlanStatus],
+        config: PlanConfig.planConfigs[plan.status as PlanConfig.PlanStatus],
     };
 
     return (

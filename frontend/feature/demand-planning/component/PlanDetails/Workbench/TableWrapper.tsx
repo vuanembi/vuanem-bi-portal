@@ -11,15 +11,14 @@ import CellComponent = Tabulator.CellComponent;
 import CellEditEventCallback = Tabulator.CellEditEventCallback;
 
 import { usePlan } from '../../../provider/plan.context';
-import { PlanItem, getOne, updateOne } from '../../../service/plan-item.api';
-
+import * as PlanItemService from '../../../service/plan-item.api';
 import Table from './Table';
 
 type TableWrapperProps = {
-    data: PlanItem[];
+    data: PlanItemService.PlanItem[];
 };
 
-type DataFn = (cell: CellComponent) => PlanItem;
+type DataFn = (cell: CellComponent) => PlanItemService.PlanItem;
 type ItemMutate = (dataFn: DataFn) => CellEditEventCallback;
 
 const TableWrapper = ({ data }: TableWrapperProps) => {
@@ -30,14 +29,14 @@ const TableWrapper = ({ data }: TableWrapperProps) => {
     const itemQueries = useQueries(
         data.map((planItem) => ({
             queryKey: ['plan-item', planItem.id],
-            queryFn: getOne(planItem.id),
+            queryFn: PlanItemService.getOne(planItem.id),
             initialData: planItem,
             staleTime: Infinity,
             cacheTime: Infinity,
         })),
-    ) as unknown as UseQueryResult<PlanItem, any>[];
+    ) as unknown as UseQueryResult<PlanItemService.PlanItem, any>[];
 
-    const { mutate } = useMutation(updateOne, {
+    const { mutate } = useMutation(PlanItemService.updateOne, {
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries(['plan-item', variables.id]);
         },
@@ -68,7 +67,7 @@ const TableWrapper = ({ data }: TableWrapperProps) => {
 
     const _data = itemQueries
         .filter(({ data }) => !!data)
-        .map(({ data }) => data as PlanItem)
+        .map(({ data }) => data as PlanItemService.PlanItem)
         .map((d) => ({ ...d, sku: d.item.sku }));
 
     return (

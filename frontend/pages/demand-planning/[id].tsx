@@ -1,16 +1,12 @@
 import type { NextPage, GetServerSideProps } from 'next';
 
 import { VStack } from '@chakra-ui/react';
-
-import { getOne } from '../../feature/demand-planning/service/plan.api';
-
-import { PlanProvider } from '../../feature/demand-planning/provider/plan.context';
-import { Plan as PlanPageProps } from '../../feature/demand-planning/service/plan.api';
-
 import Header from '../../feature/demand-planning/component/PlanDetails/Header/Header';
 import Workbench from '../../feature/demand-planning/component/PlanDetails/Workbench/Workbench';
+import { PlanProvider } from '../../feature/demand-planning/provider/plan.context';
+import * as PlanService from '../../feature/demand-planning/service/plan.api';
 
-const Plan: NextPage<{ plan: PlanPageProps }> = ({ plan }) => {
+const Plan: NextPage<{ plan: PlanService.Plan }> = ({ plan }) => {
     return (
         <PlanProvider plan={plan}>
             <VStack alignItems="stretch" maxH="80%">
@@ -25,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { id } = context.query;
 
     if (typeof id === 'string') {
-        const plan = await getOne(+id);
+        const plan = await PlanService.getOne(+id);
 
         return {
             props: {

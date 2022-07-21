@@ -3,12 +3,14 @@ import { useState, useEffect, useRef } from 'react';
 import { TabulatorFull, Tabulator } from 'tabulator-tables';
 import ColumnDefinition = Tabulator.ColumnDefinition;
 
-import { PlanItem } from '../../../service/plan-item.api';
+import * as PlanItemService from '../../../service/plan-item.api';
 
 export type TableProps = {
     columns: ColumnDefinition[];
-    data: (PlanItem & { sku: PlanItem['item']['sku'] })[];
-    dataTree: boolean
+    data: (PlanItemService.PlanItem & {
+        sku: PlanItemService.PlanItem['item']['sku'];
+    })[];
+    dataTree: boolean;
 };
 
 const Table = ({ columns, data, dataTree }: TableProps) => {

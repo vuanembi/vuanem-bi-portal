@@ -5,15 +5,15 @@ import { Box } from '@chakra-ui/react';
 import TableWrapper from './TableWrapper';
 
 import { usePlan } from '../../../provider/plan.context';
-import { getOneItems } from '../../../service/plan.api';
-import { PlanItem } from '../../../service/plan-item.api';
+import * as PlanService from '../../../service/plan.api';
+import * as PlanItemService from '../../../service/plan-item.api';
 
 const Workbench = () => {
     const { plan, config } = usePlan();
 
-    const { data: planItems } = useQuery<PlanItem[]>(
+    const { data: planItems } = useQuery<PlanItemService.PlanItem[]>(
         ['plan', plan.id, 'items'],
-        getOneItems(plan.id),
+        PlanService.getOneItems(plan.id),
         { staleTime: Infinity, cacheTime: Infinity },
     );
 
