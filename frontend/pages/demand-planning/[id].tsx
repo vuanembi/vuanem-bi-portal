@@ -12,7 +12,9 @@ const Plan: NextPage = () => {
     const { query } = useRouter();
     const { id } = query;
 
-    const { data: plan } = useQuery(['plan', id], () => PlanService.getOne(id));
+    const { data: plan } = useQuery(['plan', id], () =>
+        PlanService.getOne(+(id as string)),
+    );
 
     if (!plan) return null;
 
