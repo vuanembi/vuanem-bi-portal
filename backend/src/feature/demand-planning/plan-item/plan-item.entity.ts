@@ -2,25 +2,33 @@ import {
     Entity,
     Property,
     Formula,
-    OneToOne,
     ManyToOne,
     OneToMany,
     Collection,
     IdentifiedReference,
     Cascade,
+    DateType,
 } from '@mikro-orm/core';
 
 import { Record } from '../../common/entity';
 
-import { Item } from '../../netsuite/item/item.entity';
+import { Class } from '../../netsuite/class/class.entity';
 import { Plan } from '../plan/plan.entity';
-import { PlanItemSeed } from './plan-item-seed.entity';
-import { PlanItemForecast } from './plan-item-forecast.entity';
 import { PlanItemVendor } from './plan-item-vendor.entity';
 
 @Entity()
 export class PlanItem extends Record {
+
     @Property()
+    width: number;
+
+    @Property()
+    length: number;
+
+    @Property()
+    thickness: number;
+
+    @Property({type: DateType})
     startOfWeek: Date;
 
     @Formula(`date_part('week', start_of_week)`)
@@ -32,33 +40,71 @@ export class PlanItem extends Record {
     @Property()
     region: string;
 
-    @OneToOne({
-        entity: () => PlanItemSeed,
-        mappedBy: ({planItem}) => planItem,
-        eager: true,
-        owner: true,
-        wrappedReference: true,
-    })
-    seed: IdentifiedReference<PlanItemSeed>
+    // Seed
 
-    @OneToOne({
-        entity: () => PlanItemForecast,
-        mappedBy: ({planItem}) => planItem,
-        eager: true,
-        owner: true,
-        wrappedReference: true,
-        nullable: true,
-    })
-    forecast: IdentifiedReference<PlanItemForecast>
+    @Property({ type: 'float' })
+    avgItemDiscount: number;
+
+    @Property({ type: 'float' })
+    avgOrderDiscount: number;
+
+    @Property()
+    basePrice: number;
+
+    @Property()
+    workingDays: number;
+
+    // Forecast
+
+    @Property({ type: 'float' })
+    qtyL1w: number;
+
+    @Property({ type: 'float' })
+    qtyL4w: number;
+
+    @Property({ type: 'float' })
+    qtyL8w: number;
+
+    @Property()
+    qtyDemandML: number = 0;
+
+    @Property()
+    qtyDemandPurchasing: number = 0;
+
+    @Formula('qty_demand_ml / nullif(qty_l1w, 0)')
+    percentageChangeL1w: number;
+
+    @Formula('qty_demand_ml / nullif(qty_l4w, 0)')
+    percentageChangeL4w: number;
+
+    @Formula('qty_demand_ml / nullif(qty_l8w, 0)')
+    percentageChangeL8w: number;
+
+    // Inventory
+
+    @Property()
+    seedingInventory: number;
+
+    @Property()
+    qtyBackOrder: number;
+
+    @Property()
+    qtyCommitted: number;
+
+    @Property()
+    qtyOnOrder: number;
+
+    @Property()
+    safetyStockLevelInDays: number;
 
     @ManyToOne({
-        entity: () => Item,
+        entity: () => Class,
         eager: true,
         nullable: false,
         wrappedReference: true,
         cascade: [Cascade.PERSIST, Cascade.REMOVE],
     })
-    item: IdentifiedReference<Item>;
+    class: IdentifiedReference<Class>;
 
     @ManyToOne({
         entity: () => Plan,

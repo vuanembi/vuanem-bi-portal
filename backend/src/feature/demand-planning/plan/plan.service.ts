@@ -22,17 +22,17 @@ export class PlanService {
             status: PlanStatus.DRAFT,
         });
 
+        this.planRepository.persist(plan);
+
         return this.planItemService
-            .create(plan, createPlanDto.startOfForecastWeek)
+            .create(plan, createPlanDto.classIds)
             .then(() => this.planRepository.flush())
             .then(() => plan);
     }
 
     async findAll() {
         return this.planRepository.findAll({
-            orderBy: {
-                createdAt: QueryOrder.DESC,
-            },
+            orderBy: { createdAt: QueryOrder.DESC },
         });
     }
 
@@ -47,25 +47,10 @@ export class PlanService {
     }
 
     async forecast(id: number) {
-        const plan = await this.planRepository.findOneOrFail(
-            { id },
-            {
-                populate: [
-                    'items',
-                    'items.item.sku',
-                    'items.seed',
-                    'items.forecast',
-                ],
-            },
-        );
-
-        await this.planItemService.forecast(plan.items.getItems());
-
-        this.planRepository.assign(plan, { status: PlanStatus.FORECAST });
-
-        this.planRepository.persist(plan);
-
-        return this.planRepository.flush().then(() => plan);
+        return this.findOne(id).then(async (plan) => {
+            this.planRepository.assign(plan, { status: PlanStatus.FORECAST });
+            await this.planRepository.persistAndFlush(plan);
+        });
     }
 
     async checkInventory(id: number) {

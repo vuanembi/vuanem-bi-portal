@@ -9,9 +9,6 @@ import { ClassService } from './class/class.service';
 import { Vendor } from './vendor/vendor.entity';
 import { VendorService } from './vendor/vendor.service';
 
-import { Item } from './item/item.entity';
-import { ItemService } from './item/item.service';
-
 export class NetSuiteSeeder extends Seeder {
     async run(em: EntityManager) {
         const bigQueryProvider = new BigQueryProvider();
@@ -26,13 +23,7 @@ export class NetSuiteSeeder extends Seeder {
             em.getRepository(Vendor),
         );
 
-        const itemService = new ItemService(
-            bigQueryProvider,
-            em.getRepository(Item),
-        );
-
         await classService.sync();
         await vendorService.sync();
-        await itemService.sync();
     }
 }

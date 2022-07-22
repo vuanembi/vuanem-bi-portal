@@ -14,19 +14,11 @@ import { PlanItem } from './plan-item/plan-item.entity';
 import { PlanItemService } from './plan-item/plan-item.service';
 import { PlanItemController } from './plan-item/plan-item.controller';
 
-import { PlanItemSeed } from './plan-item/plan-item-seed.entity';
-import { PlanItemForecast } from './plan-item/plan-item-forecast.entity';
 import { PlanItemVendor } from './plan-item/plan-item-vendor.entity';
 
 @Module({
     imports: [
-        MikroOrmModule.forFeature([
-            Plan,
-            PlanItem,
-            PlanItemSeed,
-            PlanItemForecast,
-            PlanItemVendor,
-        ]),
+        MikroOrmModule.forFeature([Plan, PlanItem, PlanItemVendor]),
         NetSuiteModule,
     ],
     providers: [BigQueryProvider, AutoMLProvider, PlanService, PlanItemService],

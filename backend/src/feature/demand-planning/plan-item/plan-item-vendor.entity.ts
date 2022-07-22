@@ -12,7 +12,7 @@ import { PlanItem } from './plan-item.entity';
 
 @Entity()
 export class PlanItemVendor extends SubRecord {
-    @Property()
+    @Property({ type: 'float' })
     allocation: number;
 
     @ManyToOne({

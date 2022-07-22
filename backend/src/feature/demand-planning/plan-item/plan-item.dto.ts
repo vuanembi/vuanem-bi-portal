@@ -1,23 +1,43 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePlanItemDto {
-    @ApiProperty()
-    startOfWeek: Date;
+    classId: number;
 
-    @ApiProperty()
+    width: number;
+
+    length: number;
+
+    thickness: number;
+
     region: string;
 
-    @ApiProperty()
+    startOfWeek: Date;
+
     avgItemDiscount: number;
 
-    @ApiProperty()
     avgOrderDiscount: number;
 
-    @ApiProperty()
     basePrice: number;
 
-    @ApiProperty()
     workingDays: number;
+
+    qtyL1w: number;
+
+    qtyL4w: number;
+
+    qtyL8w: number;
+
+    seedingInventory: number;
+
+    qtyBackOrder: number;
+
+    qtyCommitted: number;
+
+    qtyOnOrder: number;
+
+    safetyStockLevelInDays: number;
+
+    vendorIds: number[];
 }
 
 class UpdatePlanItemSeedDto {
@@ -40,9 +60,22 @@ class UpdatePlanItemForecastDto {
 }
 
 export class UpdatePlanItemDto {
-    @ApiPropertyOptional()
-    seed: UpdatePlanItemSeedDto
+    // Seed
 
     @ApiPropertyOptional()
-    forecast: UpdatePlanItemForecastDto
+    avgItemDiscount: number;
+
+    @ApiPropertyOptional()
+    avgOrderDiscount: number;
+
+    @ApiPropertyOptional()
+    basePrice: number;
+
+    @ApiPropertyOptional()
+    workingDays: number;
+
+    // Forecast
+    
+    @ApiPropertyOptional()
+    qtyDemandPurchasing: number;
 }

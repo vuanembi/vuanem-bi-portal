@@ -19,9 +19,6 @@ export enum PlanStatus {
 
 @Entity()
 export class Plan extends Record {
-    @Property({ columnType: 'date' })
-    startOfForecastWeek: Date;
-
     @Property()
     name: string;
 

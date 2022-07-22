@@ -34,6 +34,11 @@ export class PlanController {
         return this.planService.forecast(+id);
     }
 
+    @Put(':id/inventory')
+    checkInventory(@Param('id') id: string) {
+        return this.planService.checkInventory(+id);
+    }
+
     @Put(':id/review')
     review(@Param('id') id: string) {
         return this.planService.review(+id);

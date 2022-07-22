@@ -12,6 +12,8 @@ describe('Demand Planning', () => {
     let moduleRef: TestingModule;
     let planService: PlanService;
 
+    const planId = 4;
+
     beforeAll(async () => {
         moduleRef = await Test.createTestingModule({
             imports: [
@@ -31,9 +33,8 @@ describe('Demand Planning', () => {
     describe('Plan Service', () => {
         it('Create', async () => {
             const options = {
-                name: 'Aruuuu',
-                sku: ['123'],
-                startOfForecastWeek: new Date('2022-01-01'),
+                name: 'Plan 01',
+                classIds: [2805],
             };
             return planService.create(options).then((plan) => {
                 expect(plan).toBeTruthy();
@@ -48,16 +49,20 @@ describe('Demand Planning', () => {
         })
 
         it('Find One Item', async () => {
-            const id = 8;
-            return planService.findOneItems(id).then((planItems) => {
-                
+            return planService.findOneItems(planId).then((planItems) => {
                 console.log(planItems);
                 expect(planItems.length).toBeGreaterThan(0);
             });
         });
 
         it('Forecast', async () => {
-            return planService.forecast(5).then((plan) => {
+            return planService.forecast(planId).then((plan) => {
+                expect(plan).toBeTruthy();
+            });
+        });
+
+        it('Inventory', async () => {
+            return planService.checkInventory(planId).then((plan) => {
                 expect(plan).toBeTruthy();
             });
         });
