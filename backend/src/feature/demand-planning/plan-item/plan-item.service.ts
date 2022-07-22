@@ -30,6 +30,7 @@ export class PlanItemService {
             .whereIn('CLASS_ID', classIds)
             .select({
                 classId: 'CLASS_ID',
+                productGroupCode: 'PRODUCT_GROUP_CODE',
                 startOfWeek: 'START_OF_WEEK',
                 width: 'WIDTH',
                 length: 'LENGTH_0',

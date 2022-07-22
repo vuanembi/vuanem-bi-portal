@@ -3,6 +3,8 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 export class CreatePlanItemDto {
     classId: number;
 
+    productGroupCode: string;
+
     width: number;
 
     length: number;

@@ -42,7 +42,7 @@ export class PlanService {
 
     async findOneItems(id: number) {
         return this.planRepository
-            .findOneOrFail({ id }, { populate: ['items'] })
+            .findOneOrFail({ id }, { populate: ['items', 'items.class'] })
             .then((plan) => plan.items.getItems());
     }
 

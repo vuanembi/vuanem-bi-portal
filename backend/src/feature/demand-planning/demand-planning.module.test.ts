@@ -12,7 +12,7 @@ describe('Demand Planning', () => {
     let moduleRef: TestingModule;
     let planService: PlanService;
 
-    const planId = 4;
+    const planId = 1;
 
     beforeAll(async () => {
         moduleRef = await Test.createTestingModule({

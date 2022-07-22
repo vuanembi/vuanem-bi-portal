@@ -18,6 +18,8 @@ import { PlanItemVendor } from './plan-item-vendor.entity';
 
 @Entity()
 export class PlanItem extends Record {
+    @Property({ hidden: true })
+    productGroupCode: string;
 
     @Property()
     width: number;
@@ -28,7 +30,12 @@ export class PlanItem extends Record {
     @Property()
     thickness: number;
 
-    @Property({type: DateType})
+    @Formula(
+        `product_group_code || ' :: ' || width || '-' || length || '-' || thickness`,
+    )
+    name: string;
+
+    @Property({ type: DateType })
     startOfWeek: Date;
 
     @Formula(`date_part('week', start_of_week)`)
