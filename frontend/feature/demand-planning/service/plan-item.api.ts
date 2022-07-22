@@ -6,21 +6,25 @@ export type PlanItem = {
     weekNo: number;
     year: number;
     region: string;
-    seed: {
-        avgItemDiscount: number;
-        avgOrderDiscount: number;
-        basePrice: number;
-        workingDays: number;
-    };
-    forecast: {
-        percentageChange1w: number;
-        percentageChange1m: number;
-        percentageChange3m: number;
-        qtyDemandML: number;
-        qtyDemandPurchasing: number;
-    };
 
-    item: {
+    avgItemDiscount: number;
+    avgOrderDiscount: number;
+    basePrice: number;
+    workingDays: number;
+
+    percentageChangeL1w: number;
+    percentageChangeL4w: number;
+    percentageChangeL8w: number;
+    qtyDemandML: number;
+    qtyDemandPurchasing: number;
+
+    seedingInventory: number;
+    qtyBackOrder: number;
+    qtyCommitted: number;
+    qtyOnOrder: number;
+    safetyStockLevelInDays: number;
+    
+    class: {
         sku: string;
         name: string;
     };

@@ -4,7 +4,6 @@ import { PlanItem } from './plan-item.api';
 export type Plan = {
     id: number;
     name: string;
-    startOfForecastWeek: string;
     status: string;
     createdAt: string;
     updatedAt: string;
@@ -12,8 +11,7 @@ export type Plan = {
 
 export type CreatePlanDto = {
     name: string;
-    startOfForecastWeek: string;
-    classes: number[];
+    classIds: number[];
 };
 
 export const create = (data: CreatePlanDto) =>
